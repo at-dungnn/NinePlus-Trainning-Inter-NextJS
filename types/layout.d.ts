@@ -8,6 +8,10 @@ type Page<P = {}> = NextPage<P> & {
     getLayout?: (page: ReactElement) => ReactNode;
 };
 
+type childNode<P = {}>= NextPage<P> & {
+    children?: ReactNode;
+};
+
 /* Breadcrumb Types */
 export interface AppBreadcrumbProps {
     className?: string;
