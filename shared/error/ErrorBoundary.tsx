@@ -25,9 +25,12 @@ class ErrorBoundary extends Component<Props, State> {
     return { hasError: true };
   }
 
-  public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
-    
-     
+  public componentDidUpdate(
+    prevProps: Readonly<Props>,
+    prevState: Readonly<State>,
+    snapshot?: any
+  ): void {
+    console.log(prevProps, prevState);
   }
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // You can use your own error logging service here
