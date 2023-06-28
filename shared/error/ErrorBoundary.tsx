@@ -1,5 +1,4 @@
 import React, { Component, ErrorInfo, ReactNode } from "react";
-import { useRouter } from "next/router";
 
 interface Props {
   children?: ReactNode;
