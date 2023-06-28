@@ -1,4 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from "react";
+import { useRouter } from "next/router";
 
 interface Props {
   children?: ReactNode;
@@ -22,6 +23,11 @@ class ErrorBoundary extends Component<Props, State> {
     // Update state so the next render will show the fallback UI
 
     return { hasError: true };
+  }
+
+  public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+    
+     
   }
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // You can use your own error logging service here
