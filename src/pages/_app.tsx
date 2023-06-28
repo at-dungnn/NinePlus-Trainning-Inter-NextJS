@@ -9,12 +9,16 @@ import "primeicons/primeicons.css";
 import "@/styles/layout/layout.scss";
 import "@/styles/demo/Demos.scss";
 import { ErrorBoundary } from "@/shared/error";
+import ErrorPage from "./auth/error";
 
 type Props = AppProps & {
   Component: Page;
 };
 
-export default function MyApp({ Component, pageProps }: Props) {
+export default function MyApp({
+  Component,
+  pageProps,
+}: Props): React.ReactNode {
   if (Component.getLayout) {
     return (
       <LayoutProvider>
@@ -27,7 +31,7 @@ export default function MyApp({ Component, pageProps }: Props) {
     return (
       <LayoutProvider>
         <Layout>
-          <ErrorBoundary fallback="Error">
+          <ErrorBoundary fallback={<ErrorPage />}>
             <Component {...pageProps} />
           </ErrorBoundary>
         </Layout>
