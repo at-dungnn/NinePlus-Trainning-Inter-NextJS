@@ -1,4 +1,10 @@
-import React, { ReactElement, Dispatch, SetStateAction, HTMLAttributeAnchorTarget, ReactNode } from 'react';
+import React, {
+    ReactElement,
+    Dispatch,
+    SetStateAction,
+    HTMLAttributeAnchorTarget,
+    ReactNode,
+} from 'react';
 import { NextPage } from 'next';
 import { Demo } from './demo';
 import { Toast } from 'primereact/toast';
@@ -8,7 +14,7 @@ type Page<P = {}> = NextPage<P> & {
     getLayout?: (page: ReactElement) => ReactNode;
 };
 
-type childNode<P = {}>= NextPage<P> & {
+type childNode<P = {}> = NextPage<P> & {
     children?: ReactNode;
 };
 

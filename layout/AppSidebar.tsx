@@ -2,7 +2,7 @@ import { Page } from "@/types/types";
 import AppMenu from "./AppMenu";
 
 const AppSidebar: Page = () => {
-  return <AppMenu />;
+    return <AppMenu />;
 };
 
 export default AppSidebar;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const EmptyPage = () => {
     return (
@@ -6,7 +6,10 @@ const EmptyPage = () => {
             <div className="col-12">
                 <div className="card">
                     <h5>Empty Page</h5>
-                    <p>Use this page to start from scratch and place your custom content.</p>
+                    <p>
+                        Use this page to start from scratch and place your
+                        custom content.
+                    </p>
                 </div>
             </div>
         </div>

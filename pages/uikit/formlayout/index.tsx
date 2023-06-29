@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { Dropdown } from 'primereact/dropdown';
+import React, { useState } from "react";
+import { InputText } from "primereact/inputtext";
+import { Button } from "primereact/button";
+import { InputTextarea } from "primereact/inputtextarea";
+import { Dropdown } from "primereact/dropdown";
 
 const FormLayoutDemo = () => {
     const [dropdownItem, setDropdownItem] = useState(null);
     const dropdownItems = [
-        { name: 'Option 1', code: 'Option 1' },
-        { name: 'Option 2', code: 'Option 2' },
-        { name: 'Option 3', code: 'Option 3' }
+        { name: "Option 1", code: "Option 1" },
+        { name: "Option 2", code: "Option 2" },
+        { name: "Option 3", code: "Option 3" },
     ];
 
     return (
@@ -50,7 +50,10 @@ const FormLayoutDemo = () => {
                 <div className="card p-fluid">
                     <h5>Horizontal</h5>
                     <div className="field grid">
-                        <label htmlFor="name3" className="col-12 mb-2 md:col-2 md:mb-0">
+                        <label
+                            htmlFor="name3"
+                            className="col-12 mb-2 md:col-2 md:mb-0"
+                        >
                             Name
                         </label>
                         <div className="col-12 md:col-10">
@@ -58,7 +61,10 @@ const FormLayoutDemo = () => {
                         </div>
                     </div>
                     <div className="field grid">
-                        <label htmlFor="email3" className="col-12 mb-2 md:col-2 md:mb-0">
+                        <label
+                            htmlFor="email3"
+                            className="col-12 mb-2 md:col-2 md:mb-0"
+                        >
                             Email
                         </label>
                         <div className="col-12 md:col-10">
@@ -74,13 +80,21 @@ const FormLayoutDemo = () => {
                             <label htmlFor="firstname1" className="p-sr-only">
                                 Firstname
                             </label>
-                            <InputText id="firstname1" type="text" placeholder="Firstname" />
+                            <InputText
+                                id="firstname1"
+                                type="text"
+                                placeholder="Firstname"
+                            />
                         </div>
                         <div className="field">
                             <label htmlFor="lastname1" className="p-sr-only">
                                 Lastname
                             </label>
-                            <InputText id="lastname1" type="text" placeholder="Lastname" />
+                            <InputText
+                                id="lastname1"
+                                type="text"
+                                placeholder="Lastname"
+                            />
                         </div>
                         <Button label="Submit"></Button>
                     </div>
@@ -91,7 +105,9 @@ const FormLayoutDemo = () => {
                     <div className="field p-fluid">
                         <label htmlFor="username">Username</label>
                         <InputText id="username" type="text" />
-                        <small>Enter your username to reset your password.</small>
+                        <small>
+                            Enter your username to reset your password.
+                        </small>
                     </div>
                 </div>
             </div>
@@ -118,7 +134,14 @@ const FormLayoutDemo = () => {
                         </div>
                         <div className="field col-12 md:col-3">
                             <label htmlFor="state">State</label>
-                            <Dropdown id="state" value={dropdownItem} onChange={(e) => setDropdownItem(e.value)} options={dropdownItems} optionLabel="name" placeholder="Select One"></Dropdown>
+                            <Dropdown
+                                id="state"
+                                value={dropdownItem}
+                                onChange={(e) => setDropdownItem(e.value)}
+                                options={dropdownItems}
+                                optionLabel="name"
+                                placeholder="Select One"
+                            ></Dropdown>
                         </div>
                         <div className="field col-12 md:col-3">
                             <label htmlFor="zip">Zip</label>

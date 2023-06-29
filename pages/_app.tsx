@@ -12,30 +12,30 @@ import { ErrorBoundary } from "@/shared/error";
 import ErrorPage from "./auth/error";
 
 type Props = AppProps & {
-  Component: Page;
+    Component: Page;
 };
 
 export default function MyApp({
-  Component,
-  pageProps,
+    Component,
+    pageProps,
 }: Props): React.ReactNode {
-  if (Component.getLayout) {
-    return (
-      <LayoutProvider>
-        <ErrorBoundary fallback="Error">
-          {Component.getLayout(<Component {...pageProps} />)}
-        </ErrorBoundary>
-      </LayoutProvider>
-    );
-  } else {
-    return (
-      <LayoutProvider>
-        <Layout>
-          <ErrorBoundary fallback={<ErrorPage />}>
-            <Component {...pageProps} />
-          </ErrorBoundary>
-        </Layout>
-      </LayoutProvider>
-    );
-  }
+    if (Component.getLayout) {
+        return (
+            <LayoutProvider>
+                <ErrorBoundary fallback="Error">
+                    {Component.getLayout(<Component {...pageProps} />)}
+                </ErrorBoundary>
+            </LayoutProvider>
+        );
+    } else {
+        return (
+            <LayoutProvider>
+                <Layout>
+                    <ErrorBoundary fallback={<ErrorPage />}>
+                        <Component {...pageProps} />
+                    </ErrorBoundary>
+                </Layout>
+            </LayoutProvider>
+        );
+    }
 }
