@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import {
     SessionService,
     UserAuthenticate,
-} from "../../models/common/user-auth.model";
+} from "@/models/common/user-auth.model";
 
 export class SessionKey {
     static CURRENT_SELECT_LANG = "CURRENT_SELECT_LANG";

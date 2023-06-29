@@ -1,6 +1,6 @@
-import React from 'react';
-import NotFound from '../pages/pages/notfound/index';
-import { Page } from '../types/types';
+import React from "react";
+import NotFound from "@/src/pages/pages/notfound/index";
+import { Page } from "@/types/types";
 
 const Custom404: Page = () => {
     return <NotFound />;

@@ -6,22 +6,26 @@ export abstract class CRUDService {
 
     protected abstract basePath: string;
 
-    protected get<T>(url: string): Promise<T> {
+    //   public constructor(basePath: string) {
+    //     this.basePath = basePath;
+    //   }
+
+    protected get<T>(url: string, data?: any): Promise<T> {
         return this.httpClient
-            .get<T>(`${this.basePath}/${url}`)
+            .get<T>(`${this.basePath}/${url}`, data)
             .then((response: AxiosResponse<T>) => {
                 return response.data;
             });
     }
 
-    protected list<T>(url: string): Promise<T[]> {
+    protected list<T>(url: string, data?: any): Promise<T[]> {
         return this.httpClient
-            .get<T[]>(`${this.basePath}/${url}`)
+            .get<T[]>(`${this.basePath}/${url}`, data)
             .then((response: AxiosResponse<T[]>) => {
                 return response.data;
             });
     }
-    
+
     protected create<T>(url: string, data: any): Promise<T> {
         return this.httpClient
             .post<T>(`${this.basePath}/${url}`, data)
@@ -34,6 +38,14 @@ export abstract class CRUDService {
         return this.httpClient
             .get<T[]>(`${this.basePath}/${url}`, { params: filterParams })
             .then((response: AxiosResponse<T[]>) => {
+                return response.data;
+            });
+    }
+
+    protected update<T>(url: string, data: any): Promise<T> {
+        return this.httpClient
+            .put<T>(`${this.basePath}/${url}`, data)
+            .then((response: AxiosResponse<T>) => {
                 return response.data;
             });
     }
