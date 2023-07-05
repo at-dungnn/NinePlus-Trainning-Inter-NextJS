@@ -22,6 +22,7 @@ import {
     MenuModelItem,
     AppMenuItemProps,
     AppMenuItem,
+    ManageMenuContextProps
 } from './layout';
 import {
     Demo,
@@ -69,4 +70,5 @@ export type {
     AppMailReplyProps,
     AppMailProps,
     AppMenuItem,
+    ManageMenuContextProps
 };

@@ -148,7 +148,7 @@ export const InputDemo = () => {
 
     return (
         <div className="grid p-fluid">
-            <div className="col-12 md:col-6">
+            <div className="col-12 md:col-6 ">
                 <div className="card">
                     <h5>InputText</h5>
                     <div className="grid formgrid">
@@ -176,7 +176,7 @@ export const InputDemo = () => {
 
                     <h5>Icons</h5>
                     <div className="grid formgrid">
-                        <div className="col-12 mb-2 lg:col-4 lg:mb-0">
+                        <div className="col-12  mb-2 lg:col-4 lg:mb-0">
                             <span className="p-input-icon-left">
                                 <i className="pi pi-user" />
                                 <InputText type="text" placeholder="Username" />

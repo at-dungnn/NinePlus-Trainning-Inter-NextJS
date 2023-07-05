@@ -22,8 +22,12 @@ export default function MyApp({
     if (Component.getLayout) {
         return (
             <LayoutProvider>
-                <ErrorBoundary fallback="Error">
-                    {Component.getLayout(<Component {...pageProps} />)}
+                <ErrorBoundary fallback={<ErrorPage />}>
+                    {Component.getLayout(
+                        <ErrorBoundary fallback={<ErrorPage />}>
+                            <Component {...pageProps} />{" "}
+                        </ErrorBoundary>
+                    )}
                 </ErrorBoundary>
             </LayoutProvider>
         );
@@ -31,7 +35,7 @@ export default function MyApp({
         return (
             <LayoutProvider>
                 <Layout>
-                    <ErrorBoundary fallback={<ErrorPage />}>
+                    <ErrorBoundary fallback={"error"}>
                         <Component {...pageProps} />
                     </ErrorBoundary>
                 </Layout>

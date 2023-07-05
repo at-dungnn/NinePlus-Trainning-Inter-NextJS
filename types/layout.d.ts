@@ -6,6 +6,7 @@ import React, {
     ReactNode,
 } from 'react';
 import { NextPage } from 'next';
+import { AppProps } from 'next/app';
 import { Demo } from './demo';
 import { Toast } from 'primereact/toast';
 
@@ -18,12 +19,14 @@ type childNode<P = {}> = NextPage<P> & {
     children?: ReactNode;
 };
 
+
 /* Breadcrumb Types */
-export interface AppBreadcrumbProps {
+export interfaceAppBreadcrumbProps {
     className?: string;
+    to?:string;
 }
 
-export interface Breadcrumb {
+export interface Breadcrumb  {
     labels?: string[];
     to?: string;
 }
@@ -66,6 +69,16 @@ export interface MenuContextProps {
     activeMenu: string;
     setActiveMenu: Dispatch<SetStateAction<string>>;
 }
+
+export interface ManageMenuContextProps {
+    activeMenu: string;
+    setActiveMenu: Dispatch<SetStateAction<string>>;
+    Breadcrumb: Breadcrumb;
+    setBreadcrumb:Dispatch<SetStateAction<Breadcrumb>>;
+    AppBreadcrumbProps: AppBreadcrumbProps;
+    setAppBreadcrumbProps:Dispatch<SetStateAction<AppBreadcrumbProps>>;
+}
+
 
 /* AppConfig Types */
 export interface AppConfigProps {
