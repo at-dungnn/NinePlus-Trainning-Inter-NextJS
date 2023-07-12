@@ -34,7 +34,7 @@ const CustomerForm = ({
                 // @ts-ignore
                 setCustomer({
                     ...Customer,
-                    [key]: parseInt(value),
+                    [key]: value,
                 });
             } else if (key === "birthday") {
                 // @ts-ignore

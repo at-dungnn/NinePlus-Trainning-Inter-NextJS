@@ -1,6 +1,5 @@
 import { Column } from "primereact/column";
 import { DataTable, DataTableFilterMeta } from "primereact/datatable";
-import CustomerDetail from "./CustomerDetail";
 import { useState } from "react";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
@@ -8,6 +7,8 @@ import { FilterMatchMode } from "primereact/api";
 import { Tooltip } from "primereact/tooltip";
 import Link from "next/link";
 import { Customer } from "@/types/types";
+import { Dialog } from "primereact/dialog";
+import DeleteDialog from "./DeleteDialog";
 
 export const data: Customer[] = [
     {
@@ -116,11 +117,12 @@ export const data: Customer[] = [
     },
 ];
 const renderIcon = ({ id }: { id: string }): React.ReactNode => {
+    const [visible, setVisible] = useState(false);
     const handleDelete = () => {};
     const handleClick = (e: React.ChangeEvent<HTMLInputElement>) => {};
     const routeDetail = () => {};
     return (
-        <span className="flex justify-content-between w-5rem text-blue-600">
+        <span className="flex justify-content-between w-7rem text-blue-600">
             <Tooltip target=".pi" />
             <Link
                 href={{
@@ -128,11 +130,14 @@ const renderIcon = ({ id }: { id: string }): React.ReactNode => {
                     query: { id: id },
                 }}
             >
-                <i
-                    className="pi pi-eye cursor-pointer"
-                    data-pr-tooltip="Details"
-                    data-pr-position="top"
+                <Button
+                    icon="pi pi-eye cursor-pointer"
+                    rounded
+                    aria-label="Filter"
+                    tooltip="Details"
+                    data-pr-position="left"
                     onClick={routeDetail}
+                    style={{ width: "2rem", height: "2rem" }}
                 />
             </Link>
             <Link
@@ -141,22 +146,38 @@ const renderIcon = ({ id }: { id: string }): React.ReactNode => {
                     query: { id: id },
                 }}
             >
-                <i
-                    className="pi pi-pencil cursor-pointer"
-                    data-pr-tooltip="Change"
-                    data-pr-position="top"
+                <Button
+                    icon="pi pi-pencil cursor-pointer"
+                    rounded
+                    aria-label="Update"
+                    tooltip="Update"
+                    severity="warning"
+                    data-pr-position="left"
+                    style={{ width: "2rem", height: "2rem" }}
                 />
             </Link>
-            <i
-                className="pi pi-trash cursor-pointer"
-                data-pr-tooltip="Delete"
-                data-pr-position="top"
-                onClick={handleDelete}
+            <Button
+                icon="pi pi-trash cursor-pointer"
+                rounded
+                aria-label="Delete"
+                tooltip="Delete"
+                data-pr-position="left"
+                severity="danger"
+                onClick={() => {
+                    setVisible(true);
+                }}
+                style={{ width: "2rem", height: "2rem" }}
+            />
+            <DeleteDialog
+                id={id}
+                name={data.filter((val) => val.id === id)[0].name}
+                visible={visible}
+                setVisible={setVisible}
             />
         </span>
     );
 };
-export const renderHeader = ({
+export const FilterHeader = ({
     globalFilterValue,
     onGlobalFilterChange,
 }: any) => {
@@ -196,7 +217,7 @@ const CustomerTable = () => {
         setFilters(_filters);
         setGlobalFilterValue(value);
     };
-    const headers = renderHeader({ globalFilterValue, onGlobalFilterChange });
+    const headers = FilterHeader({ globalFilterValue, onGlobalFilterChange });
 
     return (
         <DataTable

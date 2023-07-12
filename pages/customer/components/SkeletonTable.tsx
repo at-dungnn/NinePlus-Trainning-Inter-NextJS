@@ -1,7 +1,7 @@
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Skeleton } from "primereact/skeleton";
-import { renderHeader } from "./CustomerTable";
+import { FilterHeader } from "./CustomerTable";
 
 export default function SkeletonTable() {
     const items = Array.from({ length: 5 }, (v, i) => i);
@@ -9,7 +9,7 @@ export default function SkeletonTable() {
         <DataTable
             // @ts-ignore
             value={items}
-            header={renderHeader}
+            header={FilterHeader}
             className="p-datatable-striped"
             rows={5}
             rowsPerPageOptions={[5, 15, 25]}
