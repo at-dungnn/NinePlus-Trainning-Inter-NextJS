@@ -11,10 +11,13 @@ import { classNames } from "primereact/utils";
 import React, { useContext, useEffect, useRef } from "react";
 import ManageSidebar from "./ManageSidebar";
 import ManageTopbar from "./ManageTopbar";
-import { LayoutContext } from "../context/layoutcontext";
+import { LayoutContext } from "@context/layoutcontext";
 import PrimeReact from "primereact/api";
 import { ChildContainerProps, LayoutState, AppTopbarRef } from "@/types/types";
 import { log } from "console";
+import { BreadcrumProvider } from "@context/breadcrumpcontext";
+import AppConfig from "./AppConfig";
+import { ToastProvider } from "@context/toastcontext";
 
 const ManageLayout = ({ children }: ChildContainerProps) => {
     const { layoutConfig, layoutState, setLayoutState } =
@@ -162,39 +165,6 @@ const ManageLayout = ({ children }: ChildContainerProps) => {
         <React.Fragment>
             <Head>
                 <title>Manage Spa</title>
-                <meta charSet="UTF-8" />
-                <meta
-                    name="description"
-                    content="The ultimate collection of design-agnostic, flexible and accessible React UI Components."
-                />
-                <meta name="robots" content="index, follow" />
-                <meta
-                    name="viewport"
-                    content="initial-scale=1, width=device-width"
-                />
-                <meta property="og:type" content="website"></meta>
-                <meta
-                    property="og:title"
-                    content="Sakai by PrimeReact | Free Admin Template for NextJS"
-                ></meta>
-                <meta
-                    property="og:url"
-                    content="https://www.primefaces.org/sakai-react"
-                ></meta>
-                <meta
-                    property="og:description"
-                    content="The ultimate collection of design-agnostic, flexible and accessible React UI Components."
-                />
-                <meta
-                    property="og:image"
-                    content="https://www.primefaces.org/static/social/sakai-nextjs.png"
-                ></meta>
-                <meta property="og:ttl" content="604800"></meta>
-                <link
-                    rel="icon"
-                    href={`/favicon.ico`}
-                    type="image/x-icon"
-                ></link>
             </Head>
 
             <div className={containerClass}>
@@ -203,10 +173,13 @@ const ManageLayout = ({ children }: ChildContainerProps) => {
                     <ManageSidebar />
                 </div>
                 <div className="layout-main-container">
-                    <div className="layout-main bg-white border-round-2xl shadow-2">
-                        {children}
+                    <div className="layout-main border-round-2xl pb-3 shadow-2">
+                        <BreadcrumProvider>
+                            <ToastProvider>{children}</ToastProvider>
+                        </BreadcrumProvider>
                     </div>
                 </div>
+                <AppConfig />
                 <div className="layout-mask"></div>
             </div>
         </React.Fragment>

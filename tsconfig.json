@@ -4,7 +4,8 @@
         "baseUrl": ".",
         "paths": {
             "@/*": ["./*"],
-            "@layout/*": ["./layout/*"]
+            "@layout/*": ["./layout/*"],
+            "@context/*": ["./layout/context/*"]
         },
         "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,

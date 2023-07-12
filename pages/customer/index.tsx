@@ -1,12 +1,12 @@
-"use client";
 import { Page } from "@/types/layout";
-import React, { useState } from "react";
-import { Skeleton } from "primereact/skeleton";
+import React, { Suspense, useContext, useEffect, useState } from "react";
 import { GetServerSideProps, GetStaticProps } from "next";
 import ManageLayout from "@/layout/manageLayout/layout";
 import { customerService } from "@/shared/services/customerService";
 import SkeletonTable from "./components/SkeletonTable";
 import CustomerTable from "./components/CustomerTable";
+import { BreadcrumContext } from "@/layout/context/breadcrumpcontext";
+import { BreadCrumb } from "primereact/breadcrumb";
 
 type PageProps = {
     data: any;
@@ -20,20 +20,59 @@ type Customer = {
 };
 
 const CustomerManage = (props: PageProps) => {
-    const [isLoading, setIsLoading] = useState(true);
-    // setTimeout(() => {
-    //     setIsLoading(true);
-    // }, 5000);
-    if (isLoading === false) {
+    const {
+        Breadcrumbs,
+        setBreadcrumbs,
+        AppBreadcrumbProps,
+        setAppBreadcrumbProps,
+    } = useContext(BreadcrumContext);
+    useEffect(() => {
+        setBreadcrumbs({
+            labels: [
+                { label: "Customer", url: "/customer" },
+                { label: "List" },
+            ],
+            to: "/customer",
+        });
+    }, []);
+    const [isLoading, setIsLoading] = useState(false);
+
+    if (isLoading === true) {
         return (
-            <div className="m-2">
-                <SkeletonTable />
-            </div>
+            <>
+                <Suspense fallback="Loading...">
+                    <BreadCrumb
+                        model={Breadcrumbs?.labels}
+                        home={AppBreadcrumbProps?.body}
+                        style={{
+                            border: "none",
+                            background: "none",
+                            borderRadius: 0,
+                            marginLeft: "1rem",
+                        }}
+                    />
+                </Suspense>
+                <div className="m-2 ml-5 bg-white h-full">
+                    <SkeletonTable />
+                </div>
+            </>
         );
     }
     return (
-        <div>
-            <div className="m-7 bg-white">
+        <div className="h-auto">
+            <Suspense fallback="Loading...">
+                <BreadCrumb
+                    model={Breadcrumbs?.labels}
+                    home={AppBreadcrumbProps?.body}
+                    style={{
+                        border: "none",
+                        background: "none",
+                        borderRadius: 0,
+                        marginLeft: "1rem",
+                    }}
+                />
+            </Suspense>
+            <div className="m-2 ml-5 bg-white h-full">
                 <CustomerTable />
             </div>
         </div>

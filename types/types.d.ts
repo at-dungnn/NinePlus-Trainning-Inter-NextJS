@@ -22,7 +22,7 @@ import {
     MenuModelItem,
     AppMenuItemProps,
     AppMenuItem,
-    ManageMenuContextProps
+    BreadcrumbContextProps
 } from './layout';
 import {
     Demo,
@@ -39,8 +39,9 @@ import {
 type ChildContainerProps = {
     children: ReactNode;
 };
-
+import {Customer} from "./user"
 export type {
+    Customer,
     Page,
     AppBreadcrumbProps,
     Breadcrumb,
@@ -70,5 +71,5 @@ export type {
     AppMailReplyProps,
     AppMailProps,
     AppMenuItem,
-    ManageMenuContextProps
+    BreadcrumbContextProps
 };

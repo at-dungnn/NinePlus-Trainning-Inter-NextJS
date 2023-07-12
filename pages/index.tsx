@@ -470,8 +470,7 @@ const Dashboard = () => {
                             <span className="text-900 line-height-3">
                                 Richard Jones
                                 <span className="text-700">
-                                    {" "}
-                                    has purchased a blue t-shirt for{" "}
+                                    has purchased a blue t-shirt for
                                     <span className="text-blue-500">79$</span>
                                 </span>
                             </span>
@@ -481,10 +480,10 @@ const Dashboard = () => {
                                 <i className="pi pi-download text-xl text-orange-500" />
                             </div>
                             <span className="text-700 line-height-3">
-                                Your request for withdrawal of{" "}
+                                Your request for withdrawal of
                                 <span className="text-blue-500 font-medium">
                                     2500$
-                                </span>{" "}
+                                </span>
                                 has been initiated.
                             </span>
                         </li>
@@ -501,8 +500,7 @@ const Dashboard = () => {
                             <span className="text-900 line-height-3">
                                 Keyser Wick
                                 <span className="text-700">
-                                    {" "}
-                                    has purchased a black jacket for{" "}
+                                    has purchased a black jacket for
                                     <span className="text-blue-500">59$</span>
                                 </span>
                             </span>
@@ -514,7 +512,6 @@ const Dashboard = () => {
                             <span className="text-900 line-height-3">
                                 Jane Davis
                                 <span className="text-700">
-                                    {" "}
                                     has posted a new questions about your
                                     product.
                                 </span>

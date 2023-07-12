@@ -134,7 +134,7 @@ const LandingPage: Page = () => {
                         </h1>
                         <p className="font-normal text-2xl line-height-3 md:mt-3 text-gray-700">
                             Sed blandit libero volutpat sed cras. Fames ac
-                            turpis egestas integer. Placerat in egestas erat...{" "}
+                            turpis egestas integer. Placerat in egestas erat...
                         </p>
                         <Button
                             type="button"

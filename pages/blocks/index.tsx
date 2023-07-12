@@ -550,7 +550,7 @@ const BlocksDemo = () => {
                             <span className="text-700 line-height-3">
                                 Nec tincidunt praesent semper feugiat. Sed
                                 adipiscing diam donec adipiscing tristique risus
-                                nec feugiat.{" "}
+                                nec feugiat.
                             </span>
                         </div>
                         <div className="col-12 md:col-4 md:mb-4 mb-0 px-3">
@@ -904,7 +904,7 @@ const BlocksDemo = () => {
                                 </div>
                             </div>
                             <span className="text-green-500 font-medium">
-                                24 new{" "}
+                                24 new
                             </span>
                             <span className="text-500">since last visit</span>
                         </div>
@@ -931,7 +931,7 @@ const BlocksDemo = () => {
                                 </div>
                             </div>
                             <span className="text-green-500 font-medium">
-                                %52+{" "}
+                                %52+
                             </span>
                             <span className="text-500">since last week</span>
                         </div>
@@ -958,7 +958,7 @@ const BlocksDemo = () => {
                                 </div>
                             </div>
                             <span className="text-green-500 font-medium">
-                                520{" "}
+                                520
                             </span>
                             <span className="text-500">newly registered</span>
                         </div>
@@ -985,7 +985,7 @@ const BlocksDemo = () => {
                                 </div>
                             </div>
                             <span className="text-green-500 font-medium">
-                                85{" "}
+                                85
                             </span>
                             <span className="text-500">responded</span>
                         </div>

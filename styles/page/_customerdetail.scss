@@ -1,0 +1,26 @@
+.customer-detail{
+    display: flex;
+    width: 30rem;
+    transition: width 200ms linear ;
+    @media (min-width: 1450px) {
+        width: 50rem;
+    }
+   
+}
+.margin-center{
+    margin:auto;
+}
+
+.customer-update{    
+    display: flex;
+    width: 35rem;
+    transition: width 200ms linear ;
+    @media (min-width: 1450px) {
+        width: 70rem;
+    }
+}
+
+.history-button{
+ right:5%;
+ top: 6rem;
+}

@@ -7,6 +7,7 @@ import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import "primeicons/primeicons.css";
 import "@/styles/layout/layout.scss";
+import "@/styles/page/page.scss";
 import "@/styles/demo/Demos.scss";
 import { ErrorBoundary } from "@/shared/error";
 import ErrorPage from "./auth/error";
@@ -25,7 +26,7 @@ export default function MyApp({
                 <ErrorBoundary fallback={<ErrorPage />}>
                     {Component.getLayout(
                         <ErrorBoundary fallback={<ErrorPage />}>
-                            <Component {...pageProps} />{" "}
+                            <Component {...pageProps} />
                         </ErrorBoundary>
                     )}
                 </ErrorBoundary>

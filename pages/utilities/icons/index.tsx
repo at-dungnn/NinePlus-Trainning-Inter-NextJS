@@ -42,15 +42,15 @@ const IconsDemo = () => {
         <div className="card">
             <h2>Icons</h2>
             <p>
-                PrimeReact components internally use{" "}
+                PrimeReact components internally use
                 <Link
                     href="https://github.com/primefaces/primeicons"
                     className="font-medium hover:underline"
                     target={"_blank"}
                 >
                     PrimeIcons
-                </Link>{" "}
-                library, the official icons suite from{" "}
+                </Link>
+                library, the official icons suite from
                 <Link
                     href="https://www.primetek.com.tr"
                     className="font-medium hover:underline"
@@ -70,7 +70,7 @@ const IconsDemo = () => {
             </pre>
             <h4>Getting Started</h4>
             <p>
-                PrimeIcons use the <strong>pi pi-&#123;icon&#125;</strong>{" "}
+                PrimeIcons use the <strong>pi pi-&#123;icon&#125;</strong>
                 syntax such as <strong>pi pi-check</strong>. A standalone icon
                 can be displayed using an element like <i>i</i> or <i>span</i>
             </p>
@@ -114,14 +114,14 @@ const IconsDemo = () => {
             <h4>List of Icons</h4>
             <p>
                 Here is the current list of PrimeIcons, more icons are added
-                periodically. You may also{" "}
+                periodically. You may also
                 <Link
                     href="https://github.com/primefaces/primeicons/issues"
                     className="font-medium hover:underline"
                     target={"_blank"}
                 >
                     request new icons
-                </Link>{" "}
+                </Link>
                 at the issue tracker.
             </p>
             <div>
