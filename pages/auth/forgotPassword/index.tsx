@@ -1,21 +1,16 @@
-//Forgot password
 /* eslint-disable @next/next/no-html-link-for-pages */
 /* eslint-disable react/no-unescaped-entities */
 import React, { useContext, useState } from "react";
 import { Button } from "primereact/button";
 import { useRouter } from "next/router";
 import AppConfig from "@/layout/AppConfig";
-import { Password } from "primereact/password";
 import { LayoutContext } from "@/layout/context/layoutcontext";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
 import { Page } from "@/types/types";
 
 const ForgotPassword: Page = () => {
-    const [password, setPassword] = useState("");
-    const [checked, setChecked] = useState(false);
     const { layoutConfig } = useContext(LayoutContext);
-
     const router = useRouter();
     const containerClassName = classNames(
         "surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden",
@@ -36,7 +31,7 @@ const ForgotPassword: Page = () => {
                         style={{ borderRadius: "53px" }}
                     >
                         <div className="flex align-items-end justify-content-end mb-7 gap-5">
-                            <span className="font-semibold text-500 no-underline ml-2 pb-2 text-color-secondary cursor-pointer">
+                            <span className="font-semibold text-500 no-underline ml-2 pb-2 text-color-secondary">
                                 Don't you have account?
                             </span>
                             <Button
