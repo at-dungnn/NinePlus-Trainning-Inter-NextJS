@@ -13,7 +13,7 @@ import { Page } from "@/types/types";
 
 const LoginPage: Page = () => {
     const [password, setPassword] = useState("");
-    const [checked, setChecked] = useState(false);
+    // const [checked, setChecked] = useState(false);
     const { layoutConfig } = useContext(LayoutContext);
 
     const router = useRouter();

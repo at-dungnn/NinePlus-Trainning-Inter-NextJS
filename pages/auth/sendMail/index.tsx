@@ -5,11 +5,10 @@ import { Button } from "primereact/button";
 import { useRouter } from "next/router";
 import AppConfig from "@/layout/AppConfig";
 import { LayoutContext } from "@/layout/context/layoutcontext";
-import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
 import { Page } from "@/types/types";
 
-const ForgotPassword: Page = () => {
+const SendMAil: Page = () => {
     const { layoutConfig } = useContext(LayoutContext);
     const router = useRouter();
     const containerClassName = classNames(
@@ -43,7 +42,7 @@ const ForgotPassword: Page = () => {
                         </div>
                         <div className="flex justify-content-center">
                             <img
-                                src="/demo/images/access/iconKey.png"
+                                src="/demo/images/access/iconEmail.png"
                                 alt=""
                                 className="mb-4 mt-3 cursor-pointer flex justify-content-center  "
                                 width="10%"
@@ -52,33 +51,24 @@ const ForgotPassword: Page = () => {
 
                         <div className="mb-5 text-center">
                             <div className="text-900 text-center text-3xl font-semibold mb-3">
-                                Forgot password?
+                                Check your email
                             </div>
                             <span className="text-500 font-semibold">
-                                No worries, we'll send you reset intructions
+                                We sent a password reset link to ....
                             </span>
                         </div>
 
                         <div>
-                            <label
-                                htmlFor="email1"
-                                className="block text-900 text-xl font-medium mb-2"
-                            >
-                                Email
-                            </label>
-                            <InputText
-                                id="email1"
-                                type="text"
-                                placeholder="Your email"
-                                className="w-full surface-card md:w-31rem mb-5"
-                                style={{ padding: "1rem" }}
-                            />
-
                             <Button
-                                label="Reset Password"
+                                label="Open maill app"
                                 className="w-full p-3 text-xl align-items-center"
-                                onClick={() => router.push("/auth/sendMail/")}
+                                onClick={() => router.push("/")}
                             ></Button>
+                            <div className="text-center mt-4">
+                                <span className="text-500 font-semibold">
+                                    No worries, we'll send you reset intructions
+                                </span>
+                            </div>
 
                             <div className="mt-4 text-center">
                                 <i className=" pi pi-arrow-left"></i>
@@ -129,7 +119,7 @@ const ForgotPassword: Page = () => {
     );
 };
 
-ForgotPassword.getLayout = function getLayout(page) {
+SendMAil.getLayout = function getLayout(page) {
     return (
         <React.Fragment>
             {page}
@@ -137,4 +127,4 @@ ForgotPassword.getLayout = function getLayout(page) {
         </React.Fragment>
     );
 };
-export default ForgotPassword;
+export default SendMAil;
