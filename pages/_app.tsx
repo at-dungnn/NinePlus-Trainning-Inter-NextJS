@@ -3,6 +3,7 @@ import type { Page } from "@/types/types";
 import React from "react";
 import { LayoutProvider } from "@/layout/context/layoutcontext";
 import Layout from "@/layout/layout";
+import "@/public/demo/css/style.css";
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import "primeicons/primeicons.css";
