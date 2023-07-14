@@ -8,17 +8,23 @@ import { LayoutContext } from "@/layout/context/layoutcontext";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
 import { Page } from "@/types/types";
+import { url } from "inspector";
 
 const ForgotPassword: Page = () => {
     const { layoutConfig } = useContext(LayoutContext);
     const router = useRouter();
     const containerClassName = classNames(
-        "surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden",
+        "surface-ground bg-cover md:bg-contain bg-no-repeat flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden",
         { "p-input-filled": layoutConfig.inputStyle === "filled" }
     );
 
     return (
-        <div className={containerClassName}>
+        <div
+            className={containerClassName}
+            style={{
+                backgroundImage: "url(/demo/images/access/background.png)",
+            }}
+        >
             <div className="flex flex-column align-items-start justify-content-center">
                 <div
                     style={{
@@ -28,7 +34,7 @@ const ForgotPassword: Page = () => {
                 >
                     <div
                         className="w-full surface-card py-8 px-5 sm:px-8"
-                        style={{ borderRadius: "53px" }}
+                        // style={{ borderRadius: "53px" }}
                     >
                         <div className="flex align-items-end justify-content-end mb-7 gap-5">
                             <span className="font-semibold text-500 no-underline ml-2 pb-2 text-color-secondary">
