@@ -9,7 +9,10 @@ import {
 export const BreadcrumContext = createContext({} as BreadcrumbContextProps);
 
 export const BreadcrumProvider = ({ children }: ChildContainerProps) => {
-    const [Breadcrumbs, setBreadcrumbs] = useState<Breadcrumb>();
+    const [Breadcrumbs, setBreadcrumbs] = useState<Breadcrumb>({
+        labels: [],
+        to: "",
+    });
     const [AppBreadcrumbProps, setAppBreadcrumbProps] =
         useState<AppBreadcrumbProps>({
             body: {
@@ -26,7 +29,6 @@ export const BreadcrumProvider = ({ children }: ChildContainerProps) => {
     };
 
     return (
-        // @ts-ignore
         <BreadcrumContext.Provider value={value}>
             {children}
         </BreadcrumContext.Provider>

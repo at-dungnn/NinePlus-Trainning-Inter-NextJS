@@ -4,7 +4,7 @@ import { Ripple } from "primereact/ripple";
 import { classNames } from "primereact/utils";
 import React, { useEffect, useContext } from "react";
 import { CSSTransition } from "react-transition-group";
-import { ManageMenuContext } from "../context/managemenucontext";
+import { ManageMenuContext } from "../context/ManageMenuContext";
 import { AppMenuItemProps } from "@/types/types";
 
 const ManageMenuitem = (props: AppMenuItemProps) => {

@@ -15,8 +15,8 @@ import { formatDate } from "@/shared/tools";
 
 type customerProps = {
     children?: React.ReactNode;
-    Customer?: Customer;
-    setCustomer?: Dispatch<SetStateAction<Customer>>;
+    Customer: Customer;
+    setCustomer: Dispatch<SetStateAction<Customer>>;
     readonly?: boolean;
 };
 const CustomerForm = ({
@@ -31,13 +31,11 @@ const CustomerForm = ({
     const handleChange = useCallback(
         (value: any, key: string) => {
             if (key === "total") {
-                // @ts-ignore
                 setCustomer({
                     ...Customer,
                     [key]: value,
                 });
             } else if (key === "birthday") {
-                // @ts-ignore
                 setCustomer({
                     ...Customer,
                     [key]: `${value.getDate()}/${
@@ -45,7 +43,6 @@ const CustomerForm = ({
                     }/${value.getFullYear()}`,
                 });
             } else {
-                // @ts-ignore
                 setCustomer({
                     ...Customer,
                     [key]: value,

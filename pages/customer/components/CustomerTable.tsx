@@ -9,6 +9,7 @@ import Link from "next/link";
 import { Customer } from "@/types/types";
 import { Dialog } from "primereact/dialog";
 import DeleteDialog from "./DeleteDialog";
+import { useRouter } from "next/router";
 
 export const data: Customer[] = [
     {
@@ -117,14 +118,14 @@ export const data: Customer[] = [
     },
 ];
 const renderIcon = ({ id }: { id: string }): React.ReactNode => {
+    const router = useRouter();
     const [visible, setVisible] = useState(false);
-    const handleDelete = () => {};
-    const handleClick = (e: React.ChangeEvent<HTMLInputElement>) => {};
     const routeDetail = () => {};
     return (
         <span className="flex justify-content-between w-7rem text-blue-600">
             <Tooltip target=".pi" />
             <Link
+                locale={router.locale === "en" ? "en" : "vi"}
                 href={{
                     pathname: `/customer/[id]`,
                     query: { id: id },
@@ -141,6 +142,7 @@ const renderIcon = ({ id }: { id: string }): React.ReactNode => {
                 />
             </Link>
             <Link
+                locale={router.locale === "en" ? "en" : "vi"}
                 href={{
                     pathname: `/customer/update/[id]`,
                     query: { id: id },
@@ -177,7 +179,7 @@ const renderIcon = ({ id }: { id: string }): React.ReactNode => {
         </span>
     );
 };
-export const FilterHeader = ({
+export const renderHeader = ({
     globalFilterValue,
     onGlobalFilterChange,
 }: any) => {
@@ -211,13 +213,12 @@ const CustomerTable = () => {
         const value = e.target.value;
         let _filters = { ...filters };
 
-        // @ts-ignore
-        _filters["global"].value = value;
+        (_filters["global"] as any).value = value;
 
         setFilters(_filters);
         setGlobalFilterValue(value);
     };
-    const headers = FilterHeader({ globalFilterValue, onGlobalFilterChange });
+    const headers = renderHeader({ globalFilterValue, onGlobalFilterChange });
 
     return (
         <DataTable

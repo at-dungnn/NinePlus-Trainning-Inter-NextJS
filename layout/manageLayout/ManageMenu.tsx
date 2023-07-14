@@ -2,9 +2,9 @@
 
 import React, { useContext } from "react";
 import ManageMenuitem from "./ManageMenuitem";
-import { LayoutContext } from "../context/layoutcontext";
-import { MenuProvider } from "../context/menucontext";
-import { ManageMenuProvider } from "../context/managemenucontext";
+import { LayoutContext } from "../context/LayoutContext";
+import { MenuProvider } from "../context/MenuContext";
+import { ManageMenuProvider } from "../context/ManageMenuContext";
 import Link from "next/link";
 import { AppMenuItem } from "@/types/types";
 

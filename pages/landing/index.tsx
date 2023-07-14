@@ -7,7 +7,7 @@ import { Button } from "primereact/button";
 import { Ripple } from "primereact/ripple";
 import { Divider } from "primereact/divider";
 import AppConfig from "@/layout/AppConfig";
-import { LayoutContext } from "@/layout/context/layoutcontext";
+import { LayoutContext } from "@/layout/context/LayoutContext";
 import { NodeRef, Page } from "@/types/types";
 import { classNames } from "primereact/utils";
 

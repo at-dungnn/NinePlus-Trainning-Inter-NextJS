@@ -5,13 +5,13 @@ import ManageLayout from "@/layout/manageLayout/layout";
 import { Button } from "primereact/button";
 import { customerService } from "@/shared/services/customerService";
 import SkeletonTable from "../components/SkeletonTable";
-import { BreadcrumContext } from "@/layout/context/breadcrumpcontext";
+import { BreadcrumContext } from "@/layout/context/BreadcrumpContext";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { CustomerForm } from "@/shared/components/CustomerForm/index.d";
 import { Customer } from "@/types/types";
 import { useRouter } from "next/router";
 import { checkFilled } from "@/shared/tools";
-import { ToastContext } from "@/layout/context/toastcontext";
+import { ToastContext } from "@/layout/context/ToastContext";
 
 type PageProps = {
     data: any;

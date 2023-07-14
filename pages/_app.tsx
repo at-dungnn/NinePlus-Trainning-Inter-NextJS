@@ -1,7 +1,7 @@
 import type { AppProps } from "next/app";
 import type { Page } from "@/types/types";
 import React from "react";
-import { LayoutProvider } from "@/layout/context/layoutcontext";
+import { LayoutProvider } from "@/layout/context/LayoutContext";
 import Layout from "@/layout/layout";
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";

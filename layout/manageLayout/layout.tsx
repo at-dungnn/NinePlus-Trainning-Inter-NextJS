@@ -11,13 +11,13 @@ import { classNames } from "primereact/utils";
 import React, { useContext, useEffect, useRef } from "react";
 import ManageSidebar from "./ManageSidebar";
 import ManageTopbar from "./ManageTopbar";
-import { LayoutContext } from "@context/layoutcontext";
+import { LayoutContext } from "@/layout/context/LayoutContext";
 import PrimeReact from "primereact/api";
 import { ChildContainerProps, LayoutState, AppTopbarRef } from "@/types/types";
 import { log } from "console";
-import { BreadcrumProvider } from "@context/breadcrumpcontext";
+import { BreadcrumProvider } from "@/layout/context/BreadcrumpContext";
 import AppConfig from "./AppConfig";
-import { ToastProvider } from "@context/toastcontext";
+import { ToastProvider } from "@/layout/context/ToastContext";
 
 const ManageLayout = ({ children }: ChildContainerProps) => {
     const { layoutConfig, layoutState, setLayoutState } =

@@ -15,15 +15,13 @@ type ToastContextType = {
 export const ToastProvider = ({ children }: ChildContainerProps) => {
     const toast = useRef(null);
     function showToast(props: ToastProps) {
-        // @ts-ignore
-        toast.current.show({
+        (toast.current as any).show({
             severity: props.severity,
             summary: props.summary,
             detail: props.detail,
         });
     }
     return (
-        // @ts-ignore
         <ToastContext.Provider value={{ showToast }}>
             <Toast ref={toast} />
             {children}

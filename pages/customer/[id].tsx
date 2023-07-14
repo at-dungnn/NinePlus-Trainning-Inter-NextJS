@@ -6,10 +6,11 @@ import { data } from "./components/CustomerTable";
 import CustomerForm from "@/shared/components/CustomerForm/CustomerForm";
 import { Button } from "primereact/button";
 import { Customer } from "@/types/user";
-import { BreadcrumContext } from "@/layout/context/breadcrumpcontext";
+import { BreadcrumContext } from "@/layout/context/BreadcrumpContext";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { Dialog } from "primereact/dialog";
 import BookingHistory from "./components/BookingHistory";
+import useTrans from "@/shared/hooks/useTrans";
 
 const DetailPage = () => {
     const {
@@ -22,6 +23,7 @@ const DetailPage = () => {
     const details = data.filter((val) => {
         return val.id === router.query.id;
     });
+    const { trans } = useTrans();
     const [visible, setVisible] = useState(false);
     const [customer, setCustomer] = useState<Customer>(details[0]);
     useEffect(() => {
@@ -49,9 +51,13 @@ const DetailPage = () => {
                 />
             </Suspense>
             <div className="m-2 ml-5 p-5 bg-white  border-round-2xl relative ">
-                <h2 className="font-bold">Detail Customer Profile </h2>
+                <h2 className="font-bold">{trans.detail.title}</h2>
                 <div className="customer-detail margin-center">
-                    <CustomerForm Customer={customer} readonly={true}>
+                    <CustomerForm
+                        Customer={customer}
+                        readonly={true}
+                        setCustomer={setCustomer}
+                    >
                         <div className="mt-5 ">
                             <Button
                                 label="Back"

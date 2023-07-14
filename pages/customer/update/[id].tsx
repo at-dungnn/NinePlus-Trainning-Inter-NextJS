@@ -6,9 +6,9 @@ import { data } from "../components/CustomerTable";
 import CustomerForm from "@/shared/components/CustomerForm/CustomerForm";
 import { Button } from "primereact/button";
 import { Customer } from "@/types/user";
-import { BreadcrumContext } from "@/layout/context/breadcrumpcontext";
+import { BreadcrumContext } from "@/layout/context/BreadcrumpContext";
 import { BreadCrumb } from "primereact/breadcrumb";
-import { ToastContext } from "@/layout/context/toastcontext";
+import { ToastContext } from "@/layout/context/ToastContext";
 
 const DetailPage = () => {
     const { showToast } = useContext(ToastContext);

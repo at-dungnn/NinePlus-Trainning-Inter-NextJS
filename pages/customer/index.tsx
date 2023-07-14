@@ -5,7 +5,7 @@ import ManageLayout from "@/layout/manageLayout/layout";
 import { customerService } from "@/shared/services/customerService";
 import SkeletonTable from "./components/SkeletonTable";
 import CustomerTable from "./components/CustomerTable";
-import { BreadcrumContext } from "@/layout/context/breadcrumpcontext";
+import { BreadcrumContext } from "@/layout/context/BreadcrumpContext";
 import { BreadCrumb } from "primereact/breadcrumb";
 
 type PageProps = {
@@ -80,6 +80,7 @@ const CustomerManage = (props: PageProps) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
+    // TODO/ add api
     // const apiService = new customerService();
     // const res = await fetch(`https://.../data`);
     // const data = await res.json();

@@ -7,9 +7,13 @@ import React, {
     useContext,
     useImperativeHandle,
     useRef,
+    useState,
 } from "react";
 import { AppTopbarRef } from "@/types/types";
-import { LayoutContext } from "../context/layoutcontext";
+import { LayoutContext } from "../context/LayoutContext";
+import { SelectButton } from "primereact/selectbutton";
+import useTrans from "@/shared/hooks/useTrans";
+import { useRouter } from "next/router";
 
 const ManageTopbar = forwardRef<AppTopbarRef>((props, ref) => {
     const { layoutConfig, layoutState, onMenuToggle, showProfileSidebar } =
@@ -17,6 +21,10 @@ const ManageTopbar = forwardRef<AppTopbarRef>((props, ref) => {
     const menubuttonRef = useRef(null);
     const topbarmenuRef = useRef(null);
     const topbarmenubuttonRef = useRef(null);
+    const router = useRouter();
+    const [transVal, setTransVal] = useState(router.locale);
+    const { changeLang } = useTrans();
+    const langOptions = ["en", "vi"];
 
     useImperativeHandle(ref, () => ({
         menubutton: menubuttonRef.current,
@@ -71,6 +79,14 @@ const ManageTopbar = forwardRef<AppTopbarRef>((props, ref) => {
                         <span>Settings</span>
                     </button>
                 </Link>
+                <SelectButton
+                    value={transVal}
+                    onChange={(e) => {
+                        setTransVal(e.value);
+                        changeLang(e.value);
+                    }}
+                    options={langOptions}
+                />
             </div>
         </div>
     );

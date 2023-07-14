@@ -1,15 +1,14 @@
 import { Column } from "primereact/column";
-import { DataTable } from "primereact/datatable";
+import { DataTable, DataTableValue } from "primereact/datatable";
 import { Skeleton } from "primereact/skeleton";
-import { FilterHeader } from "./CustomerTable";
+import { renderHeader } from "./CustomerTable";
 
 export default function SkeletonTable() {
-    const items = Array.from({ length: 5 }, (v, i) => i);
+    const items: number[] = Array.from({ length: 5 }, (v, i) => i);
     return (
         <DataTable
-            // @ts-ignore
-            value={items}
-            header={FilterHeader}
+            value={items as any as DataTableValue[]}
+            header={renderHeader}
             className="p-datatable-striped"
             rows={5}
             rowsPerPageOptions={[5, 15, 25]}

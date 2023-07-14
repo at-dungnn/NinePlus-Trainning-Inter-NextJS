@@ -5,7 +5,8 @@
         "paths": {
             "@/*": ["./*"],
             "@layout/*": ["./layout/*"],
-            "@context/*": ["./layout/context/*"]
+            "@context/*": ["./layout/context/*"],
+            "@shared/*": ["./shared/*"]
         },
         "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
