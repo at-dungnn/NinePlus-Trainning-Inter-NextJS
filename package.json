@@ -26,6 +26,7 @@
         "typescript": "5.0.4"
     },
     "devDependencies": {
+        "@types/chart.js": "^2.9.37",
         "sass": "^1.58.3"
     }
 }
