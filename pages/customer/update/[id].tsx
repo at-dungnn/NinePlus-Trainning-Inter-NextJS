@@ -6,7 +6,7 @@ import { data } from "../components/CustomerTable";
 import CustomerForm from "@/shared/components/CustomerForm/CustomerForm";
 import { Button } from "primereact/button";
 import { Customer } from "@/types/user";
-import { BreadcrumContext } from "@/layout/context/BreadcrumpContext";
+import { BreadcrumbContext } from "@/layout/context/BreadcrumbContext";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { ToastContext } from "@/layout/context/ToastContext";
 
@@ -17,7 +17,7 @@ const DetailPage = () => {
         setBreadcrumbs,
         AppBreadcrumbProps,
         setAppBreadcrumbProps,
-    } = useContext(BreadcrumContext);
+    } = useContext(BreadcrumbContext);
     const router = useRouter();
     const details = data.filter((val: Customer) => {
         return val.id === router.query.id;

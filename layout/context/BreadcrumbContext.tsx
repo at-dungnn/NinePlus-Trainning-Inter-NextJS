@@ -6,9 +6,9 @@ import {
     BreadcrumbContextProps,
 } from "@/types/types";
 
-export const BreadcrumContext = createContext({} as BreadcrumbContextProps);
+export const BreadcrumbContext = createContext({} as BreadcrumbContextProps);
 
-export const BreadcrumProvider = ({ children }: ChildContainerProps) => {
+export const BreadcrumbProvider = ({ children }: ChildContainerProps) => {
     const [Breadcrumbs, setBreadcrumbs] = useState<Breadcrumb>({
         labels: [],
         to: "",
@@ -29,8 +29,8 @@ export const BreadcrumProvider = ({ children }: ChildContainerProps) => {
     };
 
     return (
-        <BreadcrumContext.Provider value={value}>
+        <BreadcrumbContext.Provider value={value}>
             {children}
-        </BreadcrumContext.Provider>
+        </BreadcrumbContext.Provider>
     );
 };

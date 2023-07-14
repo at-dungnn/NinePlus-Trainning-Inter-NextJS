@@ -15,7 +15,7 @@ import { LayoutContext } from "@/layout/context/LayoutContext";
 import PrimeReact from "primereact/api";
 import { ChildContainerProps, LayoutState, AppTopbarRef } from "@/types/types";
 import { log } from "console";
-import { BreadcrumProvider } from "@/layout/context/BreadcrumpContext";
+import { BreadcrumbProvider } from "@/layout/context/BreadcrumbContext";
 import AppConfig from "./AppConfig";
 import { ToastProvider } from "@/layout/context/ToastContext";
 
@@ -174,9 +174,9 @@ const ManageLayout = ({ children }: ChildContainerProps) => {
                 </div>
                 <div className="layout-main-container">
                     <div className="layout-main border-round-2xl pb-3 shadow-2">
-                        <BreadcrumProvider>
+                        <BreadcrumbProvider>
                             <ToastProvider>{children}</ToastProvider>
-                        </BreadcrumProvider>
+                        </BreadcrumbProvider>
                     </div>
                 </div>
                 <AppConfig />

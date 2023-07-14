@@ -5,7 +5,7 @@ import ManageLayout from "@/layout/manageLayout/layout";
 import { customerService } from "@/shared/services/customerService";
 import SkeletonTable from "./components/SkeletonTable";
 import CustomerTable from "./components/CustomerTable";
-import { BreadcrumContext } from "@/layout/context/BreadcrumpContext";
+import { BreadcrumbContext } from "@/layout/context/BreadcrumbContext";
 import { BreadCrumb } from "primereact/breadcrumb";
 
 type PageProps = {
@@ -25,7 +25,7 @@ const CustomerManage = (props: PageProps) => {
         setBreadcrumbs,
         AppBreadcrumbProps,
         setAppBreadcrumbProps,
-    } = useContext(BreadcrumContext);
+    } = useContext(BreadcrumbContext);
     useEffect(() => {
         setBreadcrumbs({
             labels: [

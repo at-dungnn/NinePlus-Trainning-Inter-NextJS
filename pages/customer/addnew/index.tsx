@@ -5,7 +5,7 @@ import ManageLayout from "@/layout/manageLayout/layout";
 import { Button } from "primereact/button";
 import { customerService } from "@/shared/services/customerService";
 import SkeletonTable from "../components/SkeletonTable";
-import { BreadcrumContext } from "@/layout/context/BreadcrumpContext";
+import { BreadcrumbContext } from "@/layout/context/BreadcrumbContext";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { CustomerForm } from "@/shared/components/CustomerForm/index.d";
 import { Customer } from "@/types/types";
@@ -26,7 +26,7 @@ const CustomerManage = (props: PageProps) => {
         setBreadcrumbs,
         AppBreadcrumbProps,
         setAppBreadcrumbProps,
-    } = useContext(BreadcrumContext);
+    } = useContext(BreadcrumbContext);
     const [newCustomer, setNewCustomer] = useState<Customer>({
         id: "",
         name: "",

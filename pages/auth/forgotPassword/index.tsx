@@ -1,30 +1,31 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 /* eslint-disable react/no-unescaped-entities */
-/* eslint-disable @next/next/no-img-element */
-
-import { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
-import AppConfig from "@/layout/AppConfig";
 import { Button } from "primereact/button";
-import { Password } from "primereact/password";
-import { LayoutContext } from "@/layout/context/LayoutContext";
+import { useRouter } from "next/router";
+import AppConfig from "@/layout/AppConfig";
+import { LayoutContext } from "@/layout/context/layoutcontext";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
-import { Page } from "@/types/layout";
+import { Page } from "@/types/types";
+import { url } from "inspector";
 
-const LoginPage: Page<any> = ({ data }: { data: any }) => {
-    const [password, setPassword] = useState("");
-    // const [checked, setChecked] = useState(false);
+const ForgotPassword: Page = () => {
     const { layoutConfig } = useContext(LayoutContext);
-
     const router = useRouter();
     const containerClassName = classNames(
-        " flex align-items-center justify-content-end min-h-screen min-w-screen overflow-hidden",
+        "surface-ground bg-cover md:bg-contain bg-no-repeat flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden",
         { "p-input-filled": layoutConfig.inputStyle === "filled" }
     );
 
     return (
-        <div className={containerClassName}>
-            <div className="flex flex-column align-items-center justify-content-center">
+        <div
+            className={containerClassName}
+            style={{
+                backgroundImage: "url(/demo/images/access/background.png)",
+            }}
+        >
+            <div className="flex flex-column align-items-start justify-content-center">
                 <div
                     style={{
                         borderRadius: "56px",
@@ -46,12 +47,21 @@ const LoginPage: Page<any> = ({ data }: { data: any }) => {
                                 onClick={() => router.push("/auth/register/")}
                             ></Button>
                         </div>
-                        <div className="mb-5">
-                            <div className="text-900 text-3xl font-semibold mb-3">
-                                Welcome Back
+                        <div className="flex justify-content-center">
+                            <img
+                                src="/demo/images/access/iconKey.png"
+                                alt=""
+                                className="mb-4 mt-3 cursor-pointer flex justify-content-center  "
+                                width="10%"
+                            />
+                        </div>
+
+                        <div className="mb-5 text-center">
+                            <div className="text-900 text-center text-3xl font-semibold mb-3">
+                                Forgot password?
                             </div>
-                            <span className="text-600 font-medium">
-                                Login your account
+                            <span className="text-500 font-semibold">
+                                No worries, we'll send you reset intructions
                             </span>
                         </div>
 
@@ -60,47 +70,31 @@ const LoginPage: Page<any> = ({ data }: { data: any }) => {
                                 htmlFor="email1"
                                 className="block text-900 text-xl font-medium mb-2"
                             >
-                                Username
+                                Email
                             </label>
                             <InputText
                                 id="email1"
                                 type="text"
                                 placeholder="Your email"
-                                className="w-full md:w-30rem mb-5"
+                                className="w-full surface-card md:w-31rem mb-5"
                                 style={{ padding: "1rem" }}
                             />
 
-                            <label
-                                htmlFor="password1"
-                                className="block text-900 font-medium text-xl mb-2"
-                            >
-                                Password
-                            </label>
-                            <Password
-                                inputId="password1"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="Your password"
-                                toggleMask
-                                className="w-full mb-5"
-                                inputClassName="w-full p-3 md:w-30rem"
-                            ></Password>
+                            <Button
+                                label="Reset Password"
+                                className="w-full p-3 text-xl align-items-center"
+                                onClick={() => router.push("/auth/sendMail/")}
+                            ></Button>
 
-                            <div className="flex align-items-center justify-content-between mb-5 gap-5">
+                            <div className="mt-4 text-center">
+                                <i className=" pi pi-arrow-left"></i>
                                 <a
-                                    className="font-medium no-underline ml-2  cursor-pointer"
-                                    style={{ color: "var(--primary-color)" }}
-                                    href="/auth/forgotPassword/ "
+                                    className="font-semibold text-xl text-600 no-underline ml-2 "
+                                    href="/auth/login/"
                                 >
-                                    Forgot password?
+                                    Back to Login
                                 </a>
                             </div>
-                            <Button
-                                label="Login"
-                                rounded
-                                className="w-5 p-3 text-xl"
-                                onClick={() => router.push("/")}
-                            ></Button>
                         </div>
                         <div className="flex align-items-center mt-6 gap-3">
                             <span className="font-semibold text-500 no-underline ml-2 text-right ">
@@ -141,7 +135,7 @@ const LoginPage: Page<any> = ({ data }: { data: any }) => {
     );
 };
 
-LoginPage.getLayout = function getLayout(page: React.ReactNode) {
+ForgotPassword.getLayout = function getLayout(page) {
     return (
         <React.Fragment>
             {page}
@@ -149,4 +143,4 @@ LoginPage.getLayout = function getLayout(page: React.ReactNode) {
         </React.Fragment>
     );
 };
-export default LoginPage;
+export default ForgotPassword;
