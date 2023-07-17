@@ -12,12 +12,14 @@ import { Customer } from "@/types/types";
 import { useRouter } from "next/router";
 import { checkFilled } from "@/shared/tools";
 import { ToastContext } from "@/layout/context/ToastContext";
+import useTrans from "@/shared/hooks/useTrans";
 
 type PageProps = {
     data: any;
 };
 
 const CustomerManage = (props: PageProps) => {
+    const { trans } = useTrans();
     const { showToast } = useContext(ToastContext);
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
@@ -37,7 +39,10 @@ const CustomerManage = (props: PageProps) => {
             return {
                 ...BreadCrumbs,
                 labels: [
-                    { label: "Customer", url: "/customer" },
+                    {
+                        label: trans.breadcrump.customer.title,
+                        url: "/customer",
+                    },
                     { label: "Add New", url: "/addnew" },
                 ],
             };
@@ -89,10 +94,10 @@ const CustomerManage = (props: PageProps) => {
                 />
             </Suspense>
             <div className="m-2 ml-5 bg-white h-full p-3 border-round-2xl ">
-                <h2 className="font-bold">Add new</h2>
+                <h2 className="font-bold">{trans.customer.addnew.title}</h2>
                 <div className="grid ">
                     <div className="col-3">
-                        <h5>Profile</h5>
+                        <h5>{trans.customer.addnew.content_title}</h5>
                         <p className="text-teal-600 text-lg text-justify     ">
                             Lorem ipsum dolor sit amet, consectetur adipiscing
                             elit, sed do eiusmod tempor incididunt ut labore et
@@ -112,12 +117,15 @@ const CustomerManage = (props: PageProps) => {
                         readonly={false}
                     >
                         <div className="mt-5">
-                            <Button label="Save" onClick={handleSubmit} />
                             <Button
-                                label="Cancel"
+                                label={trans.customer.update.save_label}
+                                onClick={handleSubmit}
+                            />
+                            <Button
+                                label={trans.customer.update.cancel_label}
                                 outlined
                                 onClick={() => {
-                                    router.back();
+                                    router.push("/customer");
                                 }}
                                 style={{ marginLeft: "3rem" }}
                             />

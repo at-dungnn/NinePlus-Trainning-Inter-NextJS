@@ -12,7 +12,46 @@ import { log } from "console";
 import { Customer } from "@/types/types";
 import { InputNumber } from "primereact/inputnumber";
 import { formatDate } from "@/shared/tools";
+import useTrans from "@/shared/hooks/useTrans";
+import { useRouter } from "next/router";
+import { addLocale } from "primereact/api";
 
+addLocale("vi", {
+    firstDayOfWeek: 1,
+    dayNames: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+    dayNamesShort: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+    dayNamesMin: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+    monthNames: [
+        "tháng 1",
+        "tháng 2",
+        "tháng 3",
+        "tháng 4",
+        "tháng 5",
+        "tháng 6",
+        "tháng 7",
+        "tháng 8",
+        "tháng 9",
+        "tháng 10",
+        "tháng 11",
+        "tháng 12",
+    ],
+    monthNamesShort: [
+        "tháng 1",
+        "tháng 2",
+        "tháng 3",
+        "tháng 4",
+        "tháng 5",
+        "tháng 6",
+        "tháng 7",
+        "tháng 8",
+        "tháng 9",
+        "tháng 10",
+        "tháng 11",
+        "tháng 12",
+    ],
+    today: "Hoy",
+    clear: "Claro",
+});
 type customerProps = {
     children?: React.ReactNode;
     Customer: Customer;
@@ -25,9 +64,8 @@ const CustomerForm = ({
     setCustomer,
     readonly,
 }: customerProps) => {
-    useEffect(() => {
-        console.log(Customer);
-    }, [Customer]);
+    const { trans } = useTrans();
+    const router = useRouter();
     const handleChange = useCallback(
         (value: any, key: string) => {
             if (key === "total") {
@@ -66,7 +104,8 @@ const CustomerForm = ({
             </div>
             <div className="mt-3">
                 <h5>
-                    Name <span className="text-orange-700">*</span>:
+                    {trans.customer.form.name}
+                    <span className="ml-2 text-orange-700">*</span>:
                 </h5>
                 <InputText
                     disabled={readonly}
@@ -77,7 +116,8 @@ const CustomerForm = ({
             </div>
             <div className="mt-3">
                 <h5>
-                    Phone Number <span className="text-orange-700">*</span>:
+                    {trans.customer.form.phone_label}
+                    <span className="ml-2 text-orange-700">*</span>:
                 </h5>
                 <InputText
                     disabled={readonly}
@@ -87,7 +127,7 @@ const CustomerForm = ({
                 />
             </div>
             <div className="mt-3">
-                <h5>Adress :</h5>
+                <h5>{trans.customer.form.address_label} :</h5>
                 <InputTextarea
                     disabled={readonly}
                     autoResize
@@ -98,10 +138,11 @@ const CustomerForm = ({
                 />
             </div>
             <div className="mt-3">
-                <h5>Birthday :</h5>
+                <h5>{trans.customer.form.dob_label} :</h5>
                 <Calendar
                     disabled={readonly}
                     dateFormat="dd/mm/yy"
+                    locale={router.locale}
                     value={formatDate(Customer?.birthday)}
                     onChange={(e) => handleChange(e.target.value, "birthday")}
                     showIcon
@@ -109,7 +150,7 @@ const CustomerForm = ({
                 />
             </div>
             <div className="mt-3">
-                <h5>Total Money :</h5>
+                <h5>{trans.customer.form.total_label} :</h5>
                 <InputNumber
                     disabled={readonly}
                     value={Customer?.total}

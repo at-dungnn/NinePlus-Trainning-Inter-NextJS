@@ -7,6 +7,7 @@ import SkeletonTable from "./components/SkeletonTable";
 import CustomerTable from "./components/CustomerTable";
 import { BreadcrumbContext } from "@/layout/context/BreadcrumbContext";
 import { BreadCrumb } from "primereact/breadcrumb";
+import useTrans from "@/shared/hooks/useTrans";
 
 type PageProps = {
     data: any;
@@ -20,17 +21,14 @@ type Customer = {
 };
 
 const CustomerManage = (props: PageProps) => {
-    const {
-        Breadcrumbs,
-        setBreadcrumbs,
-        AppBreadcrumbProps,
-        setAppBreadcrumbProps,
-    } = useContext(BreadcrumbContext);
+    const { trans } = useTrans();
+    const { Breadcrumbs, setBreadcrumbs, AppBreadcrumbProps } =
+        useContext(BreadcrumbContext);
     useEffect(() => {
         setBreadcrumbs({
             labels: [
-                { label: "Customer", url: "/customer" },
-                { label: "List" },
+                { label: trans.breadcrump.customer.title },
+                { label: trans.breadcrump.customer.list },
             ],
             to: "/customer",
         });

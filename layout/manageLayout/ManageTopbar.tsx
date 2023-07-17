@@ -11,9 +11,9 @@ import React, {
 } from "react";
 import { AppTopbarRef } from "@/types/types";
 import { LayoutContext } from "../context/LayoutContext";
-import { SelectButton } from "primereact/selectbutton";
 import useTrans from "@/shared/hooks/useTrans";
 import { useRouter } from "next/router";
+import { Dropdown } from "primereact/dropdown";
 
 const ManageTopbar = forwardRef<AppTopbarRef>((props, ref) => {
     const { layoutConfig, layoutState, onMenuToggle, showProfileSidebar } =
@@ -79,13 +79,15 @@ const ManageTopbar = forwardRef<AppTopbarRef>((props, ref) => {
                         <span>Settings</span>
                     </button>
                 </Link>
-                <SelectButton
+                <Dropdown
                     value={transVal}
                     onChange={(e) => {
                         setTransVal(e.value);
                         changeLang(e.value);
                     }}
                     options={langOptions}
+                    className="w-full md:w-6rem"
+                    placeholder="Select a City"
                 />
             </div>
         </div>

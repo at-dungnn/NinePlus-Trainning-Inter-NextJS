@@ -9,6 +9,7 @@ import { Customer } from "@/types/user";
 import { BreadcrumbContext } from "@/layout/context/BreadcrumbContext";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { ToastContext } from "@/layout/context/ToastContext";
+import useTrans from "@/shared/hooks/useTrans";
 
 const DetailPage = () => {
     const { showToast } = useContext(ToastContext);
@@ -18,30 +19,29 @@ const DetailPage = () => {
         AppBreadcrumbProps,
         setAppBreadcrumbProps,
     } = useContext(BreadcrumbContext);
+    const { trans } = useTrans();
     const router = useRouter();
     const details = data.filter((val: Customer) => {
         return val.id === router.query.id;
     });
-    console.log(details);
-
     const [customer, setCustomer] = useState<Customer>(details[0]);
     useEffect(() => {
         setCustomer(details[0]);
         setBreadcrumbs(() => ({
             labels: [
-                { label: "Customer", url: "/customer" },
-                { label: "Update" },
+                { label: trans.breadcrump.customer.title },
+                { label: trans.breadcrump.customer.update },
                 { label: `${router.query.id}` },
             ],
         }));
-    }, [router.query.id]);
+    }, [router.query.id, trans]);
     const submitHandle = () => {
         showToast({
             severity: "success",
             summary: "Success",
             detail: "Update Success",
         });
-        router.back();
+        router.push("/customer");
     };
     return (
         <>
@@ -58,16 +58,19 @@ const DetailPage = () => {
                 />
             </Suspense>
             <div className="m-2 ml-5 bg-white h-full p-3 border-round-2xl ">
-                <h2 className="font-bold">Edit Customer Profile</h2>
+                <h2 className="font-bold">{trans.customer.update.title}</h2>
                 <div className="customer-update ml-8 ">
                     <CustomerForm Customer={customer} setCustomer={setCustomer}>
                         <div className="mt-5">
-                            <Button label="Save" onClick={submitHandle} />
                             <Button
-                                label="Cancel"
+                                label={trans.customer.update.save_label}
+                                onClick={submitHandle}
+                            />
+                            <Button
+                                label={trans.customer.update.cancel_label}
                                 outlined
                                 onClick={() => {
-                                    router.back();
+                                    router.push("/customer");
                                 }}
                                 style={{ marginLeft: "3rem" }}
                             />

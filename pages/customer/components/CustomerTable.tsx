@@ -10,6 +10,7 @@ import { Customer } from "@/types/types";
 import { Dialog } from "primereact/dialog";
 import DeleteDialog from "./DeleteDialog";
 import { useRouter } from "next/router";
+import useTrans from "@/shared/hooks/useTrans";
 
 export const data: Customer[] = [
     {
@@ -182,6 +183,7 @@ const renderIcon = ({ id }: { id: string }): React.ReactNode => {
 export const renderHeader = ({
     globalFilterValue,
     onGlobalFilterChange,
+    trans,
 }: any) => {
     return (
         <div className="flex justify-content-between">
@@ -196,7 +198,9 @@ export const renderHeader = ({
             <Link href={"/customer/addnew"}>
                 <Button severity="help" outlined>
                     <i className="pi pi-user-plus pr-2 font-bold" />
-                    <span className="font-bold">Add new</span>
+                    <span className="font-bold">
+                        {trans.customer.addnew.title}
+                    </span>
                 </Button>
             </Link>
         </div>
@@ -204,6 +208,7 @@ export const renderHeader = ({
 };
 const CustomerTable = () => {
     const breakpoint = 992;
+    const { trans } = useTrans();
     const [filters, setFilters] = useState<DataTableFilterMeta>({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     });
@@ -218,7 +223,11 @@ const CustomerTable = () => {
         setFilters(_filters);
         setGlobalFilterValue(value);
     };
-    const headers = renderHeader({ globalFilterValue, onGlobalFilterChange });
+    const headers = renderHeader({
+        globalFilterValue,
+        onGlobalFilterChange,
+        trans,
+    });
 
     return (
         <DataTable
@@ -253,31 +262,31 @@ const CustomerTable = () => {
             <Column
                 field="name"
                 sortable
-                header="Full Name"
+                header={trans.customer.form.name}
                 style={{ width: "20rem" }}
             />
             <Column
                 field="phone"
                 sortable
-                header="Phone Number"
+                header={trans.customer.form.phone_label}
                 style={{ width: "15rem" }}
             />
             <Column
                 field="address"
                 sortable
-                header="Address"
+                header={trans.customer.form.address_label}
                 style={{ width: "20rem" }}
             />
             <Column
                 field="birthday"
                 sortable
-                header="Birthday"
+                header={trans.customer.form.dob_label}
                 style={{ width: "13rem" }}
             />
             <Column
                 field="total"
                 sortable
-                header="Total money"
+                header={trans.customer.form.total_label}
                 style={{ width: "13rem" }}
             />
             <Column field="id" body={renderIcon} style={{ width: "12rem" }} />

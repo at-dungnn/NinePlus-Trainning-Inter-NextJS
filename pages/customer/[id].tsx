@@ -30,7 +30,7 @@ const DetailPage = () => {
         setCustomer(details[0]);
         setBreadcrumbs(() => ({
             labels: [
-                { label: "Customer", url: "/customer" },
+                { label: "Customer" },
                 { label: "Detail" },
                 { label: `${router.query.id}` },
             ],
@@ -51,7 +51,7 @@ const DetailPage = () => {
                 />
             </Suspense>
             <div className="m-2 ml-5 p-5 bg-white  border-round-2xl relative ">
-                <h2 className="font-bold">{trans.detail.title}</h2>
+                <h2 className="font-bold">{trans.customer.detail.title}</h2>
                 <div className="customer-detail margin-center">
                     <CustomerForm
                         Customer={customer}
@@ -60,9 +60,9 @@ const DetailPage = () => {
                     >
                         <div className="mt-5 ">
                             <Button
-                                label="Back"
-                                onClick={() => {
-                                    router.back();
+                                label={trans.customer.detail.back}
+                                onClick={() => {    
+                                    router.push("/customer");
                                 }}
                             />
                         </div>
@@ -70,7 +70,7 @@ const DetailPage = () => {
                 </div>
                 <div className="history-button absolute">
                     <Button
-                        label="Booking History"
+                        label={trans.customer.detail.booking_history}
                         outlined
                         style={{ width: "15rem" }}
                         onClick={() => setVisible(true)}
