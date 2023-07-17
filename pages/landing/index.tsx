@@ -7,7 +7,7 @@ import { Button } from "primereact/button";
 import { Ripple } from "primereact/ripple";
 import { Divider } from "primereact/divider";
 import AppConfig from "@/layout/AppConfig";
-import { LayoutContext } from "@/layout/context/layoutcontext";
+import { LayoutContext } from "@/layout/context/LayoutContext";
 import { NodeRef, Page } from "@/types/types";
 import { classNames } from "primereact/utils";
 
@@ -134,7 +134,7 @@ const LandingPage: Page = () => {
                         </h1>
                         <p className="font-normal text-2xl line-height-3 md:mt-3 text-gray-700">
                             Sed blandit libero volutpat sed cras. Fames ac
-                            turpis egestas integer. Placerat in egestas erat...{" "}
+                            turpis egestas integer. Placerat in egestas erat...
                         </p>
                         <Button
                             type="button"

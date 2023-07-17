@@ -638,7 +638,7 @@ const Crud = () => {
                             />
                             {product && (
                                 <span>
-                                    Are you sure you want to delete{" "}
+                                    Are you sure you want to delete
                                     <b>{product.name}</b>?
                                 </span>
                             )}
