@@ -13,8 +13,12 @@ import { url } from "inspector";
 const ForgotPassword: Page = () => {
     const { layoutConfig } = useContext(LayoutContext);
     const router = useRouter();
+    // const containerClassName = classNames(
+    //     "surface-ground bg-cover md:bg-contain bg-no-repeat flex align-items-center justify-content-end min-h-screen min-w-screen overflow-hidden",
+    //     { "p-input-filled": layoutConfig.inputStyle === "filled" }
+    // );
     const containerClassName = classNames(
-        "surface-ground bg-cover md:bg-contain bg-no-repeat flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden",
+        " flex align-items-center justify-content-end min-h-screen min-w-screen overflow-hidden",
         { "p-input-filled": layoutConfig.inputStyle === "filled" }
     );
 
@@ -22,18 +26,20 @@ const ForgotPassword: Page = () => {
         <div
             className={containerClassName}
             style={{
-                backgroundImage: "url(/demo/images/access/background.png)",
+                backgroundImage: "url(/demo/images/access/BgLogin.png)",
             }}
         >
-            <div className="flex flex-column align-items-start justify-content-center">
+            <div className="flex flex-column align-items-end justify-content-center">
                 <div
                     style={{
                         borderRadius: "56px",
                         padding: "0.3rem",
+                        // maxWidth: "75%",
+                        // height: "100%",
                     }}
                 >
                     <div
-                        className="w-full surface-card py-8 px-5 sm:px-8"
+                        className="w-full surface-card  py-8 px-5 sm:px-8"
                         // style={{ borderRadius: "53px" }}
                     >
                         <div className="flex align-items-end justify-content-end mb-7 gap-5">
