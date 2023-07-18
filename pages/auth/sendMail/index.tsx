@@ -18,7 +18,7 @@ const SendMAil: Page = () => {
 
     return (
         <div className={containerClassName}>
-            <div className="flex flex-column align-items-start justify-content-center">
+            <div className="flex flex-column align-items-center justify-content-center">
                 <div
                     style={{
                         borderRadius: "56px",
@@ -36,7 +36,7 @@ const SendMAil: Page = () => {
                             <Button
                                 rounded
                                 label="SIGN UP"
-                                className="w-3 p-2 font-semibold text-sm align-items-center text-color-secondary bg-white border-black-alpha-20 border-2"
+                                className="w-2 p-2 font-semibold text-sm align-items-center text-color-secondary bg-white border-black-alpha-20 border-2"
                                 onClick={() => router.push("/auth/register/")}
                             ></Button>
                         </div>
@@ -58,59 +58,58 @@ const SendMAil: Page = () => {
                             </span>
                         </div>
 
-                        <div>
-                            <Button
-                                label="Open maill app"
-                                className="w-full p-3 text-xl align-items-center"
-                                onClick={() => router.push("/")}
-                            ></Button>
-                            <div className="text-center mt-4">
-                                <span className="text-500 font-semibold">
-                                    No worries, we'll send you reset intructions
-                                </span>
-                            </div>
+                        <div className="flex flex-column justify-content-start">
+                            <div className="flex flex-column">
+                                <Button
+                                    label="Open maill app"
+                                    className="w-full p-3 text-xl align-content-center"
+                                    onClick={() => router.push("/")}
+                                ></Button>
+                                <div className="text-center mt-4">
+                                    <span className="text-500 font-semibold">
+                                        No worries, we'll send you reset
+                                        intructions
+                                    </span>
+                                </div>
 
-                            <div className="mt-4 text-center">
-                                <i className=" pi pi-arrow-left"></i>
-                                <a
-                                    className="font-semibold text-xl text-600 no-underline ml-2 "
-                                    href="/auth/login/"
-                                >
-                                    Back to Login
-                                </a>
+                                <div className="mt-4 text-center">
+                                    <i className=" pi pi-arrow-left"></i>
+                                    <a
+                                        className="font-semibold text-xl text-600 no-underline ml-2 "
+                                        href="/auth/login/"
+                                    >
+                                        Back to Login
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div className="flex align-items-center mt-6 gap-3">
-                            <span className="font-semibold text-500 no-underline ml-2 text-right ">
-                                Login with
-                            </span>
-                            <img
-                                src="/demo/images/access/iconFb.png"
-                                alt=""
-                                className="mb-3 mt-3 cursor-pointer"
-                                width="24px"
-                                onClick={() =>
-                                    router.push("https://facebook.com")
-                                }
-                            />
-                            <img
-                                src="/demo/images/access/iconLinkedin.png"
-                                alt=""
-                                className="mb-3 mt-3 cursor-pointer"
-                                width="24px"
-                                onClick={() =>
-                                    router.push("https://www.linkedin.com/")
-                                }
-                            />
-                            <img
-                                src="/demo/images/access/iconGoogle.png"
-                                alt=""
-                                className="mb-3 mt-3 cursor-pointer"
-                                width="29px"
-                                onClick={() =>
-                                    router.push("https://accounts.google.com")
-                                }
-                            />
+                            <div className="flex fle align-items-start mt-6 gap-3">
+                                <span className="font-semibold text-500 no-underline ml-2 text-right ">
+                                    Login with
+                                </span>
+                                <i
+                                    className="pi pi-facebook cursor-pointer"
+                                    style={{ fontSize: "20px" }}
+                                    onClick={() =>
+                                        router.push("https://facebook.com")
+                                    }
+                                ></i>
+                                <i
+                                    className="pi pi-linkedin cursor-pointer"
+                                    style={{ fontSize: "20px" }}
+                                    onClick={() =>
+                                        router.push("https://www.linkedin.com/")
+                                    }
+                                ></i>
+                                <i
+                                    className="pi pi-google"
+                                    style={{ fontSize: "20px" }}
+                                    onClick={() =>
+                                        router.push(
+                                            "https://accounts.google.com"
+                                        )
+                                    }
+                                ></i>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -10,6 +10,7 @@ import { LayoutContext } from "@/layout/context/layoutcontext";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
 import { Page } from "@/types/types";
+import Link from "next/link";
 
 const LoginPage: Page = () => {
     const [password, setPassword] = useState("");
@@ -18,7 +19,7 @@ const LoginPage: Page = () => {
 
     const router = useRouter();
     const containerClassName = classNames(
-        " flex align-items-center justify-content-end min-h-screen min-w-screen overflow-hidden",
+        " flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden",
         { "p-input-filled": layoutConfig.inputStyle === "filled" }
     );
 
@@ -33,7 +34,7 @@ const LoginPage: Page = () => {
                 >
                     <div
                         className="w-full surface-card py-8 px-5 sm:px-8"
-                        // style={{ borderRadius: "53px" }}
+                        style={{ borderRadius: "53px" }}
                     >
                         <div className="flex align-items-end justify-content-end mb-7 gap-5">
                             <span className="font-semibold text-500 no-underline ml-2 pb-2 text-color-secondary">
@@ -87,13 +88,13 @@ const LoginPage: Page = () => {
                             ></Password>
 
                             <div className="flex align-items-center justify-content-between mb-5 gap-5">
-                                <a
+                                <Link
                                     className="font-medium no-underline ml-2  cursor-pointer"
                                     style={{ color: "var(--primary-color)" }}
-                                    href="/auth/forgotPassword/index2 "
+                                    href="/auth/forgotPassword/ "
                                 >
                                     Forgot password?
-                                </a>
+                                </Link>
                             </div>
                             <Button
                                 label="Login"
@@ -102,37 +103,31 @@ const LoginPage: Page = () => {
                                 onClick={() => router.push("/")}
                             ></Button>
                         </div>
-                        <div className="flex align-items-center mt-6 gap-3">
+                        <div className=" iconPi flex align-items-center mt-6 gap-3">
                             <span className="font-semibold text-500 no-underline ml-2 text-right ">
                                 Login with
                             </span>
-                            <img
-                                src="/demo/images/access/iconFb.png"
-                                alt=""
-                                className="mb-3 mt-3 cursor-pointer"
-                                width="24px"
+                            <i
+                                className="pi pi-facebook cursor-pointer"
+                                style={{ fontSize: "20px" }}
                                 onClick={() =>
                                     router.push("https://facebook.com")
                                 }
-                            />
-                            <img
-                                src="/demo/images/access/iconLinkedin.png"
-                                alt=""
-                                className="mb-3 mt-3 cursor-pointer"
-                                width="24px"
+                            ></i>
+                            <i
+                                className="pi pi-linkedin cursor-pointer"
+                                style={{ fontSize: "20px" }}
                                 onClick={() =>
                                     router.push("https://www.linkedin.com/")
                                 }
-                            />
-                            <img
-                                src="/demo/images/access/iconGoogle.png"
-                                alt=""
-                                className="mb-3 mt-3 cursor-pointer"
-                                width="29px"
+                            ></i>
+                            <i
+                                className="pi pi-google"
+                                style={{ fontSize: "20px" }}
                                 onClick={() =>
                                     router.push("https://accounts.google.com")
                                 }
-                            />
+                            ></i>
                         </div>
                     </div>
                 </div>
