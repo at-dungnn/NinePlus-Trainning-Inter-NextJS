@@ -34,7 +34,7 @@ const DetailPage = () => {
                 { label: `${router.query.id}` },
             ],
         }));
-    }, [router.query.id, trans]);
+}, [router.query.id, router.locale]);
     const submitHandle = () => {
         showToast({
             severity: "success",

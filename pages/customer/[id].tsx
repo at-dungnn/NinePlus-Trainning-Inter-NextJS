@@ -13,29 +13,31 @@ import BookingHistory from "./components/BookingHistory";
 import useTrans from "@/shared/hooks/useTrans";
 
 const DetailPage = () => {
+    const router = useRouter();
+    const { trans } = useTrans();
+    const [visible, setVisible] = useState(false);
     const {
         Breadcrumbs,
         setBreadcrumbs,
         AppBreadcrumbProps,
         setAppBreadcrumbProps,
     } = useContext(BreadcrumbContext);
-    const router = useRouter();
+    // TODO / delete when replace with api
     const details = data.filter((val) => {
         return val.id === router.query.id;
     });
-    const { trans } = useTrans();
-    const [visible, setVisible] = useState(false);
+    //
     const [customer, setCustomer] = useState<Customer>(details[0]);
     useEffect(() => {
         setCustomer(details[0]);
-        setBreadcrumbs(() => ({
+        setBreadcrumbs({
             labels: [
-                { label: "Customer" },
-                { label: "Detail" },
+                { label: trans.breadcrump.customer.title },
+                { label: trans.breadcrump.customer.detail },
                 { label: `${router.query.id}` },
             ],
-        }));
-    }, [router.query.id]);
+        });
+    }, [router.query.id, router.locale]);
     return (
         <>
             <Suspense fallback="Loading...">
@@ -61,7 +63,7 @@ const DetailPage = () => {
                         <div className="mt-5 ">
                             <Button
                                 label={trans.customer.detail.back}
-                                onClick={() => {    
+                                onClick={() => {
                                     router.push("/customer");
                                 }}
                             />
@@ -78,7 +80,9 @@ const DetailPage = () => {
                     <Dialog
                         draggable={false}
                         header={
-                            <h2 className="text-blue-400">Booking History</h2>
+                            <h2 className="text-blue-400">
+                                {trans.customer.detail.booking_history}
+                            </h2>
                         }
                         visible={visible}
                         onHide={() => setVisible(false)}
@@ -89,7 +93,7 @@ const DetailPage = () => {
                         <BookingHistory />
                         <div className="h-full">
                             <Button
-                                label="Cancel"
+                                label={trans.customer.detail.cancel_label}
                                 outlined
                                 style={{
                                     width: "15rem",

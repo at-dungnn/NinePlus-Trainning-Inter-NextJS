@@ -1,12 +1,18 @@
 export default {
     breadcrump: {
         customer: {
-            title: 'Customer',
-            list: 'List',
-            detail: 'Detail',
-            update: 'Update',
+            title: 'Khách Hàng',
+            list: 'Danh sách',
+            detail: 'Chi tiết',
+            update: 'Chỉnh sửa',
         },
     },
+    toolstip: {
+        detail: 'Chi tiết',
+        update: 'Chỉnh sửa',
+        delete: 'Xóa',
+    },
+
     customer: {
         delete: 'Bạn chắc chắn muốn xóa khách hàng ',
         home: 'Chào mừng tới Viblo!',
@@ -14,6 +20,8 @@ export default {
             title: 'Thông tin chi tiết khách hàng',
             back: 'Trở về',
             booking_history: 'Lịch sử đặt lịch',
+            cancel_label: 'Thoát',
+            history: { date: 'Thời gian', price: 'Giá ' },
         },
         addnew: { title: 'Thêm mới', content_title: 'Thông tin cá nhân' },
         update: {
@@ -29,7 +37,7 @@ export default {
             total_label: 'Tổng tiền',
         },
     },
-    delete_title:"Xác Nhận",
+    delete_title: 'Xác Nhận',
     button: {
         yes: 'Có',
         no: 'Không',
