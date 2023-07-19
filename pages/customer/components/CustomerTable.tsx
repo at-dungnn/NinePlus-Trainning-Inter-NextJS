@@ -119,6 +119,7 @@ export const data: Customer[] = [
     },
 ];
 const renderIcon = ({ id }: { id: string }): React.ReactNode => {
+    const { trans } = useTrans();
     const router = useRouter();
     const [visible, setVisible] = useState(false);
     const routeDetail = () => {};
@@ -136,7 +137,7 @@ const renderIcon = ({ id }: { id: string }): React.ReactNode => {
                     icon="pi pi-eye cursor-pointer"
                     rounded
                     aria-label="Filter"
-                    tooltip="Details"
+                    tooltip={trans.toolstip.detail}
                     data-pr-position="left"
                     onClick={routeDetail}
                     style={{ width: "2rem", height: "2rem" }}
@@ -153,7 +154,7 @@ const renderIcon = ({ id }: { id: string }): React.ReactNode => {
                     icon="pi pi-pencil cursor-pointer"
                     rounded
                     aria-label="Update"
-                    tooltip="Update"
+                    tooltip={trans.toolstip.update}
                     severity="warning"
                     data-pr-position="left"
                     style={{ width: "2rem", height: "2rem" }}
@@ -163,7 +164,7 @@ const renderIcon = ({ id }: { id: string }): React.ReactNode => {
                 icon="pi pi-trash cursor-pointer"
                 rounded
                 aria-label="Delete"
-                tooltip="Delete"
+                tooltip={trans.toolstip.delete}
                 data-pr-position="left"
                 severity="danger"
                 onClick={() => {

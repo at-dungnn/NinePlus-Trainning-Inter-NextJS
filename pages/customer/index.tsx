@@ -8,6 +8,7 @@ import CustomerTable from "./components/CustomerTable";
 import { BreadcrumbContext } from "@/layout/context/BreadcrumbContext";
 import { BreadCrumb } from "primereact/breadcrumb";
 import useTrans from "@/shared/hooks/useTrans";
+import { useRouter } from "next/router";
 
 type PageProps = {
     data: any;
@@ -21,6 +22,7 @@ type Customer = {
 };
 
 const CustomerManage = (props: PageProps) => {
+    const router = useRouter();
     const { trans } = useTrans();
     const { Breadcrumbs, setBreadcrumbs, AppBreadcrumbProps } =
         useContext(BreadcrumbContext);
@@ -32,7 +34,7 @@ const CustomerManage = (props: PageProps) => {
             ],
             to: "/customer",
         });
-    }, []);
+    }, [router.locale]);
     const [isLoading, setIsLoading] = useState(false);
 
     if (isLoading === true) {
