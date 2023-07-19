@@ -110,7 +110,7 @@ export const data: Customer[] = [
         total: 2344322,
     },
     {
-        id: "NPLUS0011",
+        id: "NPLUS0012",
         name: "Nhat Huy",
         phone: "0905124124",
         address: "Khue My,Ngu Hanh Son,Da Nang",
