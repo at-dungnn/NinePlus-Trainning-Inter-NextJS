@@ -9,25 +9,26 @@ export abstract class CRUDService {
     //   public constructor(basePath: string) {
     //     this.basePath = basePath;
     //   }
+]
 
-    protected get<T>(url: string, data?: any): Promise<T> {
-        return this.httpClient
+    protected async get<T>(url: string, data?: any): Promise<T> {
+        return await this.httpClient
             .get<T>(`${this.basePath}/${url}`, data)
             .then((response: AxiosResponse<T>) => {
                 return response.data;
             });
     }
 
-    protected list<T>(url: string, data?: any): Promise<T[]> {
-        return this.httpClient
+    protected async list<T>(url: string, data?: any): Promise<T[]> {
+        return await this.httpClient
             .get<T[]>(`${this.basePath}/${url}`, data)
             .then((response: AxiosResponse<T[]>) => {
                 return response.data;
             });
     }
 
-    protected create<T>(url: string, data: any): Promise<T> {
-        return this.httpClient
+    protected async create<T>(url: string, data: any): Promise<T> {
+        return await this.httpClient
             .post<T>(`${this.basePath}/${url}`, data)
             .then((response: AxiosResponse<T>) => {
                 return response.data;

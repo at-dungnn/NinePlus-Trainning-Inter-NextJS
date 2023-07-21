@@ -2,6 +2,7 @@ import type { AppProps } from "next/app";
 import type { Page } from "@/types/types";
 import React from "react";
 import { LayoutProvider } from "@/layout/context/LayoutContext";
+import { AppContextProvider } from "@/shared/context";
 import Layout from "@/layout/layout";
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
@@ -22,6 +23,7 @@ export default function MyApp({
 }: Props): React.ReactNode {
     if (Component.getLayout) {
         return (
+            <AppContextProvider>
             <LayoutProvider>
                 <ErrorBoundary fallback={<ErrorPage />}>
                     {Component.getLayout(
@@ -31,6 +33,7 @@ export default function MyApp({
                     )}
                 </ErrorBoundary>
             </LayoutProvider>
+            </AppContextProvider>
         );
     } else {
         return (
