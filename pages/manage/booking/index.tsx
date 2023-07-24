@@ -11,6 +11,7 @@ import {
     useEffect,
     useState,
 } from "react";
+import { BookingTable } from "./components";
 
 const BookingManagePage = () => {
     const router = useRouter();
@@ -43,7 +44,7 @@ const BookingManagePage = () => {
                 />
             </Suspense>
             <div className="m-2 ml-5 bg-white h-full">
-                {/* <BookingTable /> */}
+                <BookingTable />
             </div>
         </div>
     );

@@ -24,22 +24,22 @@ export default function MyApp({
     if (Component.getLayout) {
         return (
             <AppContextProvider>
-            <LayoutProvider>
-                <ErrorBoundary fallback={<ErrorPage />}>
-                    {Component.getLayout(
-                        <ErrorBoundary fallback={<ErrorPage />}>
-                            <Component {...pageProps} />
-                        </ErrorBoundary>
-                    )}
-                </ErrorBoundary>
-            </LayoutProvider>
+                <LayoutProvider>
+                    <ErrorBoundary fallback={<ErrorPage />}>
+                        {Component.getLayout(
+                            <ErrorBoundary fallback={<ErrorPage />}>
+                                <Component {...pageProps} />
+                            </ErrorBoundary>
+                        )}
+                    </ErrorBoundary>
+                </LayoutProvider>
             </AppContextProvider>
         );
     } else {
         return (
             <LayoutProvider>
                 <Layout>
-                    <ErrorBoundary fallback={"error"}>
+                    <ErrorBoundary fallback={<ErrorPage />}>
                         <Component {...pageProps} />
                     </ErrorBoundary>
                 </Layout>
