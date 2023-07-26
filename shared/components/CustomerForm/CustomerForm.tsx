@@ -68,6 +68,8 @@ const CustomerForm = ({
     const router = useRouter();
     const handleChange = useCallback(
         (value: any, key: string) => {
+           
+
             if (key === "total") {
                 setCustomer({
                     ...Customer,

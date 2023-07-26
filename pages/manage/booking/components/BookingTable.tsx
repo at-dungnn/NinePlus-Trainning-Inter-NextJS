@@ -22,7 +22,7 @@ export const data: any[] = [
     },
     {
         id: "BC123",
-        name: "Nhat Huy",
+        name: "Minh Tri",
         phone: "0905124124",
         bookingDate: "14/07/2023",
         from_to: "14:00-16:00 15/07/2023",
@@ -38,7 +38,13 @@ export const data: any[] = [
     },
 ];
 
-const renderIcon = ({ id }: { id: string }): React.ReactNode => {
+const renderIcon = ({
+    id,
+    name,
+}: {
+    id: string;
+    name: string;
+}): React.ReactNode => {
     const { trans } = useTrans();
     const router = useRouter();
     const [visible, setVisible] = useState(false);
@@ -48,7 +54,7 @@ const renderIcon = ({ id }: { id: string }): React.ReactNode => {
             <Link
                 locale={router.locale === "en" ? "en" : "vi"}
                 href={{
-                    pathname: `/customer/update/[id]`,
+                    pathname: `/manage/booking/update/[id]`,
                     query: { id: id },
                 }}
             >
@@ -76,7 +82,7 @@ const renderIcon = ({ id }: { id: string }): React.ReactNode => {
             />
             <DeleteDialog
                 id={id}
-                name={data.filter((val) => val.id === id)[0].name}
+                name={name}
                 visible={visible}
                 setVisible={setVisible}
             />
@@ -123,7 +129,7 @@ export const renderHeader = ({
                         <span className="font-bold">Calendar</span>
                     </Button>
                 </Link>
-                <Link href={"/customer/addnew"}>
+                <Link href={"/manage/booking/create"}>
                     <Button
                         severity="help"
                         outlined
@@ -284,7 +290,11 @@ const BookingTable = () => {
                 body={StatusBox}
                 style={{ width: "13rem" }}
             />
-            <Column field="id" body={renderIcon} style={{ width: "12rem" }} />
+            <Column
+                field="id,name"
+                body={renderIcon}
+                style={{ width: "12rem" }}
+            />
         </DataTable>
     );
 };
