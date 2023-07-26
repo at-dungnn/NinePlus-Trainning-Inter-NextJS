@@ -1,5 +1,6 @@
 import DeleteDialog from "@/pages/customer/components/DeleteDialog";
 import useTrans from "@/shared/hooks/useTrans";
+import { formatFromTo } from "@/shared/tools/formatDate";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FilterMatchMode } from "primereact/api";
@@ -17,7 +18,8 @@ export const data: any[] = [
         name: "Nhat Huy",
         phone: "0905124124",
         bookingDate: "14/07/2023",
-        from_to: "14:00-16:00 15/07/2023",
+        from: "14:00 15/07/2023",
+        to: "16:00 15/07/2023 ",
         status: "Inprogress",
     },
     {
@@ -25,7 +27,8 @@ export const data: any[] = [
         name: "Minh Tri",
         phone: "0905124124",
         bookingDate: "14/07/2023",
-        from_to: "14:00-16:00 15/07/2023",
+        from: "14:00 16/07/2023",
+        to: "16:00 16/07/2023 ",
         status: "Done",
     },
     {
@@ -33,7 +36,8 @@ export const data: any[] = [
         name: "Nhat Huy",
         phone: "0905124124",
         bookingDate: "14/07/2023",
-        from_to: "14:00-16:00 15/07/2023",
+        from: "14:00 17/07/2023",
+        to: "17:00 17/07/2023 ",
         status: "Waiting",
     },
 ];
@@ -207,6 +211,9 @@ const RouteDetailName = ({ name }: { name: string }) => {
         </>
     );
 };
+const FromTo = ({ from, to }: { from: string; to: string }) => {
+    return <p>{formatFromTo(from, to)}</p>;
+};
 const BookingTable = () => {
     const { trans } = useTrans();
     const [filters, setFilters] = useState<DataTableFilterMeta>({
@@ -280,8 +287,9 @@ const BookingTable = () => {
                 style={{ width: "20rem" }}
             />
             <Column
-                field="from_to"
+                field="from,to"
                 sortable
+                body={FromTo}
                 header={"From-To Time"}
                 style={{ width: "15rem" }}
             />

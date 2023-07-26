@@ -9,20 +9,20 @@ import BookingForm from "@/shared/components/BookingForm";
 import { Button } from "primereact/button";
 import { BookingType } from "@/types/user";
 
-const initState: BookingType = {
-    id: "",
-    name: "",
-    phone: "",
-    bookingDate: "",
-    from: "",
-    to: "",
-    service: "",
-    note: "",
+const data: BookingType = {
+    id: "A0005",
+    name: "Donnete",
+    phone: "090321512",
+    bookingDate: "12/05/2023",
+    from: "14:00 13/05/2023",
+    to: "16:00 13/05/2023",
+    service: "DV001-Massage",
+    note: "Note description",
 };
 
-const CreateBooking = () => {
+const UpdateBooking = () => {
     const router = useRouter();
-    const [booking, setBooking] = useState<BookingType>(initState);
+    const [booking, setBooking] = useState<BookingType>(data);
     const { trans } = useTrans();
     const [isLoading, setIsLoading] = useState(false);
     const {
@@ -63,9 +63,17 @@ const CreateBooking = () => {
                     <BookingForm booking={booking} setBooking={setBooking}>
                         <div className="mt-5">
                             <Button
-                                label={"Create Booking"}
+                                label={"Update"}
                                 onClick={handleSubmit}
                                 className="text-xl font-light"
+                            />
+                            <Button
+                                label={"Cancel"}
+                                outlined
+                                onClick={() => {
+                                    router.push("/manage/booking");
+                                }}
+                                style={{ marginLeft: "3rem" }}
                             />
                         </div>
                     </BookingForm>
@@ -83,8 +91,8 @@ const CreateBooking = () => {
     );
 };
 
-CreateBooking.getLayout = function getLayout(page: React.ReactElement) {
+UpdateBooking.getLayout = function getLayout(page: React.ReactElement) {
     return <ManageLayout>{page}</ManageLayout>;
 };
 
-export default CreateBooking;
+export default UpdateBooking;
