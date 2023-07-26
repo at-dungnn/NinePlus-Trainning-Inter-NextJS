@@ -143,6 +143,7 @@ const CustomerForm = ({
                     disabled={readonly}
                     dateFormat="dd/mm/yy"
                     locale={router.locale}
+                    readOnlyInput 
                     value={formatDate(Customer?.birthday)}
                     onChange={(e) => handleChange(e.target.value, "birthday")}
                     showIcon
