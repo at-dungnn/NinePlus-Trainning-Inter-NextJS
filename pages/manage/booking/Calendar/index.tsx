@@ -79,31 +79,6 @@ const CalendarPage = () => {
     const [resourceData, setResourceData] = useState(inititalResourceData);
     const [eventData, setEventData] = useState<EventType[]>(inititalEventData);
 
-    // useEffect(() => {
-    //     data?.map((booking) => {
-    //         console.log(booking);
-
-    //         setEventData([
-    //             ...eventData,
-    //             {
-    //                 title: booking?.name,
-    //                 start: formatDateCalendar(booking?.from),
-    //                 end: formatDateCalendar(booking?.to),
-    //                 resourceId: booking?.id,
-    //             },
-    //         ]);
-    //         setResourceData([
-    //             ...resourceData,
-    //             {
-    //                 id: booking?.id,
-    //                 title: booking?.name,
-    //                 eventColor: "#0f41f5",
-    //             },
-    //         ]);
-    //     });
-    //     console.log(eventData, resourceData);
-    // }, []);
-
     const {
         Breadcrumbs,
         setBreadcrumbs,
