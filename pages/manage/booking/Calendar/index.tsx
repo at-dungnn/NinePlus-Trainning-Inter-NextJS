@@ -40,11 +40,6 @@ const data: any[] = [
     },
 ];
 
-const initialData = {
-    event: [{}],
-    resource: [{}],
-};
-
 type EventType = {
     title: string;
     start: string;
@@ -52,51 +47,62 @@ type EventType = {
     resourceId: string;
 };
 
+const inititalEventData = () => {
+    const event: any[] = [];
+    data.map((booking) => {
+        event.push({
+            title: booking?.name,
+            start: formatDateCalendar(booking?.from),
+            end: formatDateCalendar(booking?.to),
+            resourceId: booking?.id,
+        });
+    });
+    return event;
+};
+const inititalResourceData = () => {
+    const resource: any[] = [];
+    data.map((booking) => {
+        resource.push({
+            id: booking?.id,
+            title: booking?.name,
+            eventColor: "#0f41f5",
+        });
+    });
+    return resource;
+};
+
 const CalendarPage = () => {
     const router = useRouter();
     const { trans } = useTrans();
     const [isLoading, setIsLoading] = useState(false);
-    const [calendarData, setCalendatData] = useState(initialData);
-    const [resourceData, setResourceData] = useState([
-        {
-            title: "Event A",
-            id: "NPLUS0002",
-            eventColor: "#19ecff",
-        },
-    ]);
-    const [eventData, setEventData] = useState<EventType[]>([
-        {
-            title: "Event A",
-            start: "2023-07-24 13:15",
-            end: "2023-07-24 15:15",
-            resourceId: "NPLUS0002",
-        },
-    ]);
 
-    useEffect(() => {
-        data?.map((booking) => {
-            console.log(booking);
+    const [resourceData, setResourceData] = useState(inititalResourceData);
+    const [eventData, setEventData] = useState<EventType[]>(inititalEventData);
 
-            setEventData([
-                ...eventData,
-                {
-                    title: booking?.name,
-                    start: formatDateCalendar(booking?.from),
-                    end: formatDateCalendar(booking?.to),
-                    resourceId: booking?.id,
-                },
-            ]);
-            setResourceData([
-                ...resourceData,
-                {
-                    id: booking?.id,
-                    title: booking?.name,
-                    eventColor: "#0f41f5",
-                },
-            ]);
-        });
-        console.log(eventData, resourceData);
-    }, []);
+    // useEffect(() => {
+    //     data?.map((booking) => {
+    //         console.log(booking);
+
+    //         setEventData([
+    //             ...eventData,
+    //             {
+    //                 title: booking?.name,
+    //                 start: formatDateCalendar(booking?.from),
+    //                 end: formatDateCalendar(booking?.to),
+    //                 resourceId: booking?.id,
+    //             },
+    //         ]);
+    //         setResourceData([
+    //             ...resourceData,
+    //             {
+    //                 id: booking?.id,
+    //                 title: booking?.name,
+    //                 eventColor: "#0f41f5",
+    //             },
+    //         ]);
+    //     });
+    //     console.log(eventData, resourceData);
+    // }, []);
 
     const {
         Breadcrumbs,
