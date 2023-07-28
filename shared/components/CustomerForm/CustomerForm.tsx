@@ -68,12 +68,12 @@ const CustomerForm = ({
     const router = useRouter();
     const handleChange = useCallback(
         (value: any, key: string) => {
-            if (key === "total") {
+            if (key === "totalMoney") {
                 setCustomer({
                     ...Customer,
                     [key]: value,
                 });
-            } else if (key === "birthday") {
+            } else if (key === "dateOfBirth") {
                 setCustomer({
                     ...Customer,
                     [key]: `${value.getDate()}/${
@@ -109,8 +109,8 @@ const CustomerForm = ({
                 </h5>
                 <InputText
                     disabled={readonly}
-                    value={Customer?.name}
-                    onChange={(e) => handleChange(e.target.value, "name")}
+                    value={Customer?.customerName}
+                    onChange={(e) => handleChange(e.target.value, "customerName")}
                     style={{ width: "95%" }}
                 />
             </div>
@@ -121,8 +121,8 @@ const CustomerForm = ({
                 </h5>
                 <InputText
                     disabled={readonly}
-                    value={Customer?.phone}
-                    onChange={(e) => handleChange(e.target.value, "phone")}
+                    value={Customer?.phoneNumber}
+                    onChange={(e) => handleChange(e.target.value, "phoneNumber")}
                     style={{ width: "95%" }}
                 />
             </div>
@@ -144,8 +144,8 @@ const CustomerForm = ({
                     dateFormat="dd/mm/yy"
                     locale={router.locale}
                     readOnlyInput 
-                    value={formatDate(Customer?.birthday)}
-                    onChange={(e) => handleChange(e.target.value, "birthday")}
+                    value={formatDate(Customer?.dateOfBirth)}
+                    onChange={(e) => handleChange(e.target.value, "dateOfBirth")}
                     showIcon
                     style={{ width: "40%" }}
                 />
@@ -154,8 +154,8 @@ const CustomerForm = ({
                 <h5>{trans.customer.form.total_label} :</h5>
                 <InputNumber
                     disabled={readonly}
-                    value={Customer?.total}
-                    onChange={(e) => handleChange(e.value, "total")}
+                    value={Customer?.totalMoney}
+                    onChange={(e) => handleChange(e.value, "totalMoney")}
                     style={{ width: "95%" }}
                 />
             </div>

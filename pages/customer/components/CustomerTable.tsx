@@ -15,107 +15,107 @@ import useTrans from "@/shared/hooks/useTrans";
 export const data: Customer[] = [
     {
         id: "NPLUS0001",
-        name: "Nhat Huy",
-        phone: "0905124124",
+        customerName: "Nhat Huy",
+        phoneNumber: "0905124124",
         address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
+        dateOfBirth: "28/06/2000",
+        totalMoney: 2344322,
     },
     {
         id: "BC123",
-        name: "Nhat Huy",
-        phone: "0905124124",
+        customerName: "Nhat Huy",
+        phoneNumber: "0905124124",
         address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
+        dateOfBirth: "28/06/2000",
+        totalMoney: 2344322,
     },
     {
         id: "NPLUS0002",
-        name: "Nhat Huy",
-        phone: "0905124124",
+        customerName: "Nhat Huy",
+        phoneNumber: "0905124124",
         address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
+        dateOfBirth: "28/06/2000",
+        totalMoney: 2344322,
     },
     {
         id: "NPLUS0003",
-        name: "Nhat Huy",
-        phone: "0905124124",
+        customerName: "Nhat Huy",
+        phoneNumber: "0905124124",
         address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
+        dateOfBirth: "28/06/2000",
+        totalMoney: 2344322,
     },
     {
         id: "NPLUS0004",
-        name: "Nhat Huy",
-        phone: "0905124124",
+        customerName: "Nhat Huy",
+        phoneNumber: "0905124124",
         address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
+        dateOfBirth: "28/06/2000",
+        totalMoney: 2344322,
     },
     {
         id: "NPLUS0005",
-        name: "Nhat Huy",
-        phone: "0905124124",
+        customerName: "Nhat Huy",
+        phoneNumber: "0905124124",
         address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
+        dateOfBirth: "28/06/2000",
+        totalMoney: 2344322,
     },
     {
         id: "NPLUS0006",
-        name: "Nhat Huy",
-        phone: "0905124124",
+        customerName: "Nhat Huy",
+        phoneNumber: "0905124124",
         address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
+        dateOfBirth: "28/06/2000",
+        totalMoney: 2344322,
     },
     {
         id: "NPLUS0007",
-        name: "Nhat Huy",
-        phone: "0905124124",
+        customerName: "Nhat Huy",
+        phoneNumber: "0905124124",
         address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
+        dateOfBirth: "28/06/2000",
+        totalMoney: 2344322,
     },
     {
         id: "NPLUS0008",
-        name: "Nhat Huy",
-        phone: "0905124124",
+        customerName: "Nhat Huy",
+        phoneNumber: "0905124124",
         address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
+        dateOfBirth: "28/06/2000",
+        totalMoney: 2344322,
     },
     {
         id: "NPLUS0009",
-        name: "Nhat Huy",
-        phone: "0905124124",
+        customerName: "Nhat Huy",
+        phoneNumber: "0905124124",
         address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
+        dateOfBirth: "28/06/2000",
+        totalMoney: 2344322,
     },
     {
         id: "NPLUS0010",
-        name: "Nhat Huy",
-        phone: "0905124124",
+        customerName: "Nhat Huy",
+        phoneNumber: "0905124124",
         address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
+        dateOfBirth: "28/06/2000",
+        totalMoney: 2344322,
     },
     {
         id: "NPLUS0011",
-        name: "Nhat Huy",
-        phone: "0905124124",
+        customerName: "Nhat Huy",
+        phoneNumber: "0905124124",
         address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
+        dateOfBirth: "28/06/2000",
+        totalMoney: 2344322,
     },
     {
         id: "NPLUS0011",
-        name: "Nhat Huy",
-        phone: "0905124124",
+        customerName: "Nhat Huy",
+        phoneNumber: "0905124124",
         address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
+        dateOfBirth: "28/06/2000",
+        totalMoney: 2344322,
     },
 ];
 const renderIcon = ({ id }: { id: string }): React.ReactNode => {
@@ -174,7 +174,7 @@ const renderIcon = ({ id }: { id: string }): React.ReactNode => {
             />
             <DeleteDialog
                 id={id}
-                name={data.filter((val) => val.id === id)[0].name}
+                name={data.filter((val) => val.id === id)[0].customerName}
                 visible={visible}
                 setVisible={setVisible}
             />
@@ -242,11 +242,11 @@ const CustomerTable = () => {
             header={headers}
             globalFilterFields={[
                 "id",
-                "name",
-                "phone",
+                "customerName",
+                "phoneNumber",
                 "address",
-                "birthday",
-                "total",
+                "dateOfBirth",
+                "totalMoney",
             ]}
             loading={loading}
             emptyMessage="No customers found."
@@ -261,13 +261,13 @@ const CustomerTable = () => {
                 style={{ width: "10rem" }}
             />
             <Column
-                field="name"
+                field="customerName"
                 sortable
                 header={trans.customer.form.name}
                 style={{ width: "20rem" }}
             />
             <Column
-                field="phone"
+                field="phoneNumber"
                 sortable
                 header={trans.customer.form.phone_label}
                 style={{ width: "15rem" }}
@@ -279,13 +279,13 @@ const CustomerTable = () => {
                 style={{ width: "20rem" }}
             />
             <Column
-                field="birthday"
+                field="dateOfBirth"
                 sortable
                 header={trans.customer.form.dob_label}
                 style={{ width: "13rem" }}
             />
             <Column
-                field="total"
+                field="totalMoney"
                 sortable
                 header={trans.customer.form.total_label}
                 style={{ width: "13rem" }}

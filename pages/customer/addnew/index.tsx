@@ -26,13 +26,12 @@ const CustomerManage = (props: PageProps) => {
     const {
         Breadcrumbs,
         setBreadcrumbs,
-        AppBreadcrumbProps,
-        setAppBreadcrumbProps,
+        AppBreadcrumbProps,        
     } = useContext(BreadcrumbContext);
     const [newCustomer, setNewCustomer] = useState<Customer>({
         id: "",
-        name: "",
-        phone: "",
+        customerName: "",
+        phoneNumber: "",
     });
     useEffect(() => {
         setBreadcrumbs((BreadCrumbs) => {
