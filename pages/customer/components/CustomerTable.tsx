@@ -207,7 +207,7 @@ export const renderHeader = ({
         </div>
     );
 };
-const CustomerTable = () => {
+const CustomerTable = (tableData: Customer[] | null) => {
     const breakpoint = 992;
     const { trans } = useTrans();
     const [filters, setFilters] = useState<DataTableFilterMeta>({

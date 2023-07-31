@@ -10,11 +10,14 @@ export abstract class CRUDService {
     //     this.basePath = basePath;
     //   }
 
-    protected get<T>(url: string, data?: any): Promise<T> {
+    protected get<T>(url: string, data?: any) {
         return this.httpClient
             .get<T>(`${this.basePath}/${url}`, data)
             .then((response: AxiosResponse<T>) => {
                 return response.data;
+            })
+            .catch((e) => {
+                console.log(e);
             });
     }
 
@@ -53,6 +56,13 @@ export abstract class CRUDService {
     protected delete<T>(url: string): Promise<T> {
         return this.httpClient
             .delete<T>(`${this.basePath}/${url}`)
+            .then((response: AxiosResponse<T>) => {
+                return response.data;
+            });
+    }
+    protected deleteId<T>(url: string, data: any): Promise<T> {
+        return this.httpClient
+            .delete<T>(`${this.basePath}/${url}`, data)
             .then((response: AxiosResponse<T>) => {
                 return response.data;
             });

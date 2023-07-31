@@ -11,25 +11,41 @@ export class SessionKey {
 }
 
 export const useSessionService = (): SessionService => {
-    const [loggedInUser, setLoggedInUser] = useState<UserAuthenticate | null>(
-        JSON.parse(localStorage.getItem(SessionKey.USER) || "null")
-    );
-
-    useEffect(() => {
-        if (loggedInUser) {
-            localStorage.setItem(SessionKey.USER, JSON.stringify(loggedInUser));
-        } else {
-            localStorage.removeItem(SessionKey.USER);
+    // const [loggedInUser, setLoggedInUser] = useState<UserAuthenticate | null>(
+    //     () => {
+    //         try {
+    //             const value = JSON.parse(
+    //                 localStorage.getItem(SessionKey.USER) || "false"
+    //             );
+    //             return value === "false" ? value : null;
+    //         } catch (e) {
+    //             console.log(e);
+    //         }
+    //     }
+    // );
+    const loggedInUser: UserAuthenticate | null = (() => {
+        try {
+            const value = JSON.parse(
+                localStorage.getItem(SessionKey.USER) || "false"
+            );
+            return value === "false" ? value : null;
+        } catch (e) {
+            console.log(e);
         }
-    }, [loggedInUser]);
+    })();
+
+    if (loggedInUser) {
+        localStorage.setItem(SessionKey.USER, JSON.stringify(loggedInUser));
+    } else {
+        localStorage.removeItem(SessionKey.USER);
+    }
 
     const saveSession = (userAuth: UserAuthenticate): void => {
-        setLoggedInUser(userAuth);
         localStorage.setItem(SessionKey.USER, JSON.stringify(userAuth));
     };
 
     const clearSession = (): void => {
-        setLoggedInUser(null);
+        localStorage.removeItem(SessionKey.USER);
     };
 
     const isLoggedIn = !!loggedInUser;
@@ -37,7 +53,6 @@ export const useSessionService = (): SessionService => {
     return {
         loggedInUser,
         isLoggedIn,
-        setLoggedInUser,
         clearSession,
         saveSession,
     };

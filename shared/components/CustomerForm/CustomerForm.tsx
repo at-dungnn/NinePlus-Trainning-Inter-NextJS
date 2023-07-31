@@ -96,7 +96,7 @@ const CustomerForm = ({
                     ID <span className="text-orange-700">*</span>:
                 </h5>
                 <InputText
-                    disabled={readonly}
+                    disabled
                     value={Customer?.id}
                     onChange={(e) => handleChange(e.target.value, "id")}
                     style={{ width: "95%" }}
@@ -110,7 +110,9 @@ const CustomerForm = ({
                 <InputText
                     disabled={readonly}
                     value={Customer?.customerName}
-                    onChange={(e) => handleChange(e.target.value, "customerName")}
+                    onChange={(e) =>
+                        handleChange(e.target.value, "customerName")
+                    }
                     style={{ width: "95%" }}
                 />
             </div>
@@ -122,7 +124,9 @@ const CustomerForm = ({
                 <InputText
                     disabled={readonly}
                     value={Customer?.phoneNumber}
-                    onChange={(e) => handleChange(e.target.value, "phoneNumber")}
+                    onChange={(e) =>
+                        handleChange(e.target.value, "phoneNumber")
+                    }
                     style={{ width: "95%" }}
                 />
             </div>
@@ -143,9 +147,11 @@ const CustomerForm = ({
                     disabled={readonly}
                     dateFormat="dd/mm/yy"
                     locale={router.locale}
-                    readOnlyInput 
+                    readOnlyInput
                     value={formatDate(Customer?.dateOfBirth)}
-                    onChange={(e) => handleChange(e.target.value, "dateOfBirth")}
+                    onChange={(e) =>
+                        handleChange(e.target.value, "dateOfBirth")
+                    }
                     showIcon
                     style={{ width: "40%" }}
                 />
