@@ -22,14 +22,14 @@ export default function SkeletonTable() {
                 body={<Skeleton></Skeleton>}
             />
             <Column
-                field="name"
+                field="customerName"
                 sortable
                 header="Full Name"
                 style={{ width: "20rem" }}
                 body={<Skeleton></Skeleton>}
             />
             <Column
-                field="phone"
+                field="phoneNumber"
                 sortable
                 header="Phone Number"
                 style={{ width: "15rem" }}
@@ -43,14 +43,14 @@ export default function SkeletonTable() {
                 body={<Skeleton></Skeleton>}
             />
             <Column
-                field="birthday"
+                field="dateOfBirth"
                 sortable
                 header="Birthday"
                 style={{ width: "13rem" }}
                 body={<Skeleton></Skeleton>}
             />
             <Column
-                field="total"
+                field="totalMoney"
                 sortable
                 header="Total money"
                 style={{ width: "13rem" }}

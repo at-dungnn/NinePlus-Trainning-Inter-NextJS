@@ -1,12 +1,22 @@
 import { CRUDService } from "@/services/common/crudService";
+import { Customer } from "@/types/user";
 
-export class customerService extends CRUDService {
-    protected basePath = `http://localhost:8080`;
-    public publicData = `test api class`;
-
-    public getCustomer<T>(url: string): Promise<T> {
-        return this.get<T>(url);
+export class CustomerService extends CRUDService {
+    protected basePath = `/customer`;
+    public async getCustomer<T>(url: string): Promise<T> {
+        return await this.get<T>(url).then((resp: any) => resp.data);
     }
-
-    // public getCustomerDetail<T>(url:string):Promise<T>{}
+    public async createCustomer<T>(
+        url: string,
+        data: Customer
+    ): Promise<T | void> {
+        return await this.create<T>(url, data);
+    }
+    public async updateCustomer<T>(url: string, data: Customer) {
+        console.log(data);
+        return await this.update<T>(url, data);
+    }
+    public async deleteCustomer<T>(url: string): Promise<T> {
+        return await this.delete<T>(url);
+    }
 }

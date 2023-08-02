@@ -1,8 +1,6 @@
-import { Page } from "@/types/layout";
 import React, { Suspense, useContext, useEffect, useState } from "react";
-import { GetServerSideProps, GetStaticProps } from "next";
 import ManageLayout from "@/layout/manageLayout/layout";
-import { customerService } from "@/shared/services/customerService";
+import { CustomerService } from "@/shared/services/CustomerService";
 import SkeletonTable from "./components/SkeletonTable";
 import CustomerTable from "./components/CustomerTable";
 import { BreadcrumbContext } from "@/layout/context/BreadcrumbContext";
@@ -10,19 +8,11 @@ import { BreadCrumb } from "primereact/breadcrumb";
 import useTrans from "@/shared/hooks/useTrans";
 import { useRouter } from "next/router";
 
-type PageProps = {
-    data: any;
-};
-
-type Customer = {
-    name: string;
-    age: number;
-    booking: [];
-    loadingState: boolean;
-};
-
-const CustomerManage = (props: PageProps) => {
+const CustomerManage = () => {
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(true);
+    const [customerData, setCustomerData] = useState(null);
+    const apiFetch = new CustomerService();
     const { trans } = useTrans();
     const { Breadcrumbs, setBreadcrumbs, AppBreadcrumbProps } =
         useContext(BreadcrumbContext);
@@ -35,8 +25,13 @@ const CustomerManage = (props: PageProps) => {
             to: "/customer",
         });
     }, [router.locale]);
-    const [isLoading, setIsLoading] = useState(false);
 
+    useEffect(() => {
+        apiFetch.getCustomer("").then((res: any) => {
+            setCustomerData(res);
+            setIsLoading(false);
+        });
+    }, [router.locale]);
     if (isLoading === true) {
         return (
             <>
@@ -73,25 +68,15 @@ const CustomerManage = (props: PageProps) => {
                 />
             </Suspense>
             <div className="m-2 ml-5 bg-white h-full">
-                <CustomerTable />
+                <CustomerTable
+                    tableData={customerData}
+                    setTableData={setCustomerData}
+                />
             </div>
         </div>
     );
 };
 
-export const getStaticProps: GetStaticProps = async () => {
-    // TODO/ add api
-    // const apiService = new customerService();
-    // const res = await fetch(`https://.../data`);
-    // const data = await res.json();
-    const data: Customer = {
-        name: "leon",
-        age: 4,
-        booking: [],
-        loadingState: true,
-    };
-    return { props: { data } };
-};
 CustomerManage.getLayout = function getLayout(page: React.ReactNode) {
     return <ManageLayout>{page}</ManageLayout>;
 };

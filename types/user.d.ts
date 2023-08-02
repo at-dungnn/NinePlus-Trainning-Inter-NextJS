@@ -1,10 +1,12 @@
 export type Customer = {
-    id: string;
-    name: string;
-    phone: string;
+    id?: string;
+    customerName: string;
+    phoneNumber: string;
     address?: string;
-    birthday?: string;
-    total?: number;
+    dateOfBirth?: string;
+    totalMoney?: number;
+    username?: string;
+    password?: string;
 };
 
 export type BookingType = {

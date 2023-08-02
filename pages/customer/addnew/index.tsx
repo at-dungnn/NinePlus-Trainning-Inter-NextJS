@@ -1,9 +1,7 @@
-import { Page } from "@/types/layout";
 import React, { Suspense, useContext, useEffect, useState } from "react";
-import { GetServerSideProps, GetStaticProps } from "next";
 import ManageLayout from "@/layout/manageLayout/layout";
 import { Button } from "primereact/button";
-import { customerService } from "@/shared/services/customerService";
+import { CustomerService } from "@/shared/services/CustomerService";
 import SkeletonTable from "../components/SkeletonTable";
 import { BreadcrumbContext } from "@/layout/context/BreadcrumbContext";
 import { BreadCrumb } from "primereact/breadcrumb";
@@ -19,20 +17,17 @@ type PageProps = {
 };
 
 const CustomerManage = (props: PageProps) => {
+    const apiFetch = new CustomerService();
     const { trans } = useTrans();
     const { showToast } = useContext(ToastContext);
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
-    const {
-        Breadcrumbs,
-        setBreadcrumbs,
-        AppBreadcrumbProps,
-        setAppBreadcrumbProps,
-    } = useContext(BreadcrumbContext);
+    const { Breadcrumbs, setBreadcrumbs, AppBreadcrumbProps } =
+        useContext(BreadcrumbContext);
     const [newCustomer, setNewCustomer] = useState<Customer>({
-        id: "",
-        name: "",
-        phone: "",
+        customerName: "",
+        phoneNumber: "",
+        totalMoney: 0,
     });
     useEffect(() => {
         setBreadcrumbs((BreadCrumbs) => {
@@ -50,12 +45,36 @@ const CustomerManage = (props: PageProps) => {
     }, []);
 
     const handleSubmit = () => {
-        showToast({
-            severity: "success",
-            summary: "Success",
-            detail: "Add Success",
-        });
-        console.log(checkFilled(newCustomer));
+        // console.log(newCustomer);
+        const { isFilled, errorString } = checkFilled(newCustomer, trans);
+        if (isFilled) {
+            apiFetch.createCustomer("", newCustomer).then((resp: any) => {
+                console.log(resp);
+                if (resp?.succeeded) {
+                    showToast({
+                        severity: "success",
+                        summary: trans.toast.success,
+                        detail: trans.toast.detail.add,
+                    });
+                    router.push("/customer");
+                } else {
+                    console.log(resp);
+                    showToast({
+                        severity: "error",
+                        summary: trans.toast.error,
+                        detail: resp.resp?.messages[0]
+                            ? resp?.messages[0]
+                            : trans.toast.detail.format,
+                    });
+                }
+            });
+        } else {
+            showToast({
+                severity: "warn",
+                summary: trans.toast.warn,
+                detail: errorString || trans.toast.detail.format,
+            });
+        }
     };
 
     if (isLoading === true) {
@@ -115,6 +134,7 @@ const CustomerManage = (props: PageProps) => {
                         Customer={newCustomer}
                         setCustomer={setNewCustomer}
                         readonly={false}
+                        newCustomer={true}
                     >
                         <div className="mt-5">
                             <Button
@@ -136,19 +156,6 @@ const CustomerManage = (props: PageProps) => {
         </div>
     );
 };
-
-// export const getStaticProps: GetStaticProps = async () => {
-//     // const apiService = new customerService();
-//     // const res = await fetch(`https://.../data`);
-//     // const data = await res.json();
-//     const data: Customer = {
-//         name: "leon",
-//         age: 4,
-//         booking: [],
-//         loadingState: true,
-//     };
-//     return { props: { data } };
-// };
 CustomerManage.getLayout = function getLayout(page: React.ReactNode) {
     return <ManageLayout>{page}</ManageLayout>;
 };

@@ -1,2 +1,4 @@
 import useViewport from "./useViewPort";
-export { useViewport };
+import useTrans from "./useTrans";
+import useLocalStorage from "./useLocalStorage";
+export { useViewport, useTrans, useLocalStorage };

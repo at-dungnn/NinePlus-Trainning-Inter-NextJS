@@ -6,119 +6,18 @@ import { InputText } from "primereact/inputtext";
 import { FilterMatchMode } from "primereact/api";
 import { Tooltip } from "primereact/tooltip";
 import Link from "next/link";
-import { Customer } from "@/types/types";
-import { Dialog } from "primereact/dialog";
 import DeleteDialog from "./DeleteDialog";
 import { useRouter } from "next/router";
 import useTrans from "@/shared/hooks/useTrans";
+import { splitDateTime } from "@/shared/tools";
 
-export const data: Customer[] = [
-    {
-        id: "NPLUS0001",
-        name: "Nhat Huy",
-        phone: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
-    },
-    {
-        id: "BC123",
-        name: "Nhat Huy",
-        phone: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
-    },
-    {
-        id: "NPLUS0002",
-        name: "Nhat Huy",
-        phone: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
-    },
-    {
-        id: "NPLUS0003",
-        name: "Nhat Huy",
-        phone: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
-    },
-    {
-        id: "NPLUS0004",
-        name: "Nhat Huy",
-        phone: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
-    },
-    {
-        id: "NPLUS0005",
-        name: "Nhat Huy",
-        phone: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
-    },
-    {
-        id: "NPLUS0006",
-        name: "Nhat Huy",
-        phone: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
-    },
-    {
-        id: "NPLUS0007",
-        name: "Nhat Huy",
-        phone: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
-    },
-    {
-        id: "NPLUS0008",
-        name: "Nhat Huy",
-        phone: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
-    },
-    {
-        id: "NPLUS0009",
-        name: "Nhat Huy",
-        phone: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
-    },
-    {
-        id: "NPLUS0010",
-        name: "Nhat Huy",
-        phone: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
-    },
-    {
-        id: "NPLUS0011",
-        name: "Nhat Huy",
-        phone: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
-    },
-    {
-        id: "NPLUS0012",
-        name: "Nhat Huy",
-        phone: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        birthday: "28/06/2000",
-        total: 2344322,
-    },
-];
-const renderIcon = ({ id }: { id: string }): React.ReactNode => {
+const renderIcon = ({
+    id,
+    customerName,
+}: {
+    id: string;
+    customerName: string;
+}): React.ReactNode => {
     const { trans } = useTrans();
     const router = useRouter();
     const [visible, setVisible] = useState(false);
@@ -174,7 +73,7 @@ const renderIcon = ({ id }: { id: string }): React.ReactNode => {
             />
             <DeleteDialog
                 id={id}
-                name={data.filter((val) => val.id === id)[0].name}
+                name={customerName}
                 visible={visible}
                 setVisible={setVisible}
             />
@@ -184,8 +83,8 @@ const renderIcon = ({ id }: { id: string }): React.ReactNode => {
 export const renderHeader = ({
     globalFilterValue,
     onGlobalFilterChange,
-    trans,
 }: any) => {
+    const { trans } = useTrans();
     return (
         <div className="flex justify-content-between">
             <span className="p-input-icon-left">
@@ -207,7 +106,7 @@ export const renderHeader = ({
         </div>
     );
 };
-const CustomerTable = () => {
+const CustomerTable = ({ tableData, setTableData }: any) => {
     const breakpoint = 992;
     const { trans } = useTrans();
     const [filters, setFilters] = useState<DataTableFilterMeta>({
@@ -227,12 +126,11 @@ const CustomerTable = () => {
     const headers = renderHeader({
         globalFilterValue,
         onGlobalFilterChange,
-        trans,
     });
 
     return (
         <DataTable
-            value={data}
+            value={tableData}
             scrollable
             scrollHeight="55vh"
             paginator
@@ -242,11 +140,11 @@ const CustomerTable = () => {
             header={headers}
             globalFilterFields={[
                 "id",
-                "name",
-                "phone",
+                "customerName",
+                "phoneNumber",
                 "address",
-                "birthday",
-                "total",
+                "dateOfBirth",
+                "totalMoney",
             ]}
             loading={loading}
             emptyMessage="No customers found."
@@ -261,13 +159,13 @@ const CustomerTable = () => {
                 style={{ width: "10rem" }}
             />
             <Column
-                field="name"
+                field="customerName"
                 sortable
                 header={trans.customer.form.name}
                 style={{ width: "20rem" }}
             />
             <Column
-                field="phone"
+                field="phoneNumber"
                 sortable
                 header={trans.customer.form.phone_label}
                 style={{ width: "15rem" }}
@@ -279,13 +177,14 @@ const CustomerTable = () => {
                 style={{ width: "20rem" }}
             />
             <Column
-                field="birthday"
+                field="dateOfBirth"
                 sortable
+                body={({ dateOfBirth }) => <p>{splitDateTime(dateOfBirth)}</p>}
                 header={trans.customer.form.dob_label}
                 style={{ width: "13rem" }}
             />
             <Column
-                field="total"
+                field="totalMoney"
                 sortable
                 header={trans.customer.form.total_label}
                 style={{ width: "13rem" }}

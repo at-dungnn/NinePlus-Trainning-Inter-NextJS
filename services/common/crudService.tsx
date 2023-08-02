@@ -6,16 +6,15 @@ export abstract class CRUDService {
 
     protected abstract basePath: string;
 
-    //   public constructor(basePath: string) {
-    //     this.basePath = basePath;
-    //   }
-]
-
-    protected async get<T>(url: string, data?: any): Promise<T> {
-        return await this.httpClient
+    protected get<T>(url: string, data?: any) {
+        return this.httpClient
             .get<T>(`${this.basePath}/${url}`, data)
             .then((response: AxiosResponse<T>) => {
                 return response.data;
+            })
+            .catch((e) => {
+                console.log(e);
+                return e.response.data;
             });
     }
 
@@ -27,11 +26,15 @@ export abstract class CRUDService {
             });
     }
 
-    protected async create<T>(url: string, data: any): Promise<T> {
-        return await this.httpClient
-            .post<T>(`${this.basePath}/${url}`, data)
+    protected create<T>(url: string, data: any): Promise<T | void> {
+        return this.httpClient
+            .post<T>(`${this.basePath}/${url}`, JSON.stringify(data))
             .then((response: AxiosResponse<T>) => {
                 return response.data;
+            })
+            .catch((e) => {
+                console.log(e);
+                return e.response.data;
             });
     }
 
@@ -43,11 +46,16 @@ export abstract class CRUDService {
             });
     }
 
-    protected update<T>(url: string, data: any): Promise<T> {
+    protected update<T>(url: string, data: any) {
+        console.log(data);
         return this.httpClient
-            .put<T>(`${this.basePath}/${url}`, data)
+            .put<T>(`${this.basePath}/${url}`, JSON.stringify(data))
             .then((response: AxiosResponse<T>) => {
                 return response.data;
+            })
+            .catch((e) => {
+                console.log(e);
+                return e.response.data;
             });
     }
 

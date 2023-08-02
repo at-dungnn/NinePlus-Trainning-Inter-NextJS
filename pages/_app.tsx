@@ -12,6 +12,8 @@ import "@/styles/page/page.scss";
 import "@/styles/demo/Demos.scss";
 import { ErrorBoundary } from "@/shared/error";
 import ErrorPage from "./auth/error";
+import { useRouter } from "next/router";
+import globalRouter from "@/shared/tools/globalRouter";
 
 type Props = AppProps & {
     Component: Page;
@@ -21,6 +23,8 @@ export default function MyApp({
     Component,
     pageProps,
 }: Props): React.ReactNode {
+    const router = useRouter();
+    globalRouter.navigate = router;
     if (Component.getLayout) {
         return (
             <AppContextProvider>
