@@ -1,6 +1,4 @@
-import { Page } from "@/types/layout";
 import React, { Suspense, useContext, useEffect, useState } from "react";
-import { GetServerSideProps, GetStaticProps } from "next";
 import ManageLayout from "@/layout/manageLayout/layout";
 import { customerService } from "@/shared/services/customerService";
 import SkeletonTable from "./components/SkeletonTable";
@@ -9,16 +7,11 @@ import { BreadcrumbContext } from "@/layout/context/BreadcrumbContext";
 import { BreadCrumb } from "primereact/breadcrumb";
 import useTrans from "@/shared/hooks/useTrans";
 import { useRouter } from "next/router";
-import { Customer } from "@/types/types";
 
-type PageProps = {
-    data: any;
-};
-
-const CustomerManage = (props: PageProps) => {
+const CustomerManage = () => {
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false);
-    const [customerData, setcustomerData] = useState<Customer[] | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [customerData, setCustomerData] = useState(null);
     const apiFetch = new customerService();
     const { trans } = useTrans();
     const { Breadcrumbs, setBreadcrumbs, AppBreadcrumbProps } =
@@ -34,10 +27,11 @@ const CustomerManage = (props: PageProps) => {
     }, [router.locale]);
 
     useEffect(() => {
-        apiFetch.getCustomer("").then((res) => {
-            console.log(res);
+        apiFetch.getCustomer("").then((res: any) => {
+            setCustomerData(res);
+            setIsLoading(false);
         });
-    }, [customerData]);
+    }, [router.locale]);
     if (isLoading === true) {
         return (
             <>
@@ -74,7 +68,10 @@ const CustomerManage = (props: PageProps) => {
                 />
             </Suspense>
             <div className="m-2 ml-5 bg-white h-full">
-                <CustomerTable tableData={customerData} />
+                <CustomerTable
+                    tableData={customerData}
+                    setTableData={setCustomerData}
+                />
             </div>
         </div>
     );

@@ -1,7 +1,10 @@
+import { ToastContext } from "@/layout/context/ToastContext";
 import useTrans from "@/shared/hooks/useTrans";
+import { customerService } from "@/shared/services";
+import { useRouter } from "next/router";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useContext } from "react";
 type dialogProps = {
     id: string;
     name: string;
@@ -9,12 +12,29 @@ type dialogProps = {
     setVisible: Dispatch<SetStateAction<boolean>>;
 };
 const DeleteDialog = ({ id, name, visible, setVisible }: dialogProps) => {
+    const router = useRouter();
+    const { showToast } = useContext(ToastContext);
+    const apiFetch = new customerService();
     const { trans } = useTrans();
+    const handleDelete = () => {
+        console.log(id);
+        apiFetch.deleteCustomer(`?id=${id}`).then((resp) => {
+            console.log(resp);
+            showToast({
+                severity: "success",
+                summary: trans.toast.success,
+                detail: trans.toast.detail.delete,
+            });
+            router.reload();
+        });
+    };
     return (
         <Dialog
             header={trans.delete_title}
             visible={visible}
             modal={false}
+            dismissableMask={true}
+            draggable={false}
             style={{ width: "40rem", height: "12rem", position: "relative" }}
             onHide={() => setVisible(false)}
         >
@@ -40,6 +60,7 @@ const DeleteDialog = ({ id, name, visible, setVisible }: dialogProps) => {
                     text
                     aria-label="Filter"
                     label={trans.button.yes}
+                    onClick={handleDelete}
                     style={{ marginLeft: "3rem" }}
                 />
             </div>

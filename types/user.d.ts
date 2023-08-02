@@ -1,8 +1,10 @@
 export type Customer = {
-    id: string;
+    id?: string;
     customerName: string;
     phoneNumber: string;
     address?: string;
     dateOfBirth?: string;
-    totalMoney?: number ;
+    totalMoney?: number;
+    username?: string;
+    password?: string;
 };

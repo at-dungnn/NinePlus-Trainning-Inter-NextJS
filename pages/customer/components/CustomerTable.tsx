@@ -6,119 +6,18 @@ import { InputText } from "primereact/inputtext";
 import { FilterMatchMode } from "primereact/api";
 import { Tooltip } from "primereact/tooltip";
 import Link from "next/link";
-import { Customer } from "@/types/types";
-import { Dialog } from "primereact/dialog";
 import DeleteDialog from "./DeleteDialog";
 import { useRouter } from "next/router";
 import useTrans from "@/shared/hooks/useTrans";
+import { splitDateTime } from "@/shared/tools";
 
-export const data: Customer[] = [
-    {
-        id: "NPLUS0001",
-        customerName: "Nhat Huy",
-        phoneNumber: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        dateOfBirth: "28/06/2000",
-        totalMoney: 2344322,
-    },
-    {
-        id: "BC123",
-        customerName: "Nhat Huy",
-        phoneNumber: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        dateOfBirth: "28/06/2000",
-        totalMoney: 2344322,
-    },
-    {
-        id: "NPLUS0002",
-        customerName: "Nhat Huy",
-        phoneNumber: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        dateOfBirth: "28/06/2000",
-        totalMoney: 2344322,
-    },
-    {
-        id: "NPLUS0003",
-        customerName: "Nhat Huy",
-        phoneNumber: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        dateOfBirth: "28/06/2000",
-        totalMoney: 2344322,
-    },
-    {
-        id: "NPLUS0004",
-        customerName: "Nhat Huy",
-        phoneNumber: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        dateOfBirth: "28/06/2000",
-        totalMoney: 2344322,
-    },
-    {
-        id: "NPLUS0005",
-        customerName: "Nhat Huy",
-        phoneNumber: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        dateOfBirth: "28/06/2000",
-        totalMoney: 2344322,
-    },
-    {
-        id: "NPLUS0006",
-        customerName: "Nhat Huy",
-        phoneNumber: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        dateOfBirth: "28/06/2000",
-        totalMoney: 2344322,
-    },
-    {
-        id: "NPLUS0007",
-        customerName: "Nhat Huy",
-        phoneNumber: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        dateOfBirth: "28/06/2000",
-        totalMoney: 2344322,
-    },
-    {
-        id: "NPLUS0008",
-        customerName: "Nhat Huy",
-        phoneNumber: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        dateOfBirth: "28/06/2000",
-        totalMoney: 2344322,
-    },
-    {
-        id: "NPLUS0009",
-        customerName: "Nhat Huy",
-        phoneNumber: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        dateOfBirth: "28/06/2000",
-        totalMoney: 2344322,
-    },
-    {
-        id: "NPLUS0010",
-        customerName: "Nhat Huy",
-        phoneNumber: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        dateOfBirth: "28/06/2000",
-        totalMoney: 2344322,
-    },
-    {
-        id: "NPLUS0011",
-        customerName: "Nhat Huy",
-        phoneNumber: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        dateOfBirth: "28/06/2000",
-        totalMoney: 2344322,
-    },
-    {
-        id: "NPLUS0011",
-        customerName: "Nhat Huy",
-        phoneNumber: "0905124124",
-        address: "Khue My,Ngu Hanh Son,Da Nang",
-        dateOfBirth: "28/06/2000",
-        totalMoney: 2344322,
-    },
-];
-const renderIcon = ({ id }: { id: string }): React.ReactNode => {
+const renderIcon = ({
+    id,
+    customerName,
+}: {
+    id: string;
+    customerName: string;
+}): React.ReactNode => {
     const { trans } = useTrans();
     const router = useRouter();
     const [visible, setVisible] = useState(false);
@@ -174,7 +73,7 @@ const renderIcon = ({ id }: { id: string }): React.ReactNode => {
             />
             <DeleteDialog
                 id={id}
-                name={data.filter((val) => val.id === id)[0].customerName}
+                name={customerName}
                 visible={visible}
                 setVisible={setVisible}
             />
@@ -184,8 +83,8 @@ const renderIcon = ({ id }: { id: string }): React.ReactNode => {
 export const renderHeader = ({
     globalFilterValue,
     onGlobalFilterChange,
-    trans,
 }: any) => {
+    const { trans } = useTrans();
     return (
         <div className="flex justify-content-between">
             <span className="p-input-icon-left">
@@ -207,7 +106,7 @@ export const renderHeader = ({
         </div>
     );
 };
-const CustomerTable = (tableData: Customer[] | null) => {
+const CustomerTable = ({ tableData, setTableData }: any) => {
     const breakpoint = 992;
     const { trans } = useTrans();
     const [filters, setFilters] = useState<DataTableFilterMeta>({
@@ -227,12 +126,11 @@ const CustomerTable = (tableData: Customer[] | null) => {
     const headers = renderHeader({
         globalFilterValue,
         onGlobalFilterChange,
-        trans,
     });
 
     return (
         <DataTable
-            value={data}
+            value={tableData}
             scrollable
             scrollHeight="55vh"
             paginator
@@ -281,6 +179,7 @@ const CustomerTable = (tableData: Customer[] | null) => {
             <Column
                 field="dateOfBirth"
                 sortable
+                body={({ dateOfBirth }) => <p>{splitDateTime(dateOfBirth)}</p>}
                 header={trans.customer.form.dob_label}
                 style={{ width: "13rem" }}
             />

@@ -1,17 +1,10 @@
-import {
-    Dispatch,
-    SetStateAction,
-    useCallback,
-    useEffect,
-    useState,
-} from "react";
+import { Dispatch, SetStateAction, useCallback } from "react";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Calendar } from "primereact/calendar";
-import { log } from "console";
 import { Customer } from "@/types/types";
 import { InputNumber } from "primereact/inputnumber";
-import { formatDate } from "@/shared/tools";
+import { splitDate } from "@/shared/tools";
 import useTrans from "@/shared/hooks/useTrans";
 import { useRouter } from "next/router";
 import { addLocale } from "primereact/api";
@@ -57,12 +50,14 @@ type customerProps = {
     Customer: Customer;
     setCustomer: Dispatch<SetStateAction<Customer>>;
     readonly?: boolean;
+    newCustomer?: boolean;
 };
 const CustomerForm = ({
     children,
     Customer,
     setCustomer,
     readonly,
+    newCustomer,
 }: customerProps) => {
     const { trans } = useTrans();
     const router = useRouter();
@@ -76,9 +71,14 @@ const CustomerForm = ({
             } else if (key === "dateOfBirth") {
                 setCustomer({
                     ...Customer,
-                    [key]: `${value.getDate()}/${
+                    [key]: `${value.getFullYear()}-${String(
                         value.getMonth() + 1
-                    }/${value.getFullYear()}`,
+                    ).padStart(2, "0")}-${String(value.getDate()).padStart(
+                        2,
+                        "0"
+                    )}T${String(value.getHours()).padStart(2, "0")}:${String(
+                        value.getMinutes()
+                    ).padStart(2, "0")}`,
                 });
             } else {
                 setCustomer({
@@ -97,7 +97,7 @@ const CustomerForm = ({
                 </h5>
                 <InputText
                     disabled
-                    value={Customer?.id}
+                    value={Customer?.id || ""}
                     onChange={(e) => handleChange(e.target.value, "id")}
                     style={{ width: "95%" }}
                 />
@@ -109,7 +109,7 @@ const CustomerForm = ({
                 </h5>
                 <InputText
                     disabled={readonly}
-                    value={Customer?.customerName}
+                    value={Customer?.customerName || ""}
                     onChange={(e) =>
                         handleChange(e.target.value, "customerName")
                     }
@@ -123,7 +123,7 @@ const CustomerForm = ({
                 </h5>
                 <InputText
                     disabled={readonly}
-                    value={Customer?.phoneNumber}
+                    value={Customer?.phoneNumber || ""}
                     onChange={(e) =>
                         handleChange(e.target.value, "phoneNumber")
                     }
@@ -136,7 +136,7 @@ const CustomerForm = ({
                     disabled={readonly}
                     autoResize
                     rows={6}
-                    value={Customer?.address}
+                    value={Customer?.address || ""}
                     onChange={(e) => handleChange(e.target.value, "address")}
                     style={{ width: "95%" }}
                 />
@@ -148,7 +148,7 @@ const CustomerForm = ({
                     dateFormat="dd/mm/yy"
                     locale={router.locale}
                     readOnlyInput
-                    value={formatDate(Customer?.dateOfBirth)}
+                    value={splitDate(Customer?.dateOfBirth) || ""}
                     onChange={(e) =>
                         handleChange(e.target.value, "dateOfBirth")
                     }
@@ -160,11 +160,45 @@ const CustomerForm = ({
                 <h5>{trans.customer.form.total_label} :</h5>
                 <InputNumber
                     disabled={readonly}
-                    value={Customer?.totalMoney}
+                    value={Customer?.totalMoney || 0}
                     onChange={(e) => handleChange(e.value, "totalMoney")}
                     style={{ width: "95%" }}
                 />
             </div>
+            {newCustomer ? (
+                <>
+                    <div className="mt-3">
+                        <h5>
+                            {trans.customer.form.username}
+                            <span className="ml-2 text-orange-700">*</span>:
+                        </h5>
+                        <InputText
+                            disabled={readonly}
+                            value={Customer?.username || ""}
+                            onChange={(e) =>
+                                handleChange(e.target.value, "username")
+                            }
+                            style={{ width: "95%" }}
+                        />
+                    </div>{" "}
+                    <div className="mt-3">
+                        <h5>
+                            {trans.customer.form.password}
+                            <span className="ml-2 text-orange-700">*</span>:
+                        </h5>
+                        <InputText
+                            disabled={readonly}
+                            value={Customer?.password || ""}
+                            onChange={(e) =>
+                                handleChange(e.target.value, "password")
+                            }
+                            style={{ width: "95%" }}
+                        />
+                    </div>
+                </>
+            ) : (
+                <></>
+            )}
             {children}
         </div>
     );

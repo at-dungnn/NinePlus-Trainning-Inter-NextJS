@@ -3,19 +3,20 @@ import { Customer } from "@/types/user";
 
 export class customerService extends CRUDService {
     protected basePath = `/customer`;
-
-    public async getCustomer<T>(url: string) {
-        return await this.get<T>(url);
+    public async getCustomer<T>(url: string): Promise<T> {
+        return await this.get<T>(url).then((resp: any) => resp.data);
     }
-    public async createCustomer<T>(url: string, data: Customer): Promise<T> {
+    public async createCustomer<T>(
+        url: string,
+        data: Customer
+    ): Promise<T | void> {
         return await this.create<T>(url, data);
     }
-    public async updateCustomer<T>(url: string, data: Customer): Promise<T> {
+    public async updateCustomer<T>(url: string, data: Customer) {
+        console.log(data);
         return await this.update<T>(url, data);
     }
-    public async deleteCustomer<T>(url: string, data: Customer): Promise<T> {
-        return await this.deleteId<T>(url, data);
+    public async deleteCustomer<T>(url: string): Promise<T> {
+        return await this.delete<T>(url);
     }
-
-    // public getCustomerDetail<T>(url:string):Promise<T>{}
 }

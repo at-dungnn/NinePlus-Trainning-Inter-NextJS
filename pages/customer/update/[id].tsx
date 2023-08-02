@@ -1,8 +1,6 @@
 import ManageLayout from "@/layout/manageLayout/layout";
-import { Page } from "@/types/layout";
 import { useRouter } from "next/router";
 import { ReactNode, Suspense, useContext, useEffect, useState } from "react";
-import { data } from "../components/CustomerTable";
 import CustomerForm from "@/shared/components/CustomerForm/CustomerForm";
 import { Button } from "primereact/button";
 import { Customer } from "@/types/user";
@@ -10,23 +8,32 @@ import { BreadcrumbContext } from "@/layout/context/BreadcrumbContext";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { ToastContext } from "@/layout/context/ToastContext";
 import useTrans from "@/shared/hooks/useTrans";
+import { customerService } from "@/shared/services";
+import { ProgressSpinner } from "primereact/progressspinner";
+import { checkFilled } from "@/shared/tools";
 
 const DetailPage = () => {
     const { showToast } = useContext(ToastContext);
+    const apiFetch = new customerService();
+    const { trans } = useTrans();
+    const router = useRouter();
+    const [isLoading, setIsLoading] = useState(true);
+    const [customer, setCustomer] = useState<Customer>({
+        id: "",
+        customerName: "",
+        phoneNumber: "",
+        address: "",
+        dateOfBirth: "",
+        totalMoney: 0,
+    });
     const {
         Breadcrumbs,
         setBreadcrumbs,
         AppBreadcrumbProps,
         setAppBreadcrumbProps,
     } = useContext(BreadcrumbContext);
-    const { trans } = useTrans();
-    const router = useRouter();
-    const details = data.filter((val: Customer) => {
-        return val.id === router.query.id;
-    });
-    const [customer, setCustomer] = useState<Customer>(details[0]);
+
     useEffect(() => {
-        setCustomer(details[0]);
         setBreadcrumbs(() => ({
             labels: [
                 { label: trans.breadcrump.customer.title },
@@ -34,14 +41,40 @@ const DetailPage = () => {
                 { label: `${router.query.id}` },
             ],
         }));
-}, [router.query.id, router.locale]);
+        if (router.query.id) {
+            apiFetch.getCustomer(`${router.query.id}`).then((resp: any) => {
+                setCustomer({ id: String(router.query.id), ...resp });
+
+                setIsLoading(false);
+            });
+        }
+    }, [router.query.id, router.locale]);
     const submitHandle = () => {
-        showToast({
-            severity: "success",
-            summary: "Success",
-            detail: "Update Success",
-        });
-        router.push("/customer");
+        const { isFilled, errorString } = checkFilled(customer,trans);
+        if (isFilled) {
+            apiFetch.updateCustomer("", customer).then((resp: any) => {
+                if (resp?.succeeded) {
+                    showToast({
+                        severity: "success",
+                        summary: trans.toast.success,
+                        detail: trans.toast.detail.update,
+                    });
+                    router.push("/customer");
+                } else {
+                    showToast({
+                        severity: "error",
+                        summary: trans.toast.error,
+                        detail: `${resp?.messages}`,
+                    });
+                }
+            });
+        } else {
+            showToast({
+                severity: "Warning",
+                summary: "Warning",
+                detail: errorString || "Field missing or wrong format",
+            });
+        }
     };
     return (
         <>
@@ -58,25 +91,42 @@ const DetailPage = () => {
                 />
             </Suspense>
             <div className="m-2 ml-5 bg-white h-full p-3 border-round-2xl ">
-                <h2 className="font-bold">{trans.customer.update.title}</h2>
-                <div className="customer-update ml-8 ">
-                    <CustomerForm Customer={customer} setCustomer={setCustomer}>
-                        <div className="mt-5">
-                            <Button
-                                label={trans.customer.update.save_label}
-                                onClick={submitHandle}
-                            />
-                            <Button
-                                label={trans.customer.update.cancel_label}
-                                outlined
-                                onClick={() => {
-                                    router.push("/customer");
-                                }}
-                                style={{ marginLeft: "3rem" }}
-                            />
+                {isLoading ? (
+                    <>
+                        <div className="card flex justify-content-center align-items-center h-30rem">
+                            <ProgressSpinner />
                         </div>
-                    </CustomerForm>
-                </div>
+                    </>
+                ) : (
+                    <>
+                        <h2 className="font-bold">
+                            {trans.customer.update.title}
+                        </h2>
+                        <div className="customer-update ml-8 ">
+                            <CustomerForm
+                                Customer={customer}
+                                setCustomer={setCustomer}
+                            >
+                                <div className="mt-5">
+                                    <Button
+                                        label={trans.customer.update.save_label}
+                                        onClick={submitHandle}
+                                    />
+                                    <Button
+                                        label={
+                                            trans.customer.update.cancel_label
+                                        }
+                                        outlined
+                                        onClick={() => {
+                                            router.push("/customer");
+                                        }}
+                                        style={{ marginLeft: "3rem" }}
+                                    />
+                                </div>
+                            </CustomerForm>
+                        </div>
+                    </>
+                )}
             </div>
         </>
     );

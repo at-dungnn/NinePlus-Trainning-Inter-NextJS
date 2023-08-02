@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { en, vi } from "@shared/lang";
-import { useState } from "react";
 
 const useTrans = () => {
     const router = useRouter();

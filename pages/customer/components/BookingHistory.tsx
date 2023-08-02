@@ -29,6 +29,7 @@ const product = [
     },
 ];
 const BookingHistory = () => {
+    //TODO/ add fetch booking service
     const { trans } = useTrans();
     return (
         <DataTable value={product} showGridlines>
