@@ -35,11 +35,26 @@ export default {
             address_label: 'Địa chỉ',
             dob_label: 'Ngày sinh',
             total_label: 'Tổng tiền',
+            username: 'Tên người dùng',
+            password: 'Mật khẩu',
         },
     },
     delete_title: 'Xác Nhận',
     button: {
         yes: 'Có',
         no: 'Không',
+    },
+    toast: {
+        warn: 'Cảnh báo',
+        error: 'Lỗi',
+        success: 'Thành công',
+        detail: {
+            add: 'Thêm thành công',
+            number: 'Số điện thoại chứa số lượng từ 8-10 chữ số',
+            onlyNumber: 'Số điện thoại không chứa kí tự',
+            format: 'Sai định dạng ',
+            delete: 'Xóa thành công',
+            update: 'Cập nhật thành công',
+        },
     },
 };

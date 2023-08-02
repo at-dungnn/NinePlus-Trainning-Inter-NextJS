@@ -17,7 +17,7 @@ export const BreadcrumbProvider = ({ children }: ChildContainerProps) => {
         useState<AppBreadcrumbProps>({
             body: {
                 icon: "pi pi-home",
-                url: "http://localhost:3000/dashboard",
+                url: "/dashboard",
             },
         });
 
