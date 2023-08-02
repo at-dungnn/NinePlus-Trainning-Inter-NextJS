@@ -1,6 +1,6 @@
 import { ToastContext } from "@/layout/context/ToastContext";
 import useTrans from "@/shared/hooks/useTrans";
-import { customerService } from "@/shared/services";
+import { CustomerService } from "@/shared/services";
 import { useRouter } from "next/router";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
@@ -14,7 +14,7 @@ type dialogProps = {
 const DeleteDialog = ({ id, name, visible, setVisible }: dialogProps) => {
     const router = useRouter();
     const { showToast } = useContext(ToastContext);
-    const apiFetch = new customerService();
+    const apiFetch = new CustomerService();
     const { trans } = useTrans();
     const handleDelete = () => {
         console.log(id);

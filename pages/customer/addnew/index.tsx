@@ -1,7 +1,7 @@
 import React, { Suspense, useContext, useEffect, useState } from "react";
 import ManageLayout from "@/layout/manageLayout/layout";
 import { Button } from "primereact/button";
-import { customerService } from "@/shared/services/customerService";
+import { CustomerService } from "@/shared/services/CustomerService";
 import SkeletonTable from "../components/SkeletonTable";
 import { BreadcrumbContext } from "@/layout/context/BreadcrumbContext";
 import { BreadCrumb } from "primereact/breadcrumb";
@@ -17,7 +17,7 @@ type PageProps = {
 };
 
 const CustomerManage = (props: PageProps) => {
-    const apiFetch = new customerService();
+    const apiFetch = new CustomerService();
     const { trans } = useTrans();
     const { showToast } = useContext(ToastContext);
     const [isLoading, setIsLoading] = useState(false);
@@ -46,7 +46,7 @@ const CustomerManage = (props: PageProps) => {
 
     const handleSubmit = () => {
         // console.log(newCustomer);
-        const { isFilled, errorString } = checkFilled(newCustomer,trans);
+        const { isFilled, errorString } = checkFilled(newCustomer, trans);
         if (isFilled) {
             apiFetch.createCustomer("", newCustomer).then((resp: any) => {
                 console.log(resp);

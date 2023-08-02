@@ -9,12 +9,12 @@ import { BreadCrumb } from "primereact/breadcrumb";
 import { Dialog } from "primereact/dialog";
 import BookingHistory from "./components/BookingHistory";
 import useTrans from "@/shared/hooks/useTrans";
-import { customerService } from "@/shared/services";
+import { CustomerService } from "@/shared/services";
 import { ProgressSpinner } from "primereact/progressspinner";
 
 const DetailPage = () => {
     const router = useRouter();
-    const apiFetch = new customerService();
+    const apiFetch = new CustomerService();
     const { trans } = useTrans();
     const [visible, setVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(true);

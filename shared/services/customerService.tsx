@@ -1,7 +1,7 @@
 import { CRUDService } from "@/services/common/crudService";
 import { Customer } from "@/types/user";
 
-export class customerService extends CRUDService {
+export class CustomerService extends CRUDService {
     protected basePath = `/customer`;
     public async getCustomer<T>(url: string): Promise<T> {
         return await this.get<T>(url).then((resp: any) => resp.data);

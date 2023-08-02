@@ -1,6 +1,6 @@
 import React, { Suspense, useContext, useEffect, useState } from "react";
 import ManageLayout from "@/layout/manageLayout/layout";
-import { customerService } from "@/shared/services/customerService";
+import { CustomerService } from "@/shared/services/CustomerService";
 import SkeletonTable from "./components/SkeletonTable";
 import CustomerTable from "./components/CustomerTable";
 import { BreadcrumbContext } from "@/layout/context/BreadcrumbContext";
@@ -12,7 +12,7 @@ const CustomerManage = () => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
     const [customerData, setCustomerData] = useState(null);
-    const apiFetch = new customerService();
+    const apiFetch = new CustomerService();
     const { trans } = useTrans();
     const { Breadcrumbs, setBreadcrumbs, AppBreadcrumbProps } =
         useContext(BreadcrumbContext);

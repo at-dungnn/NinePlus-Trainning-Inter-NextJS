@@ -8,13 +8,13 @@ import { BreadcrumbContext } from "@/layout/context/BreadcrumbContext";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { ToastContext } from "@/layout/context/ToastContext";
 import useTrans from "@/shared/hooks/useTrans";
-import { customerService } from "@/shared/services";
+import { CustomerService } from "@/shared/services";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { checkFilled } from "@/shared/tools";
 
 const DetailPage = () => {
     const { showToast } = useContext(ToastContext);
-    const apiFetch = new customerService();
+    const apiFetch = new CustomerService();
     const { trans } = useTrans();
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
@@ -50,7 +50,7 @@ const DetailPage = () => {
         }
     }, [router.query.id, router.locale]);
     const submitHandle = () => {
-        const { isFilled, errorString } = checkFilled(customer,trans);
+        const { isFilled, errorString } = checkFilled(customer, trans);
         if (isFilled) {
             apiFetch.updateCustomer("", customer).then((resp: any) => {
                 if (resp?.succeeded) {
@@ -71,7 +71,7 @@ const DetailPage = () => {
         } else {
             showToast({
                 severity: "Warning",
-                summary: "Warning",
+                summary: trans.toast.warn,
                 detail: errorString || "Field missing or wrong format",
             });
         }

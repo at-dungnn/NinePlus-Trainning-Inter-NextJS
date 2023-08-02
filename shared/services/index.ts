@@ -1,2 +1,2 @@
-import { customerService } from './customerService';
-export { customerService };
+import { CustomerService } from './CustomerService';
+export { CustomerService };
