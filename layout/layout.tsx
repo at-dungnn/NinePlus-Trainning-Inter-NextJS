@@ -13,9 +13,10 @@ import AppFooter from "./AppFooter";
 import AppSidebar from "./AppSidebar";
 import AppTopbar from "./AppTopbar";
 import AppConfig from "./AppConfig";
-import { LayoutContext } from "./context/layoutcontext";
+import { LayoutContext } from "./context/LayoutContext";
 import PrimeReact from "primereact/api";
 import { ChildContainerProps, LayoutState, AppTopbarRef } from "@/types/types";
+import { ServicesProvicer } from "./context/servicesContext";
 
 const Layout = ({ children }: ChildContainerProps) => {
     const { layoutConfig, layoutState, setLayoutState } =
@@ -205,7 +206,7 @@ const Layout = ({ children }: ChildContainerProps) => {
                     <AppSidebar />
                 </div>
                 <div className="layout-main-container">
-                    <div className="layout-main">{children}</div>
+                    <div className="layout-main py-2 px-3 border-round-2xl shadow-2"><ServicesProvicer>{children}</ServicesProvicer></div>
                     <AppFooter />
                 </div>
                 <AppConfig />

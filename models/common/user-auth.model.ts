@@ -10,13 +10,12 @@ export interface UserAuthenticate {
     refreshToken: string;
     refreshTokenExpiryTime: Date;
     role: string;
-    token: string;
+    token?: string;
 }
 
 export interface SessionService {
     loggedInUser: UserAuthenticate | null;
     isLoggedIn: boolean;
-    setLoggedInUser: (userAuth: UserAuthenticate) => void;
     clearSession: () => void;
     saveSession: (userAuth: UserAuthenticate) => void;
 }

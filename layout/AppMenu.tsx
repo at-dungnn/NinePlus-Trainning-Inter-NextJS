@@ -2,8 +2,8 @@
 
 import React, { useContext } from "react";
 import AppMenuitem from "./AppMenuitem";
-import { LayoutContext } from "./context/layoutcontext";
-import { MenuProvider } from "./context/menucontext";
+import { LayoutContext } from "./context/LayoutContext";
+import { MenuProvider } from "./context/MenuContext";
 import Link from "next/link";
 import { AppMenuItem } from "@/types/types";
 
@@ -267,10 +267,26 @@ const AppMenu = () => {
         },
     ];
 
+    const manageApp: AppMenuItem[] = [
+        {
+            label: "MAIN MENU",
+            items: [
+              { label: "Dashboard", icon: "pi pi-fw pi-home", to: "/" },
+              { label: "Employee", icon: "pi pi-fw pi-home", to: "/employee" },
+              { label: "Service", icon: "pi pi-fw pi-home", to: "/service" },
+              { label: "Customer", icon: "pi pi-fw pi-home", to: "/customer" },
+              { label: "Booking", icon: "pi pi-fw pi-home", to: "/booking" },
+              { label: "User", icon: "pi pi-fw pi-home", to: "/user" },
+              { label: "Feedback", icon: "pi pi-fw pi-home", to: "/feedback" },
+              { label: "Setting", icon: "pi pi-fw pi-home", to: "/setting" },
+            ],
+          },
+      ];
+
     return (
         <MenuProvider>
             <ul className="layout-menu">
-                {model.map((item, i) => {
+                {manageApp.map((item, i) => {
                     return !item?.seperator ? (
                         <AppMenuitem
                             item={item}

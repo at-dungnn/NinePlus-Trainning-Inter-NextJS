@@ -9,7 +9,7 @@ import React, {
     useRef,
 } from "react";
 import { AppTopbarRef } from "@/types/types";
-import { LayoutContext } from "./context/layoutcontext";
+import { LayoutContext } from "./context/LayoutContext";
 
 const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
     const { layoutConfig, layoutState, onMenuToggle, showProfileSidebar } =

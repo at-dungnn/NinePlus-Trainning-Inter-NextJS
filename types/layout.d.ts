@@ -5,7 +5,9 @@ import React, {
     HTMLAttributeAnchorTarget,
     ReactNode,
 } from 'react';
+import { MenuItem } from 'primereact/menuitem';
 import { NextPage } from 'next';
+import { AppProps } from 'next/app';
 import { Demo } from './demo';
 import { Toast } from 'primereact/toast';
 
@@ -18,13 +20,15 @@ type childNode<P = {}> = NextPage<P> & {
     children?: ReactNode;
 };
 
+
 /* Breadcrumb Types */
 export interface AppBreadcrumbProps {
-    className?: string;
+    body?: MenuItem ;
+    to?:string;
 }
 
-export interface Breadcrumb {
-    labels?: string[];
+export interface Breadcrumb  {
+    labels?: MenuItem[];
     to?: string;
 }
 
@@ -66,6 +70,14 @@ export interface MenuContextProps {
     activeMenu: string;
     setActiveMenu: Dispatch<SetStateAction<string>>;
 }
+
+export interface BreadcrumbContextProps {
+    Breadcrumbs: Breadcrumb;
+    setBreadcrumbs:Dispatch<SetStateAction<Breadcrumb>>;
+    AppBreadcrumbProps: AppBreadcrumbProps;
+    setAppBreadcrumbProps:Dispatch<SetStateAction<AppBreadcrumbProps>>;
+}
+
 
 /* AppConfig Types */
 export interface AppConfigProps {

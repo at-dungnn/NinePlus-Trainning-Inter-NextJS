@@ -1,27 +1,28 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 import { useSessionService } from "./sessionService";
 import { useRouter } from "next/router";
+import globalRouter from "@/shared/tools/globalRouter";
 
 const apiClient: AxiosInstance = axios.create({
-    // baseURL: "http://your-api-url.com",
+    baseURL: "http://119.82.130.211:6060/api/v1",
+    transformRequest: [],
     headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: "application/json;multipart/form-data",
+        "Content-Type":
+            "application/json;multipart/form-data;application/x-www-form-urlencoded; charset=UTF-8",
         "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Methods": "GET",
         "Access-Control-Allow-Origin": "*",
     },
 });
-const sessionService = useSessionService();
-const router = useRouter();
-
+// TODO / change temp token to access token when successful testing api
 apiClient.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
+        const sessionService = useSessionService();
         const accessToken = sessionService.loggedInUser?.token;
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
         } else {
-            router.push("/login");
+            globalRouter.navigate.push("/auth/login");
         }
 
         return config;
@@ -30,4 +31,5 @@ apiClient.interceptors.request.use(
         return Promise.reject(error);
     }
 );
+
 export default apiClient;

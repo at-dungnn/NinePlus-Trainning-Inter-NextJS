@@ -4,7 +4,7 @@ import React, { useContext, useState } from "react";
 import { Button } from "primereact/button";
 import { useRouter } from "next/router";
 import AppConfig from "@/layout/AppConfig";
-import { LayoutContext } from "@/layout/context/layoutcontext";
+import { LayoutContext } from "@/layout/context/LayoutContext";
 import { classNames } from "primereact/utils";
 import { Page } from "@/types/types";
 

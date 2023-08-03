@@ -14,20 +14,20 @@ const Documentation = () => {
                         <h5>Getting Started</h5>
                         <p>
                             Sakai is an application template for React based on
-                            the popular{" "}
+                            the popular
                             <a
                                 href="https://nextjs.org/"
                                 className="font-medium hover:underline"
                             >
                                 NextJS
-                            </a>{" "}
-                            framework. To get started, clone the{" "}
+                            </a>
+                            framework. To get started, clone the
                             <a
                                 href="https://github.com/primefaces/sakai-react"
                                 className="font-medium hover:underline"
                             >
                                 repository
-                            </a>{" "}
+                            </a>
                             from GitHub and install the dependencies with npm or
                             yarn.
                         </p>
@@ -37,7 +37,7 @@ const Documentation = () => {
 
                         <p>
                             Next step is running the application using the start
-                            script and navigate to <b>http://localhost:3000/</b>{" "}
+                            script and navigate to <b>http://localhost:3000/</b>
                             to view the application. That is it, you may now
                             start with the development of your application using
                             the Sakai template.
@@ -112,10 +112,10 @@ const Documentation = () => {
 
                         <h5>Default Configuration</h5>
                         <p>
-                            Initial layout configuration can be defined at the{" "}
+                            Initial layout configuration can be defined at the
                             <span className="text-primary font-medium">
                                 layout/context/layoutcontext.js
-                            </span>{" "}
+                            </span>
                             file, this step is optional and only necessary when
                             customizing the defaults.
                         </p>
@@ -141,11 +141,11 @@ export const LayoutProvider = (props) => {
 
                         <h5>Menu</h5>
                         <p>
-                            Main menu is defined at{" "}
+                            Main menu is defined at
                             <span className="text-primary font-medium">
                                 AppMenu.js
-                            </span>{" "}
-                            file based on{" "}
+                            </span>
+                            file based on
                             <a
                                 href="https://www.primefaces.org/primereact/menumodel/"
                                 className="font-medium hover:underline"

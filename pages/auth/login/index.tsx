@@ -6,13 +6,12 @@ import React, { useContext, useState } from "react";
 import AppConfig from "@/layout/AppConfig";
 import { Button } from "primereact/button";
 import { Password } from "primereact/password";
-import { LayoutContext } from "@/layout/context/layoutcontext";
+import { LayoutContext } from "@/layout/context/LayoutContext";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
-import { Page } from "@/types/types";
-import "@/pages";
+import { Page } from "@/types/layout";
 
-const LoginPage: Page = () => {
+const LoginPage: Page<any> = ({ data }: { data: any }) => {
     const [password, setPassword] = useState("");
     const { layoutConfig } = useContext(LayoutContext);
 
@@ -132,7 +131,7 @@ const LoginPage: Page = () => {
     );
 };
 
-LoginPage.getLayout = function getLayout(page) {
+LoginPage.getLayout = function getLayout(page: React.ReactNode) {
     return (
         <React.Fragment>
             {page}

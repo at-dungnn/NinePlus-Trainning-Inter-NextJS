@@ -4,7 +4,9 @@
         "baseUrl": ".",
         "paths": {
             "@/*": ["./*"],
-            "@layout/*": ["./layout/*"]
+            "@layout/*": ["./layout/*"],
+            "@context/*": ["./layout/context/*"],
+            "@shared/*": ["./shared/*"]
         },
         "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
@@ -25,6 +27,12 @@
             }
         ]
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+    "include": [
+        "next-env.d.ts",
+        "**/*.ts",
+        "**/*.tsx",
+        ".next/types/**/*.ts",
+        "node_modules/primeflex/*"
+    ],
     "exclude": ["node_modules"]
 }

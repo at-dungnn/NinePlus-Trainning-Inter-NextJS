@@ -3,11 +3,10 @@
     "version": "9.1.2",
     "private": false,
     "scripts": {
-        "dev": "next dev",
+        "dev": "next dev -p 4200",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint",
-        "pretty": "prettier --write \"./**/*.{ts,tsx}\""
+        "lint": "next lint"
     },
     "dependencies": {
         "@types/node": "18.15.11",
@@ -27,7 +26,6 @@
         "typescript": "5.0.4"
     },
     "devDependencies": {
-        "prettier": "2.8.8",
         "sass": "^1.58.3"
     }
 }
