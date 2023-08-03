@@ -10,11 +10,10 @@ import { LayoutContext } from "@/layout/context/layoutcontext";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
 import { Page } from "@/types/types";
-import Link from "next/link";
+import "@/pages";
 
 const LoginPage: Page = () => {
     const [password, setPassword] = useState("");
-    // const [checked, setChecked] = useState(false);
     const { layoutConfig } = useContext(LayoutContext);
 
     const router = useRouter();
@@ -33,10 +32,10 @@ const LoginPage: Page = () => {
                     }}
                 >
                     <div
-                        className="w-full surface-card py-8 px-5 sm:px-8"
+                        className="w-full surface-card py-7 px-5 sm:px-8"
                         style={{ borderRadius: "53px" }}
                     >
-                        <div className="flex align-items-end justify-content-end mb-7 gap-5">
+                        <div className="flex align-items-end justify-content-end mb-6 gap-5">
                             <span className="font-semibold text-500 no-underline ml-2 pb-2 text-color-secondary">
                                 Don't you have account?
                             </span>
@@ -88,13 +87,13 @@ const LoginPage: Page = () => {
                             ></Password>
 
                             <div className="flex align-items-center justify-content-between mb-5 gap-5">
-                                <Link
+                                <a
                                     className="font-medium no-underline ml-2  cursor-pointer"
                                     style={{ color: "var(--primary-color)" }}
-                                    href="/auth/forgotPassword/ "
+                                    href="/auth/forgotPassword/index2 "
                                 >
                                     Forgot password?
-                                </Link>
+                                </a>
                             </div>
                             <Button
                                 label="Login"
@@ -103,27 +102,24 @@ const LoginPage: Page = () => {
                                 onClick={() => router.push("/")}
                             ></Button>
                         </div>
-                        <div className=" iconPi flex align-items-center mt-6 gap-3">
+                        <div className="flex align-items-center mt-5 gap-3">
                             <span className="font-semibold text-500 no-underline ml-2 text-right ">
                                 Login with
                             </span>
                             <i
                                 className="pi pi-facebook cursor-pointer"
-                                style={{ fontSize: "20px" }}
                                 onClick={() =>
                                     router.push("https://facebook.com")
                                 }
                             ></i>
                             <i
                                 className="pi pi-linkedin cursor-pointer"
-                                style={{ fontSize: "20px" }}
                                 onClick={() =>
                                     router.push("https://www.linkedin.com/")
                                 }
                             ></i>
                             <i
                                 className="pi pi-google"
-                                style={{ fontSize: "20px" }}
                                 onClick={() =>
                                     router.push("https://accounts.google.com")
                                 }
