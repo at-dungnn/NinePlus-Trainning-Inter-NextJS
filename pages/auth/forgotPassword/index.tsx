@@ -13,34 +13,23 @@ import { url } from "inspector";
 const ForgotPassword: Page = () => {
     const { layoutConfig } = useContext(LayoutContext);
     const router = useRouter();
-    // const containerClassName = classNames(
-    //     "surface-ground bg-cover md:bg-contain bg-no-repeat flex align-items-center justify-content-end min-h-screen min-w-screen overflow-hidden",
-    //     { "p-input-filled": layoutConfig.inputStyle === "filled" }
-    // );
     const containerClassName = classNames(
-        " flex align-items-center justify-content-end min-h-screen min-w-screen overflow-hidden",
+        "surface-ground bg-cover md:bg-contain bg-no-repeat flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden",
         { "p-input-filled": layoutConfig.inputStyle === "filled" }
     );
 
     return (
-        <div
-            className={containerClassName}
-            style={{
-                backgroundImage: "url(/demo/images/access/BgLogin.png)",
-            }}
-        >
-            <div className="flex flex-column align-items-end justify-content-center">
+        <div className={containerClassName}>
+            <div className="flex flex-column align-items-center justify-content-center">
                 <div
                     style={{
                         borderRadius: "56px",
                         padding: "0.3rem",
-                        // maxWidth: "75%",
-                        // height: "100%",
                     }}
                 >
                     <div
-                        className="w-full surface-card  py-8 px-5 sm:px-8"
-                        // style={{ borderRadius: "53px" }}
+                        className="w-8 surface-card  py-8 px-5 sm:px-8"
+                        style={{ borderRadius: "53px" }}
                     >
                         <div className="flex align-items-end justify-content-end mb-7 gap-5">
                             <span className="font-semibold text-500 no-underline ml-2 pb-2 text-color-secondary">
@@ -49,7 +38,7 @@ const ForgotPassword: Page = () => {
                             <Button
                                 rounded
                                 label="SIGN UP"
-                                className="w-3 p-2 font-semibold text-sm align-items-center text-color-secondary bg-white border-black-alpha-20 border-2"
+                                className="w-2 p-2 font-semibold text-sm align-items-center text-color-secondary bg-white border-black-alpha-20 border-2"
                                 onClick={() => router.push("/auth/register/")}
                             ></Button>
                         </div>
@@ -58,7 +47,7 @@ const ForgotPassword: Page = () => {
                                 src="/demo/images/access/iconKey.png"
                                 alt=""
                                 className="mb-4 mt-3 cursor-pointer flex justify-content-center  "
-                                width="10%"
+                                width="13%"
                             />
                         </div>
 
@@ -106,33 +95,27 @@ const ForgotPassword: Page = () => {
                             <span className="font-semibold text-500 no-underline ml-2 text-right ">
                                 Login with
                             </span>
-                            <img
-                                src="/demo/images/access/iconFb.png"
-                                alt=""
-                                className="mb-3 mt-3 cursor-pointer"
-                                width="24px"
+                            <i
+                                className="pi pi-facebook cursor-pointer"
+                                style={{ fontSize: "20px" }}
                                 onClick={() =>
                                     router.push("https://facebook.com")
                                 }
-                            />
-                            <img
-                                src="/demo/images/access/iconLinkedin.png"
-                                alt=""
-                                className="mb-3 mt-3 cursor-pointer"
-                                width="24px"
+                            ></i>
+                            <i
+                                className="pi pi-linkedin cursor-pointer"
+                                style={{ fontSize: "20px" }}
                                 onClick={() =>
                                     router.push("https://www.linkedin.com/")
                                 }
-                            />
-                            <img
-                                src="/demo/images/access/iconGoogle.png"
-                                alt=""
-                                className="mb-3 mt-3 cursor-pointer"
-                                width="29px"
+                            ></i>
+                            <i
+                                className="pi pi-google"
+                                style={{ fontSize: "20px" }}
                                 onClick={() =>
                                     router.push("https://accounts.google.com")
                                 }
-                            />
+                            ></i>
                         </div>
                     </div>
                 </div>
