@@ -1,7 +1,7 @@
 import React, { Suspense, useContext, useEffect, useState } from "react";
 import ManageLayout from "@/layout/manageLayout/layout";
 import { Button } from "primereact/button";
-import { CustomerService } from "@/shared/services/CustomerService";
+import { CustomerService } from "@/shared/services";
 import SkeletonTable from "../components/SkeletonTable";
 import { BreadcrumbContext } from "@/layout/context/BreadcrumbContext";
 import { BreadCrumb } from "primereact/breadcrumb";
