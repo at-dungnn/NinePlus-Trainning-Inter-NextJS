@@ -41,3 +41,44 @@
   .fc-daygrid-event-dot{
     background:rgb(112, 112, 211)!important ;
   }
+  .tooltip-inner{
+    background: #30a306;
+    color: rgb(241, 241, 241);
+    width: 150px;
+    border-radius: 3px;
+    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+    padding: 10px;
+    text-align: center;   
+    margin-bottom: 0.5em;
+    
+  }
+  .tooltip .tooltip-arrow, .popper .popper__arrow {
+    border-color: #30a306;
+    
+}
+.popper, .tooltip {
+  position: absolute;
+  z-index: 9999;
+  text-align: center;
+}
+.popper[x-placement^="top"] .popper__arrow, .tooltip[x-placement^="top"] .tooltip-arrow {
+  border-width: 5px 5px 0 5px;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  bottom: 1px;
+  left: calc(50% - 5px);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.popper .popper__arrow, .tooltip .tooltip-arrow {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  position: absolute;
+ 
+  
+}
+.tooltip-arrow{
+  margin-bottom: 0.5rem;
+}

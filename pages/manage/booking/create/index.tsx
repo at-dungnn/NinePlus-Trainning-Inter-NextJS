@@ -11,11 +11,11 @@ import { BookingType } from "@/types/user";
 
 const initState: BookingType = {
     id: "",
-    name: "",
-    phone: "",
+    customerName: "",
+    phoneNumber: "",
     bookingDate: "",
-    from: "",
-    to: "",
+    fromTime: "",
+    totime: "",
     service: "",
     note: "",
 };

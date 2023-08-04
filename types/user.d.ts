@@ -10,12 +10,13 @@ export type Customer = {
 };
 
 export type BookingType = {
-    id: string;
-    name: string;
-    phone: string;
+    id?: string;
+    customerName: string;
+    phoneNumber: string;
     bookingDate: string;
-    from: string;
-    to: string;
-    service: string;
+    fromTime: string;
+    totime: string;
+    status?: string;
+    service?: string;
     note: string;
 };

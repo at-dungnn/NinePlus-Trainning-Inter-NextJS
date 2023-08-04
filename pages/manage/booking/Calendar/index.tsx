@@ -10,32 +10,34 @@ import { useRouter } from "next/router";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { Suspense, useContext, useEffect, useState } from "react";
 import { formatDateCalendar } from "@/shared/tools/formatDate";
+import Tooltip from "tooltip.js";
+
 const data: any[] = [
     {
         id: "NPLUS0001",
-        name: "Nhat Huy",
-        phone: "0905124124",
+        customerName: "Nhat Huy",
+        phoneNumber: "0905124124",
         bookingDate: "14/07/2023",
-        from: "14:00 15/07/2023",
-        to: "16:00 15/07/2023 ",
+        fromTime: "14:00 15/07/2023",
+        totime: "16:00 15/07/2023 ",
         status: "Inprogress",
     },
     {
         id: "BC123",
-        name: "Minh Tri",
-        phone: "0905124124",
+        customerName: "Minh Tri",
+        phoneNumber: "0905124124",
         bookingDate: "14/07/2023",
-        from: "14:00 16/07/2023",
-        to: "16:00 16/07/2023 ",
+        fromTime: "14:00 16/07/2023",
+        totime: "16:00 16/07/2023 ",
         status: "Done",
     },
     {
         id: "NPLUS0002",
-        name: "Nhat Huy",
-        phone: "0905124124",
+        customerName: "Nhat Huy",
+        phoneNumber: "0905124124",
         bookingDate: "14/07/2023",
-        from: "14:00 17/07/2023",
-        to: "17:00 17/07/2023 ",
+        fromTime: "14:00 17/07/2023",
+        totime: "17:00 17/07/2023 ",
         status: "Waiting",
     },
 ];
@@ -44,6 +46,7 @@ type EventType = {
     title: string;
     start: string;
     end: string;
+    description?: string;
     resourceId: string;
 };
 
@@ -51,9 +54,14 @@ const inititalEventData = () => {
     const event: any[] = [];
     data.map((booking) => {
         event.push({
-            title: booking?.name,
-            start: formatDateCalendar(booking?.from),
-            end: formatDateCalendar(booking?.to),
+            title: booking?.customerName,
+            start: formatDateCalendar(booking?.fromTime),
+            end: formatDateCalendar(booking?.totime),
+            description: `${
+                booking.customerName
+            } booking at ${formatDateCalendar(
+                booking?.fromTime
+            )} to ${formatDateCalendar(booking?.totime)}`,
             resourceId: booking?.id,
         });
     });
@@ -64,8 +72,8 @@ const inititalResourceData = () => {
     data.map((booking) => {
         resource.push({
             id: booking?.id,
-            title: booking?.name,
-            eventColor: "#0f41f5",
+            title: booking?.customerName,
+            eventColor: "#" + Math.floor(Math.random() * 16777215).toString(16),
         });
     });
     return resource;
@@ -109,6 +117,12 @@ const CalendarPage = () => {
             <div className="m-2 ml-5 p-5 bg-white  border-round-2xl relative w-auto ">
                 <FullCalendar
                     themeSystem=""
+                    eventClick={(e) => {
+                        console.log(e.event._def.resourceIds);
+                        router.push(
+                            `/manage/booking/${e.event._def.resourceIds}`
+                        );
+                    }}
                     schedulerLicenseKey="CC-Attribution-NonCommercial-NoDerivatives"
                     plugins={[
                         resourceTimelinePlugin,
@@ -125,6 +139,15 @@ const CalendarPage = () => {
                     }}
                     resources={resourceData}
                     events={eventData}
+                    eventDidMount={(info) => {
+                        var tooltip = new Tooltip(info.el, {
+                            title: info.event.extendedProps.description,
+                            placement: "top",
+                            trigger: "hover",
+                            container: "body",
+                            html: true,
+                        });
+                    }}
                 />
             </div>
         </>

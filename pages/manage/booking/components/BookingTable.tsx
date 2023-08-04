@@ -10,35 +10,36 @@ import { DataTable, DataTableFilterMeta } from "primereact/datatable";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { Tooltip } from "primereact/tooltip";
+import { classNames } from "primereact/utils";
 import { useState } from "react";
 
 export const data: any[] = [
     {
         id: "NPLUS0001",
-        name: "Nhat Huy",
-        phone: "0905124124",
-        bookingDate: "14/07/2023",
-        from: "14:00 15/07/2023",
-        to: "16:00 15/07/2023 ",
-        status: "Inprogress",
+        customerName: "Nhat Huy",
+        phoneNumber: "0905124124",
+        bookingDate: "2023-08-19T00:00:00",
+        fromTime: "2023-08-28T00:00:00",
+        totime: "2023-08-28T02:00:00",
+        status: 2,
     },
     {
         id: "BC123",
-        name: "Minh Tri",
-        phone: "0905124124",
-        bookingDate: "14/07/2023",
-        from: "14:00 16/07/2023",
-        to: "16:00 16/07/2023 ",
-        status: "Done",
+        customerName: "Minh Tri",
+        phoneNumber: "0905124124",
+        bookingDate: "2023-08-19T00:00:00",
+        fromTime: "2023-08-28T00:00:00",
+        totime: "2023-08-28T02:00:00",
+        status: 3,
     },
     {
         id: "NPLUS0002",
-        name: "Nhat Huy",
-        phone: "0905124124",
-        bookingDate: "14/07/2023",
-        from: "14:00 17/07/2023",
-        to: "17:00 17/07/2023 ",
-        status: "Waiting",
+        customerName: "Nhat Huy",
+        phoneNumber: "0905124124",
+        bookingDate: "2023-08-19T00:00:00",
+        fromTime: "2023-08-28T00:00:00",
+        totime: "2023-08-28T02:00:00",
+        status: 1,
     },
 ];
 
@@ -120,7 +121,7 @@ export const renderHeader = ({
                 </span>
             </span>
             <div className="w-auto flex">
-                <Link href={"/customer/addnew"}>
+                <Link href={"/manage/booking/Calendar"}>
                     <Button
                         severity="help"
                         outlined
@@ -150,28 +151,40 @@ export const renderHeader = ({
         </div>
     );
 };
-const StatusBox = ({ status }: { status: string }) => {
-    const [bookingStatus, setBookingStatus] = useState<string>(status);
+const StatusBox = ({ status }: { status: number }) => {
+    const [bookingStatus, setBookingStatus] = useState<string>(String(status));
     const option = [
-        { status: "Inprogress", code: "IN" },
-        { status: "Waiting", code: "W" },
-        { status: "Done", code: "D" },
+        { status: "Waiting", code: "1" },
+        { status: "Inporgress", code: "2" },
+        { status: "Done", code: "3" },
     ];
+    const changeData = (e: any) => {};
+    const dropwDownContainer = classNames({
+        "border-yellow-500 bg-yellow-500": bookingStatus === "2",
+        "border-gray-400 bg-gray-400": bookingStatus === "1",
+        "border-green-600 bg-green-600": bookingStatus === "3",
+    });
     if (status) {
         return (
             <div className=" flex justify-content-center ">
                 <Dropdown
                     value={bookingStatus}
-                    onChange={(e) => setBookingStatus(e.value)}
+                    onChange={(e) => {
+                        console.log(e.value);
+                        setBookingStatus(e.value);
+                        changeData(e);
+                    }}
+                    editable={false}
                     defaultValue={status}
                     options={option}
                     optionLabel="status"
-                    optionValue="status"
-                    className="border-yellow-700 text-yellow-900 "
+                    optionValue="code"
+                    className={dropwDownContainer}
                     style={{
                         width: "10rem",
                         textAlign: "center",
                         color: "white",
+                        borderWidth: "3px",
                     }}
                 />
             </div>
@@ -179,7 +192,13 @@ const StatusBox = ({ status }: { status: string }) => {
     }
     return <p>Loading...</p>;
 };
-const RouteDetailID = ({ id }: { id: string }) => {
+const RouteDetailID = ({
+    id,
+    customerName,
+}: {
+    id: string;
+    customerName: string;
+}) => {
     const router = useRouter();
     return (
         <>
@@ -195,7 +214,13 @@ const RouteDetailID = ({ id }: { id: string }) => {
         </>
     );
 };
-const RouteDetailName = ({ name }: { name: string }) => {
+const RouteDetailName = ({
+    id,
+    customerName,
+}: {
+    id: string;
+    customerName: string;
+}) => {
     const router = useRouter();
     return (
         <>
@@ -203,16 +228,16 @@ const RouteDetailName = ({ name }: { name: string }) => {
                 locale={router.locale === "en" ? "en" : "vi"}
                 href={{
                     pathname: `/manage/booking/[slug]`,
-                    query: { slug: [name] },
+                    query: { slug: [id, customerName] },
                 }}
             >
-                <p className="text-black-alpha-90">{name}</p>
+                <p className="text-black-alpha-90">{customerName}</p>
             </Link>
         </>
     );
 };
-const FromTo = ({ from, to }: { from: string; to: string }) => {
-    return <p>{formatFromTo(from, to)}</p>;
+const FromTo = ({ fromTime, totime }: { fromTime: string; totime: string }) => {
+    return <p>{formatFromTo(fromTime, totime)}</p>;
 };
 const BookingTable = () => {
     const { trans } = useTrans();
@@ -248,10 +273,11 @@ const BookingTable = () => {
             header={headers}
             globalFilterFields={[
                 "id",
-                "name",
-                "phone",
+                "customerName",
+                "phoneNumber",
                 "bookingDate",
-                "from_to",
+                "fromTime",
+                "totime",
                 "status",
             ]}
             loading={loading}
@@ -268,14 +294,14 @@ const BookingTable = () => {
                 style={{ width: "10rem" }}
             />
             <Column
-                field="name"
+                field="customerName"
                 sortable
                 body={RouteDetailName}
                 header={trans.customer.form.name}
                 style={{ width: "15rem" }}
             />
             <Column
-                field="phone"
+                field="phoneNumber"
                 sortable
                 header={trans.customer.form.phone_label}
                 style={{ width: "15rem" }}
@@ -287,7 +313,7 @@ const BookingTable = () => {
                 style={{ width: "20rem" }}
             />
             <Column
-                field="from,to"
+                field="fromTime,totime"
                 sortable
                 body={FromTo}
                 header={"From-To Time"}
@@ -299,7 +325,7 @@ const BookingTable = () => {
                 style={{ width: "13rem" }}
             />
             <Column
-                field="id,name"
+                field="id,customerName"
                 body={renderIcon}
                 style={{ width: "12rem" }}
             />

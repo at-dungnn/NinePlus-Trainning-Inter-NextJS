@@ -154,7 +154,7 @@ const DetailPage = () => {
                 <h3
                     className="absolute right-0 top-0 mt-5 mr-5 cursor-pointer"
                     onClick={() => {
-                        router.push("/manage/booking");
+                        router.back();
                     }}
                 >
                     X
