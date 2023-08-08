@@ -2,7 +2,7 @@ import {
     formatDate,
     splitDateTime,
     splitDate,
-    formatDate2,
+  
     formatDateCalendar,
     formatFromTo,
 } from "./formatDate";
@@ -12,7 +12,7 @@ export {
     splitDateTime,
     checkFilled,
     splitDate,
-    formatDate2,
+ 
     formatDateCalendar,
     formatFromTo,
 };

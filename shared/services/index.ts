@@ -1,2 +1,3 @@
+import { BookingService } from './BookingService';
 import { CustomerService } from './CustomerService';
-export { CustomerService };
+export { CustomerService, BookingService };

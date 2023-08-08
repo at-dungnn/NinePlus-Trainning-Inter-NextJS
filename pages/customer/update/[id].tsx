@@ -26,12 +26,8 @@ const DetailPage = () => {
         dateOfBirth: "",
         totalMoney: 0,
     });
-    const {
-        Breadcrumbs,
-        setBreadcrumbs,
-        AppBreadcrumbProps,
-        setAppBreadcrumbProps,
-    } = useContext(BreadcrumbContext);
+    const { Breadcrumbs, setBreadcrumbs, AppBreadcrumbProps } =
+        useContext(BreadcrumbContext);
 
     useEffect(() => {
         setBreadcrumbs(() => ({
@@ -70,7 +66,7 @@ const DetailPage = () => {
             });
         } else {
             showToast({
-                severity: "Warning",
+                severity: "warn",
                 summary: trans.toast.warn,
                 detail: errorString || "Field missing or wrong format",
             });

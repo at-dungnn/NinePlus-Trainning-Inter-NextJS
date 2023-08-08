@@ -30,43 +30,36 @@ export function splitDate(str: any): Date {
         return formatDate(dateParse[0]);
     }
 }
-// only format for hh:mm dd/mm/yyyy
-export function formatDate2(str: string) {
-    if (!str) {
-        return new Date();
-    } else {
-        const dateParse = str?.split(" ");
-        const dateSplit = dateParse[1]?.split("/");
-        const data = new Date(
-            dateSplit[2] +
-                "/" +
-                dateSplit[1] +
-                "/" +
-                dateSplit[0] +
-                " " +
-                dateParse[0]
-        );
-
-        return data;
-    }
-}
-//2023-07-11 15:30
+//2023-07-11T15:30
+//
 export function formatDateCalendar(str: string): string {
     if (!str) {
         return new Date().toString();
     } else {
-        const dateParse = str?.split(" ");
-        const dateSplit = dateParse[1]?.split("/");
-        return `${dateSplit[2]}-${dateSplit[1]}-${dateSplit[0]} ${dateParse[0]}`;
+        const parseStr = str.split("T");
+
+        return `${parseStr[1].split(".")[0]}`;
     }
 }
 
 export function formatFromTo(from: string, to: string) {
-    const dateParse1 = from?.split(" ");
+    const dateParse1 = from?.split("T");
 
-    const dateParse2 = to?.split(" ");
+    const dateParse2 = to?.split("T");
 
-    const data = `${dateParse1[0]}-${dateParse2[0]} ${dateParse1[1]}`;
+    const data = `${dateParse1[1].split(".")[0]}-${
+        dateParse2[1].split(".")[0]
+    } ${dateParse1[0]}`;
 
     return data;
+}
+export function formatBookingDate(str: string) {
+    const dateParse = str?.split("T");
+    return dateParse[0];
+}
+
+export function formatBookingTime(str: string) {
+    const dateParse = str?.split("T");
+    const timeParse = dateParse[1].split(".");
+    return `${timeParse[0]} ${dateParse[0]}`;
 }

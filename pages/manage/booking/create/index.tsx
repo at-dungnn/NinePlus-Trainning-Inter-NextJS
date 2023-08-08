@@ -4,45 +4,79 @@ import React, { Suspense, useContext, useEffect, useState } from "react";
 import { BreadcrumbContext } from "@/layout/context/BreadcrumbContext";
 import useTrans from "@/shared/hooks/useTrans";
 import { BreadCrumb } from "primereact/breadcrumb";
-import { classNames } from "primereact/utils";
 import BookingForm from "@/shared/components/BookingForm";
 import { Button } from "primereact/button";
 import { BookingType } from "@/types/user";
-
-const initState: BookingType = {
-    id: "",
-    customerName: "",
-    phoneNumber: "",
-    bookingDate: "",
-    fromTime: "",
-    totime: "",
-    service: "",
-    note: "",
-};
+import {
+    BookingService,
+    ServicesManageService,
+} from "@/shared/services/BookingService";
+import { ProgressSpinner } from "primereact/progressspinner";
+import { checkFilled } from "@/shared/tools";
+import { ToastContext } from "@/layout/context/ToastContext";
 
 const CreateBooking = () => {
+    const { showToast } = useContext(ToastContext);
+    const apiFetch = new BookingService();
+    const serviceFetch = new ServicesManageService();
     const router = useRouter();
-    const [booking, setBooking] = useState<BookingType>(initState);
+    const [service, setService] = useState();
+    const [booking, setBooking] = useState<BookingType>({
+        customerId: "",
+        serviceId: [""],
+        bookingDate: String(new Date().toISOString()),
+        fromTime: String(new Date().toISOString()),
+        toTime: String(new Date().toISOString()),
+    });
     const { trans } = useTrans();
-    const [isLoading, setIsLoading] = useState(false);
-    const {
-        Breadcrumbs,
-        setBreadcrumbs,
-        AppBreadcrumbProps,
-        setAppBreadcrumbProps,
-    } = useContext(BreadcrumbContext);
+    const [isLoading, setIsLoading] = useState(true);
+    const { Breadcrumbs, setBreadcrumbs, AppBreadcrumbProps } =
+        useContext(BreadcrumbContext);
     useEffect(() => {
-        // setCustomer(details[0]);
-        console.log(router.query.slug);
+        serviceFetch.getServices("").then((resp: any) => {
+            setService(resp);
+            setIsLoading(false);
+        });
 
         setBreadcrumbs({
             labels: [{ label: "Booking" }, { label: "Create" }],
         });
     }, [router.query.slug, router.locale]);
-    if (isLoading === true) return <></>;
     const handleSubmit = (e: any) => {
         console.log(booking);
+        const { isFilled, errorString } = checkFilled(booking, trans);
+        if (isFilled) {
+            apiFetch.createBooking("", booking).then((resp: any) => {
+                if (resp?.succeeded) {
+                    showToast({
+                        severity: "success",
+                        summary: trans.toast.success,
+                        detail: trans.toast.detail.add,
+                    });
+                    router.push("/manage/booking");
+                } else {
+                    showToast({
+                        severity: "error",
+                        summary: trans.toast.error,
+                        detail: `${resp?.messages}`,
+                    });
+                }
+            });
+        } else {
+            showToast({
+                severity: "warn",
+                summary: trans.toast.warn,
+                detail: errorString || "Field missing or wrong format",
+            });
+        }
     };
+    if (isLoading === true)
+        return (
+            <div className=" flex justify-content-center align-items-center h-screen ">
+                <ProgressSpinner />
+            </div>
+        );
+
     return (
         <>
             <Suspense fallback="Loading...">
@@ -60,7 +94,12 @@ const CreateBooking = () => {
             <div className="m-2 ml-5 p-5 bg-white  border-round-2xl relative h-full grid ">
                 <h1 className="col-3 text-4xl font-bold">Create Booking</h1>
                 <div className="col-7    mt-3">
-                    <BookingForm booking={booking} setBooking={setBooking}>
+                    <BookingForm
+                        booking={booking}
+                        setBooking={setBooking}
+                        disabled={false}
+                        serviceList={service}
+                    >
                         <div className="mt-5">
                             <Button
                                 label={"Create Booking"}

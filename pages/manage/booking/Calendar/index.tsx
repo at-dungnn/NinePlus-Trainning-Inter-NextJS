@@ -11,36 +11,8 @@ import { BreadCrumb } from "primereact/breadcrumb";
 import { Suspense, useContext, useEffect, useState } from "react";
 import { formatDateCalendar } from "@/shared/tools/formatDate";
 import Tooltip from "tooltip.js";
-
-const data: any[] = [
-    {
-        id: "NPLUS0001",
-        customerName: "Nhat Huy",
-        phoneNumber: "0905124124",
-        bookingDate: "14/07/2023",
-        fromTime: "14:00 15/07/2023",
-        totime: "16:00 15/07/2023 ",
-        status: "Inprogress",
-    },
-    {
-        id: "BC123",
-        customerName: "Minh Tri",
-        phoneNumber: "0905124124",
-        bookingDate: "14/07/2023",
-        fromTime: "14:00 16/07/2023",
-        totime: "16:00 16/07/2023 ",
-        status: "Done",
-    },
-    {
-        id: "NPLUS0002",
-        customerName: "Nhat Huy",
-        phoneNumber: "0905124124",
-        bookingDate: "14/07/2023",
-        fromTime: "14:00 17/07/2023",
-        totime: "17:00 17/07/2023 ",
-        status: "Waiting",
-    },
-];
+import { BookingService } from "@/shared/services";
+const apiFetch = new BookingService();
 
 type EventType = {
     title: string;
@@ -50,26 +22,26 @@ type EventType = {
     resourceId: string;
 };
 
-const inititalEventData = () => {
+const inititalEventData = (resp: any) => {
     const event: any[] = [];
-    data.map((booking) => {
+    resp.map((booking: any) => {
         event.push({
             title: booking?.customerName,
-            start: formatDateCalendar(booking?.fromTime),
-            end: formatDateCalendar(booking?.totime),
+            start: booking?.fromTime,
+            end: booking?.toTime,
             description: `${
                 booking.customerName
             } booking at ${formatDateCalendar(
                 booking?.fromTime
-            )} to ${formatDateCalendar(booking?.totime)}`,
+            )} to ${formatDateCalendar(booking?.toTime)}`,
             resourceId: booking?.id,
         });
     });
     return event;
 };
-const inititalResourceData = () => {
+const inititalResourceData = (resp: any) => {
     const resource: any[] = [];
-    data.map((booking) => {
+    resp.map((booking: any) => {
         resource.push({
             id: booking?.id,
             title: booking?.customerName,
@@ -82,10 +54,10 @@ const inititalResourceData = () => {
 const CalendarPage = () => {
     const router = useRouter();
     const { trans } = useTrans();
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const [resourceData, setResourceData] = useState(inititalResourceData);
-    const [eventData, setEventData] = useState<EventType[]>(inititalEventData);
+    const [resourceData, setResourceData] = useState<any>();
+    const [eventData, setEventData] = useState<EventType[]>();
 
     const {
         Breadcrumbs,
@@ -97,6 +69,11 @@ const CalendarPage = () => {
         setBreadcrumbs({
             labels: [{ label: "Booking" }, { label: "Calendar" }],
         });
+        apiFetch.getBooking("").then((resp: any) => {
+            setResourceData(inititalResourceData(resp));
+            setEventData(inititalEventData(resp));
+        });
+        setIsLoading(false);
     }, [router.query.slug, router.locale]);
 
     if (isLoading) return "Loading...";
@@ -139,15 +116,7 @@ const CalendarPage = () => {
                     }}
                     resources={resourceData}
                     events={eventData}
-                    eventDidMount={(info) => {
-                        var tooltip = new Tooltip(info.el, {
-                            title: info.event.extendedProps.description,
-                            placement: "top",
-                            trigger: "hover",
-                            container: "body",
-                            html: true,
-                        });
-                    }}
+                    eventDidMount={(info) => {}}
                 />
             </div>
         </>

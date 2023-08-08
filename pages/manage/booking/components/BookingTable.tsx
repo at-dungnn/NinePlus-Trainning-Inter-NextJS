@@ -1,6 +1,7 @@
 import DeleteDialog from "@/pages/customer/components/DeleteDialog";
 import useTrans from "@/shared/hooks/useTrans";
-import { formatFromTo } from "@/shared/tools/formatDate";
+import { BookingService } from "@/shared/services";
+import { formatFromTo, formatBookingDate } from "@/shared/tools/formatDate";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FilterMatchMode } from "primereact/api";
@@ -11,37 +12,8 @@ import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { Tooltip } from "primereact/tooltip";
 import { classNames } from "primereact/utils";
-import { useState } from "react";
-
-export const data: any[] = [
-    {
-        id: "NPLUS0001",
-        customerName: "Nhat Huy",
-        phoneNumber: "0905124124",
-        bookingDate: "2023-08-19T00:00:00",
-        fromTime: "2023-08-28T00:00:00",
-        totime: "2023-08-28T02:00:00",
-        status: 2,
-    },
-    {
-        id: "BC123",
-        customerName: "Minh Tri",
-        phoneNumber: "0905124124",
-        bookingDate: "2023-08-19T00:00:00",
-        fromTime: "2023-08-28T00:00:00",
-        totime: "2023-08-28T02:00:00",
-        status: 3,
-    },
-    {
-        id: "NPLUS0002",
-        customerName: "Nhat Huy",
-        phoneNumber: "0905124124",
-        bookingDate: "2023-08-19T00:00:00",
-        fromTime: "2023-08-28T00:00:00",
-        totime: "2023-08-28T02:00:00",
-        status: 1,
-    },
-];
+import { useEffect, useState } from "react";
+const apiFetch = new BookingService();
 
 const renderIcon = ({
     id,
@@ -228,7 +200,7 @@ const RouteDetailName = ({
                 locale={router.locale === "en" ? "en" : "vi"}
                 href={{
                     pathname: `/manage/booking/[slug]`,
-                    query: { slug: [id, customerName] },
+                    query: { slug: id },
                 }}
             >
                 <p className="text-black-alpha-90">{customerName}</p>
@@ -236,11 +208,14 @@ const RouteDetailName = ({
         </>
     );
 };
-const FromTo = ({ fromTime, totime }: { fromTime: string; totime: string }) => {
-    return <p>{formatFromTo(fromTime, totime)}</p>;
+const FromTo = ({ fromTime, toTime }: { fromTime: string; toTime: string }) => {
+    return <p>{formatFromTo(fromTime, toTime)}</p>;
 };
+
 const BookingTable = () => {
     const { trans } = useTrans();
+    const router = useRouter();
+    const [bookingData, setBookingData] = useState();
     const [filters, setFilters] = useState<DataTableFilterMeta>({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     });
@@ -260,12 +235,18 @@ const BookingTable = () => {
         onGlobalFilterChange,
         trans,
     });
+    useEffect(() => {
+        apiFetch.getBooking("").then((resp: any) => {
+            console.log(resp);
+            setBookingData(resp);
+        });
+    }, [router.locale]);
 
     return (
         <DataTable
-            value={data}
+            value={bookingData}
             scrollable
-            scrollHeight="55vh"
+            scrollHeight="60vh"
             paginator
             removableSort
             filters={filters}
@@ -277,7 +258,7 @@ const BookingTable = () => {
                 "phoneNumber",
                 "bookingDate",
                 "fromTime",
-                "totime",
+                "toTime",
                 "status",
             ]}
             loading={loading}
@@ -309,11 +290,14 @@ const BookingTable = () => {
             <Column
                 field="bookingDate"
                 sortable
+                body={({ bookingDate }: { bookingDate: string }) => {
+                    return <p>{formatBookingDate(bookingDate)}</p>;
+                }}
                 header={"Booking Date"}
                 style={{ width: "20rem" }}
             />
             <Column
-                field="fromTime,totime"
+                field="fromTime,toTime"
                 sortable
                 body={FromTo}
                 header={"From-To Time"}

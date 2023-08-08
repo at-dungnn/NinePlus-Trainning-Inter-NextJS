@@ -4,45 +4,82 @@ import React, { Suspense, useContext, useEffect, useState } from "react";
 import { BreadcrumbContext } from "@/layout/context/BreadcrumbContext";
 import useTrans from "@/shared/hooks/useTrans";
 import { BreadCrumb } from "primereact/breadcrumb";
-import { classNames } from "primereact/utils";
 import BookingForm from "@/shared/components/BookingForm";
 import { Button } from "primereact/button";
 import { BookingType } from "@/types/user";
-
-const data: BookingType = {
-    id: "A0005",
-    name: "Donnete",
-    phone: "090321512",
-    bookingDate: "12/05/2023",
-    from: "14:00 13/05/2023",
-    to: "16:00 13/05/2023",
-    service: "DV001-Massage",
-    note: "Note description",
-};
+import { BookingService } from "@/shared/services";
+import { ProgressSpinner } from "primereact/progressspinner";
+import { checkFilled } from "@/shared/tools";
+import { ToastContext } from "@/layout/context/ToastContext";
+import { ServicesManageService } from "@/shared/services/BookingService";
+import { mapService } from "@/shared/components/BookingForm/tools";
 
 const UpdateBooking = () => {
+    const { showToast } = useContext(ToastContext);
+    const apiFetch = new BookingService();
+    const serviceFetch = new ServicesManageService();
     const router = useRouter();
-    const [booking, setBooking] = useState<BookingType>(data);
+    const [booking, setBooking] = useState<BookingType>({
+        customerName: "",
+        phoneNumber: "",
+        bookingDate: "",
+        fromTime: "",
+        toTime: "",
+    });
+    const [service, setService] = useState();
     const { trans } = useTrans();
-    const [isLoading, setIsLoading] = useState(false);
-    const {
-        Breadcrumbs,
-        setBreadcrumbs,
-        AppBreadcrumbProps,
-        setAppBreadcrumbProps,
-    } = useContext(BreadcrumbContext);
+    const [isLoading, setIsLoading] = useState(true);
+    const { Breadcrumbs, setBreadcrumbs, AppBreadcrumbProps } =
+        useContext(BreadcrumbContext);
     useEffect(() => {
-        // setCustomer(details[0]);
-        console.log(router.query.slug);
-
+        if (router.query.id) {
+            apiFetch.getBooking(`${router.query.id}`).then((resp: any) => {
+                setBooking({ ...resp, serviceId: mapService(resp.services) });
+                serviceFetch.getServices("").then((resp: any) => {
+                    setService(resp);
+                    setIsLoading(false);
+                });
+            });
+        }
         setBreadcrumbs({
             labels: [{ label: "Booking" }, { label: "Create" }],
         });
-    }, [router.query.slug, router.locale]);
-    if (isLoading === true) return <></>;
+    }, [router.query.id, router.locale]);
+
     const handleSubmit = (e: any) => {
         console.log(booking);
+        const { isFilled, errorString } = checkFilled(booking, trans);
+        if (isFilled) {
+            apiFetch.updateBooking("", booking).then((resp: any) => {
+                if (resp?.succeeded) {
+                    showToast({
+                        severity: "success",
+                        summary: trans.toast.success,
+                        detail: trans.toast.detail.update,
+                    });
+                    router.push("/manage/booking");
+                } else {
+                    showToast({
+                        severity: "error",
+                        summary: trans.toast.error,
+                        detail: `${resp?.messages}`,
+                    });
+                }
+            });
+        } else {
+            showToast({
+                severity: "warn",
+                summary: trans.toast.warn,
+                detail: errorString || "Field missing or wrong format",
+            });
+        }
     };
+    if (isLoading === true)
+        return (
+            <div className=" flex justify-content-center align-items-center h-screen ">
+                <ProgressSpinner />
+            </div>
+        );
     return (
         <>
             <Suspense fallback="Loading...">
@@ -58,9 +95,14 @@ const UpdateBooking = () => {
                 />
             </Suspense>
             <div className="m-2 ml-5 p-5 bg-white  border-round-2xl relative h-full grid ">
-                <h1 className="col-3 text-4xl font-bold">Create Booking</h1>
+                <h1 className="col-3 text-4xl font-bold">Update Booking</h1>
                 <div className="col-7    mt-3">
-                    <BookingForm booking={booking} setBooking={setBooking}>
+                    <BookingForm
+                        booking={booking}
+                        setBooking={setBooking}
+                        disabled={true}
+                        serviceList={service}
+                    >
                         <div className="mt-5">
                             <Button
                                 label={"Update"}

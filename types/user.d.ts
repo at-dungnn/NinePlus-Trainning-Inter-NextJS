@@ -8,15 +8,22 @@ export type Customer = {
     username?: string;
     password?: string;
 };
-
+type ServiceType = {
+    id: string | number;
+    name: string;
+    price: number;
+    serviceTime: number;
+};
 export type BookingType = {
     id?: string;
-    customerName: string;
-    phoneNumber: string;
+    customerId?: string;
+    customerName?: string;
+    phoneNumber?: string;
     bookingDate: string;
     fromTime: string;
-    totime: string;
+    toTime: string;
     status?: string;
-    service?: string;
-    note: string;
+    services?: ServiceType[];
+    note?: string;
+    serviceId?: string[];
 };
