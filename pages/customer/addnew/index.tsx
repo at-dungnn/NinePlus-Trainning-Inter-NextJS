@@ -28,6 +28,7 @@ const CustomerManage = (props: PageProps) => {
         customerName: "",
         phoneNumber: "",
         totalMoney: 0,
+        dateOfBirth: String(new Date().toISOString()),
     });
     useEffect(() => {
         setBreadcrumbs((BreadCrumbs) => {

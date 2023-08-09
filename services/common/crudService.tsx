@@ -18,8 +18,8 @@ export abstract class CRUDService {
             });
     }
 
-    protected list<T>(url: string, data?: any): Promise<T[]> {
-        return this.httpClient
+    protected async list<T>(url: string, data?: any): Promise<T[]> {
+        return await this.httpClient
             .get<T[]>(`${this.basePath}/${url}`, data)
             .then((response: AxiosResponse<T[]>) => {
                 return response.data;

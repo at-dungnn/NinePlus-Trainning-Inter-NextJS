@@ -107,7 +107,7 @@ const DetailPage = () => {
                                     "641px": "100vw",
                                 }}
                             >
-                                <BookingHistory />
+                                <BookingHistory id={router.query.id} />
                                 <div className="h-full">
                                     <Button
                                         label={

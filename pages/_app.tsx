@@ -2,6 +2,7 @@ import type { AppProps } from "next/app";
 import type { Page } from "@/types/types";
 import React from "react";
 import { LayoutProvider } from "@/layout/context/LayoutContext";
+import { AppContextProvider } from "@/shared/context";
 import Layout from "@/layout/layout";
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
@@ -26,21 +27,23 @@ export default function MyApp({
     globalRouter.navigate = router;
     if (Component.getLayout) {
         return (
-            <LayoutProvider>
-                <ErrorBoundary fallback={<ErrorPage />}>
-                    {Component.getLayout(
-                        <ErrorBoundary fallback={<ErrorPage />}>
-                            <Component {...pageProps} />
-                        </ErrorBoundary>
-                    )}
-                </ErrorBoundary>
-            </LayoutProvider>
+            <AppContextProvider>
+                <LayoutProvider>
+                    <ErrorBoundary fallback={<ErrorPage />}>
+                        {Component.getLayout(
+                            <ErrorBoundary fallback={<ErrorPage />}>
+                                <Component {...pageProps} />
+                            </ErrorBoundary>
+                        )}
+                    </ErrorBoundary>
+                </LayoutProvider>
+            </AppContextProvider>
         );
     } else {
         return (
             <LayoutProvider>
                 <Layout>
-                    <ErrorBoundary fallback={"error"}>
+                    <ErrorBoundary fallback={<ErrorPage />}>
                         <Component {...pageProps} />
                     </ErrorBoundary>
                 </Layout>
