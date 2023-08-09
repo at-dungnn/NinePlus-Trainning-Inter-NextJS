@@ -10,7 +10,9 @@ import { useRouter } from "next/router";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { Suspense, useContext, useEffect, useState } from "react";
 import { formatDateCalendar } from "@/shared/tools/formatDate";
+import interactionPlugin from "@fullcalendar/interaction";
 import Tooltip from "tooltip.js";
+import allLocales from "@fullcalendar/core/locales-all";
 import { BookingService } from "@/shared/services";
 const apiFetch = new BookingService();
 
@@ -67,7 +69,10 @@ const CalendarPage = () => {
     } = useContext(BreadcrumbContext);
     useEffect(() => {
         setBreadcrumbs({
-            labels: [{ label: "Booking" }, { label: "Calendar" }],
+            labels: [
+                { label: trans.breadcrump.booking.title },
+                { label: trans.booking.calendar },
+            ],
         });
         apiFetch.getBooking("").then((resp: any) => {
             setResourceData(inititalResourceData(resp));
@@ -94,6 +99,8 @@ const CalendarPage = () => {
             <div className="m-2 ml-5 p-5 bg-white  border-round-2xl relative w-auto ">
                 <FullCalendar
                     themeSystem=""
+                    locales={allLocales}
+                    locale={router.locale}
                     eventClick={(e) => {
                         console.log(e.event._def.resourceIds);
                         router.push(
@@ -101,7 +108,9 @@ const CalendarPage = () => {
                         );
                     }}
                     schedulerLicenseKey="CC-Attribution-NonCommercial-NoDerivatives"
+                    editable={true}
                     plugins={[
+                        interactionPlugin,
                         resourceTimelinePlugin,
                         dayGridPlugin,
                         timeGridPlugin,

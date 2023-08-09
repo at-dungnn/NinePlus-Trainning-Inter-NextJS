@@ -1,4 +1,4 @@
-import DeleteDialog from "@/pages/customer/components/DeleteDialog";
+import DeleteDialog from "./DeleteDialog";
 import useTrans from "@/shared/hooks/useTrans";
 import { BookingService } from "@/shared/services";
 import { formatFromTo, formatBookingDate } from "@/shared/tools/formatDate";
@@ -17,10 +17,10 @@ const apiFetch = new BookingService();
 
 const renderIcon = ({
     id,
-    name,
+    customerName,
 }: {
     id: string;
-    name: string;
+    customerName: string;
 }): React.ReactNode => {
     const { trans } = useTrans();
     const router = useRouter();
@@ -59,7 +59,7 @@ const renderIcon = ({
             />
             <DeleteDialog
                 id={id}
-                name={name}
+                name={customerName}
                 visible={visible}
                 setVisible={setVisible}
             />
@@ -79,7 +79,7 @@ export const renderHeader = ({
                     <InputText
                         value={globalFilterValue}
                         onChange={onGlobalFilterChange}
-                        placeholder="Global Search"
+                        placeholder={trans.input.global}
                     />
                 </span>
                 <span className="p-input-icon-left ml-3">
@@ -103,7 +103,9 @@ export const renderHeader = ({
                             className="pi pi-calendar pr-2 font-bold "
                             style={{ fontSize: "1.5rem" }}
                         />
-                        <span className="font-bold">Calendar</span>
+                        <span className="font-bold">
+                            {trans.booking.calendar}
+                        </span>
                     </Button>
                 </Link>
                 <Link href={"/manage/booking/create"}>
@@ -116,7 +118,9 @@ export const renderHeader = ({
                             className="pi pi-plus-circle pr-2 font-bold pi-lg "
                             style={{ fontSize: "1.5rem" }}
                         />
-                        <span className="font-bold">Create Booking</span>
+                        <span className="font-bold">
+                            {trans.booking.create}
+                        </span>
                     </Button>
                 </Link>
             </div>
@@ -125,10 +129,11 @@ export const renderHeader = ({
 };
 const StatusBox = ({ status }: { status: number }) => {
     const [bookingStatus, setBookingStatus] = useState<string>(String(status));
+    const { trans } = useTrans();
     const option = [
-        { status: "Waiting", code: "1" },
-        { status: "Inporgress", code: "2" },
-        { status: "Done", code: "3" },
+        { status: trans.booking.status.waiting, code: "1" },
+        { status: trans.booking.status.inprog, code: "2" },
+        { status: trans.booking.status.done, code: "3" },
     ];
     const changeData = (e: any) => {};
     const dropwDownContainer = classNames({
@@ -141,6 +146,7 @@ const StatusBox = ({ status }: { status: number }) => {
             <div className=" flex justify-content-center ">
                 <Dropdown
                     value={bookingStatus}
+                    disabled
                     onChange={(e) => {
                         console.log(e.value);
                         setBookingStatus(e.value);
@@ -220,7 +226,6 @@ const BookingTable = () => {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     });
     const [globalFilterValue, setGlobalFilterValue] = useState<string>("");
-    const [loading, setLoading] = useState<boolean>(false);
     const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         let _filters = { ...filters };
@@ -261,8 +266,7 @@ const BookingTable = () => {
                 "toTime",
                 "status",
             ]}
-            loading={loading}
-            emptyMessage="No booking found."
+            emptyMessage={trans.booking.empty}
             rows={5}
             rowsPerPageOptions={[5, 15, 25]}
             style={{ height: "55vh" }}
@@ -293,14 +297,14 @@ const BookingTable = () => {
                 body={({ bookingDate }: { bookingDate: string }) => {
                     return <p>{formatBookingDate(bookingDate)}</p>;
                 }}
-                header={"Booking Date"}
+                header={trans.booking.bookDate}
                 style={{ width: "20rem" }}
             />
             <Column
                 field="fromTime,toTime"
                 sortable
                 body={FromTo}
-                header={"From-To Time"}
+                header={trans.booking.fromTo}
                 style={{ width: "15rem" }}
             />
             <Column

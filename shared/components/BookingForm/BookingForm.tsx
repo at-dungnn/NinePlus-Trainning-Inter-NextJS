@@ -6,9 +6,10 @@ import { addLocale } from "primereact/api";
 import { Calendar } from "primereact/calendar";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { MultiSelect } from "primereact/multiselect";
 import { mapService } from "./tools";
+import { CustomerService } from "@/shared/services";
 addLocale("vi", {
     firstDayOfWeek: 1,
     dayNames: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
@@ -53,8 +54,10 @@ const BookingForm = ({
     setBooking,
     disabled,
 }: any) => {
+    const customerFetch = new CustomerService();
     const { trans } = useTrans();
     const [service, setService] = useState<any>(mapService(booking.services));
+    const [customerName, setCustomerName] = useState<string>();
     const router = useRouter();
     const handleChange = useCallback(
         (value: any, key: string) => {
@@ -72,14 +75,7 @@ const BookingForm = ({
             } else if (key === "fromTime" || key === "toTime") {
                 setBooking({
                     ...booking,
-                    [key]: `${value.getFullYear()}-${String(
-                        value.getMonth() + 1
-                    ).padStart(2, "0")}-${String(value.getDate()).padStart(
-                        2,
-                        "0"
-                    )}T${String(value.getHours()).padStart(2, "0")}:${String(
-                        value.getMinutes()
-                    ).padStart(2, "0")}`,
+                    [key]: String(new Date(value).toISOString()),
                 });
             } else if (key === "serviceId") {
                 setBooking({
@@ -95,6 +91,15 @@ const BookingForm = ({
         },
         [booking]
     );
+    useEffect(() => {
+        customerFetch.getCustomer(`${booking.customerId}`).then((resp: any) => {
+            if (resp !== null) {
+                setCustomerName(resp?.customerName);
+            } else {
+                setCustomerName("");
+            }
+        });
+    }, [booking.customerId]);
     return (
         <>
             {disabled ? (
@@ -112,7 +117,7 @@ const BookingForm = ({
                     </div>
                     <div className="mt-3">
                         <h5>
-                            Customer Name
+                            {trans.booking.form.name}
                             <span className="ml-2 text-orange-700">*</span>:
                         </h5>
                         <InputText
@@ -140,23 +145,38 @@ const BookingForm = ({
                     </div>
                 </>
             ) : (
-                <div className="mt-3">
-                    <h5>
-                        Customer ID <span className="text-orange-700">*</span>:
-                    </h5>
-                    <InputText
-                        value={booking?.customerId}
-                        onChange={(e) =>
-                            handleChange(e.target.value, "customerId")
-                        }
-                        style={{ width: "100%" }}
-                    />
-                </div>
+                <>
+                    <div className="mt-3">
+                        <h5>
+                            {trans.booking.form.id}
+                            <span className="text-orange-700">*</span>:
+                        </h5>
+                        <InputText
+                            value={booking?.customerId}
+                            onChange={(e) =>
+                                handleChange(e.target.value, "customerId")
+                            }
+                            style={{ width: "100%" }}
+                        />
+                    </div>
+                    <div className="mt-3">
+                        <h5>
+                            {trans.booking.form.name}
+                            <span className="ml-2 text-orange-700">*</span>:
+                        </h5>
+                        <InputText
+                            value={customerName}
+                            disabled
+                            style={{ width: "100%" }}
+                        />
+                    </div>
+                </>
             )}
 
             <div className="mt-3">
                 <h5>
-                    Booking Date <span className="ml-2 text-orange-700">*</span>
+                    {trans.booking.bookDate}
+                    <span className="ml-2 text-orange-700">*</span>
                 </h5>
                 <Calendar
                     dateFormat=" dd/mm/yy"
@@ -172,7 +192,7 @@ const BookingForm = ({
             </div>
             <div className="mt-3">
                 <h5>
-                    Services
+                    {trans.booking.service}
                     <span className="ml-2 text-orange-700">*</span>:
                 </h5>
                 <MultiSelect
@@ -185,19 +205,19 @@ const BookingForm = ({
                     options={serviceList}
                     optionLabel="name"
                     optionValue="id"
-                    placeholder="Select Services"
+                    placeholder={trans.booking.serviceph}
                     maxSelectedLabels={3}
                     className="w-full "
                 />
             </div>
             <div className=" lg:flex justify-content-between w-full">
-                <div className="mt-3" style={{ width: "40%" }}>
+                <div className="mt-3" style={{ width: "50%" }}>
                     <h5>
-                        From Time
+                        {trans.booking.form.from}
                         <span className="ml-2 text-orange-700">*</span>
                     </h5>
                     <Calendar
-                        className="w-full "
+                        className="w-full"
                         dateFormat=" dd/mm/yy"
                         locale={router.locale}
                         value={new Date(booking?.fromTime)}
@@ -208,12 +228,13 @@ const BookingForm = ({
                             handleChange(e.target.value, "fromTime")
                         }
                         showIcon
-                        style={{ width: "40%" }}
+                        style={{ width: "50%" }}
                     />
                 </div>
-                <div className="mt-3 " style={{ width: "40%" }}>
+                <div className="mt-3 " style={{ width: "50%" }}>
                     <h5>
-                        To Time <span className="ml-2 text-orange-700">*</span>
+                        {trans.booking.form.to}{" "}
+                        <span className="ml-2 text-orange-700">*</span>
                     </h5>
                     <Calendar
                         dateFormat=" dd/mm/yy"
@@ -225,13 +246,13 @@ const BookingForm = ({
                         hourFormat="24"
                         onChange={(e) => handleChange(e.target.value, "toTime")}
                         showIcon
-                        style={{ width: "40%" }}
+                        style={{ width: "50%" }}
                     />
                 </div>
             </div>
             <div className="mt-3">
                 <h5>
-                    Note
+                    {trans.booking.note}
                     <span className="ml-2 text-orange-700">*</span>:
                 </h5>
                 <InputTextarea

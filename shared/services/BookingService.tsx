@@ -21,8 +21,11 @@ export class BookingService extends CRUDService {
 }
 
 export class ServicesManageService extends CRUDService {
-    protected basePath = `/service`;
+    protected basePath = `service`;
     public async getServices<T>(url: string): Promise<T> {
         return await this.get<T>(url).then((resp: any) => resp.data);
     }
 }
+
+
+

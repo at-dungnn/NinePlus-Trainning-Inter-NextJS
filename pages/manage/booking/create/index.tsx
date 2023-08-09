@@ -39,7 +39,10 @@ const CreateBooking = () => {
         });
 
         setBreadcrumbs({
-            labels: [{ label: "Booking" }, { label: "Create" }],
+            labels: [
+                { label: trans.breadcrump.booking.title },
+                { label: trans.booking.create },
+            ],
         });
     }, [router.query.slug, router.locale]);
     const handleSubmit = (e: any) => {
@@ -92,7 +95,9 @@ const CreateBooking = () => {
                 />
             </Suspense>
             <div className="m-2 ml-5 p-5 bg-white  border-round-2xl relative h-full grid ">
-                <h1 className="col-3 text-4xl font-bold">Create Booking</h1>
+                <h1 className="col-3 text-4xl font-bold">
+                    {trans.booking.create}
+                </h1>
                 <div className="col-7    mt-3">
                     <BookingForm
                         booking={booking}
@@ -102,7 +107,7 @@ const CreateBooking = () => {
                     >
                         <div className="mt-5">
                             <Button
-                                label={"Create Booking"}
+                                label={trans.booking.button.add}
                                 onClick={handleSubmit}
                                 className="text-xl font-light"
                             />

@@ -6,6 +6,12 @@ export default {
             detail: 'Detail',
             update: 'Update',
         },
+        booking: {
+            title: 'Booking',
+        },
+    },
+    input: {
+        global: 'Global Search',
     },
     toolstip: { detail: 'Detail', update: 'Update', delete: 'Delete' },
     customer: {
@@ -32,6 +38,35 @@ export default {
             total_label: 'Total Money',
             username: 'username',
             password: 'password',
+        },
+    },
+    booking: {
+        delete: 'Are you sure you want to delete booking ',
+        empty: 'No booking found',
+        bookDate: 'Booking Date ',
+        fromTo: 'From-To Time',
+        create: 'Create Booking',
+        update: 'Update Booking',
+        calendar: 'Calendar',
+        from: 'From',
+        to: 'To',
+        service: 'Service',
+        note: 'Note',
+        serviceph: 'Select Service',
+        button: {
+            add: 'Add Booking',
+        },
+        status: {
+            title: 'Status ',
+            done: 'Done',
+            waiting: 'Waiting',
+            inprog: 'Inporgress',
+        },
+        form: {
+            name: 'Customer Name',
+            id: 'Customer ID ',
+            from: 'From Time ',
+            to: 'To Time ',
         },
     },
     delete_title: 'Confirm',

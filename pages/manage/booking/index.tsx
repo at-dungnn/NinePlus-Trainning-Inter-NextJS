@@ -23,7 +23,7 @@ const BookingManagePage = () => {
     useEffect(() => {
         setBreadcrumbs({
             labels: [
-                { label: "Booking" },
+                { label: trans.breadcrump.booking.title },
                 { label: trans.breadcrump.customer.list },
             ],
             to: "/booking",

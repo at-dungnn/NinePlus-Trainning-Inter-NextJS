@@ -41,8 +41,12 @@ const UpdateBooking = () => {
                 });
             });
         }
+
         setBreadcrumbs({
-            labels: [{ label: "Booking" }, { label: "Create" }],
+            labels: [
+                { label: trans.breadcrump.booking.title },
+                { label: trans.breadcrump.customer.update },
+            ],
         });
     }, [router.query.id, router.locale]);
 
@@ -95,7 +99,9 @@ const UpdateBooking = () => {
                 />
             </Suspense>
             <div className="m-2 ml-5 p-5 bg-white  border-round-2xl relative h-full grid ">
-                <h1 className="col-3 text-4xl font-bold">Update Booking</h1>
+                <h1 className="col-3 text-4xl font-bold">
+                    {trans.booking.update}
+                </h1>
                 <div className="col-7    mt-3">
                     <BookingForm
                         booking={booking}
@@ -105,12 +111,12 @@ const UpdateBooking = () => {
                     >
                         <div className="mt-5">
                             <Button
-                                label={"Update"}
+                                label={trans.customer.update.save_label}
                                 onClick={handleSubmit}
                                 className="text-xl font-light"
                             />
                             <Button
-                                label={"Cancel"}
+                                label={trans.customer.update.cancel_label}
                                 outlined
                                 onClick={() => {
                                     router.push("/manage/booking");

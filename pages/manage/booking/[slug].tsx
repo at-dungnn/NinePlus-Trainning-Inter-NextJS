@@ -10,31 +10,6 @@ import { ProgressSpinner } from "primereact/progressspinner";
 import { BookingService } from "@/shared/services";
 import { formatBookingTime } from "@/shared/tools/formatDate";
 
-const booking: BookingType = {
-    id: "A0005",
-    customerName: "Donnete",
-    phoneNumber: "090321512",
-    bookingDate: "12/05/2023",
-    status: "Waiting",
-    fromTime: "14:00 13/05/2023",
-    toTime: "16:00 13/05/2023",
-    services: [
-        {
-            id: 1,
-            name: "đắp mặt nạ",
-            price: 200,
-            serviceTime: 3,
-        },
-        {
-            id: 2,
-            name: "massage mắt",
-            price: 300,
-            serviceTime: 5,
-        },
-    ],
-    note: "Note description",
-};
-
 const DetailPage = () => {
     const apiFetch = new BookingService();
     const router = useRouter();
@@ -57,7 +32,6 @@ const DetailPage = () => {
     useEffect(() => {
         console.log(router.query.slug);
         if (router.query.slug) {
-            // const id = (router.query.slug as any).split(",");
             apiFetch.getBooking(`${router.query.slug}`).then((resp: any) => {
                 console.log(resp);
                 setBooking(resp);
@@ -66,8 +40,8 @@ const DetailPage = () => {
         }
         setBreadcrumbs({
             labels: [
-                { label: "Booking" },
-                { label: "Details" },
+                { label: trans.breadcrump.booking.title },
+                { label: trans.breadcrump.customer.detail },
                 { label: `${router.query.slug}` },
             ],
         });
@@ -106,7 +80,7 @@ const DetailPage = () => {
                             <div className="lg:flex justify-content-between w-10">
                                 <div className="w-20rem">
                                     <h3>
-                                        Booking Date{" "}
+                                        {trans.booking.bookDate}
                                         <i className="pi pi-calendar text-2xl" />
                                     </h3>
                                     <p className="text-2xl ml-5 font-medium ">
@@ -115,7 +89,7 @@ const DetailPage = () => {
                                 </div>
                                 <div className="w-20rem">
                                     <h3>
-                                        Status{" "}
+                                        {trans.booking.status.title}
                                         <i
                                             className={classNames(
                                                 "pi text-2xl ml-2",
@@ -126,7 +100,7 @@ const DetailPage = () => {
                                                     "pi-hourglass text-bluegray-500 pi-spin":
                                                         (booking.status as any) ===
                                                         1,
-                                                    "pi-replay text-yellow-500 pi-spin":
+                                                    "text-yellow-500  pi-spin pi-spinner":
                                                         (booking.status as any) ===
                                                         2,
                                                 }
@@ -150,29 +124,29 @@ const DetailPage = () => {
                                         )}
                                     >
                                         {(booking.status as any) === 3
-                                            ? "Done"
+                                            ? trans.booking.status.done
                                             : (booking.status as any) === 2
-                                            ? "Inprogress"
-                                            : "Waiting"}
+                                            ? trans.booking.status.inprog
+                                            : trans.booking.status.waiting}
                                     </p>
                                 </div>
                             </div>
                             <div className="lg:flex justify-content-between w-10 mt-5">
                                 <div className="w-20rem">
-                                    <h3>From</h3>
+                                    <h3>{trans.booking.from}</h3>
                                     <p className="text-2xl ml-5 font-medium ">
                                         {formatBookingTime(booking.fromTime)}
                                     </p>
                                 </div>
                                 <div className="w-20rem">
-                                    <h3>To</h3>
+                                    <h3>{trans.booking.to}</h3>
                                     <p className="text-2xl ml-5 font-medium ">
                                         {formatBookingTime(booking.toTime)}
                                     </p>
                                 </div>
                             </div>
                             <div className=" mt-5">
-                                <h3>Service</h3>
+                                <h3>{trans.booking.service}</h3>
                                 <div className="text-2xl ml-5 font-medium ">
                                     {booking.services?.map((e: ServiceType) => {
                                         return (
@@ -184,7 +158,7 @@ const DetailPage = () => {
                                 </div>
                             </div>
                             <div className="mt-4 h-20rem">
-                                <h3>Note</h3>
+                                <h3>{trans.booking.note}</h3>
                                 <p className="text-2xl ml-5 font-medium ">
                                     {booking.note}
                                 </p>
