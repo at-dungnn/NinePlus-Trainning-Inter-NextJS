@@ -10,6 +10,7 @@ import { LayoutContext } from "@/layout/context/LayoutContext";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
 import { Page } from "@/types/layout";
+import Link from "next/link";
 
 const LoginPage: Page<any> = ({ data }: { data: any }) => {
     const [password, setPassword] = useState("");
@@ -86,13 +87,13 @@ const LoginPage: Page<any> = ({ data }: { data: any }) => {
                             ></Password>
 
                             <div className="flex align-items-center justify-content-between mb-5 gap-5">
-                                <a
+                                <Link
                                     className="font-medium no-underline ml-2  cursor-pointer"
                                     style={{ color: "var(--primary-color)" }}
-                                    href="/auth/forgotPassword/index2 "
+                                    href="/auth/forgotPassword/ "
                                 >
                                     Forgot password?
-                                </a>
+                                </Link>
                             </div>
                             <Button
                                 label="Login"
