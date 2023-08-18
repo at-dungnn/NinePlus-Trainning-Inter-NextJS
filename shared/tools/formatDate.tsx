@@ -2,7 +2,7 @@
 export function formatDate(str: any) {
     const dateParse = str?.split("-");
     const data = new Date(
-        dateParse[1] + "/" + dateParse[2] + "/" + dateParse[0]
+        dateParse[1] + "/" + dateParse[2] + "/" + dateParse[0],
     );
     return data;
 }
@@ -30,8 +30,24 @@ export function splitDate(str: any): Date {
         return formatDate(dateParse[0]);
     }
 }
+
+export function splitFormatDate(str: any): Date | null {
+    if (!str) {
+        return null;
+    } else {
+        const dateParse = str?.split("T");
+        return formatDate(dateParse[0]);
+    }
+}
+export function formatDateTime(str: any): Date | null {
+    if (!str) {
+        return null;
+    } else {
+        return new Date(str);
+    }
+}
 //2023-07-11T15:30
-//
+
 export function formatDateCalendar(str: string): string {
     if (!str) {
         return new Date().toString();

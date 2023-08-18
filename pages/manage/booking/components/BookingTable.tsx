@@ -1,3 +1,4 @@
+import { ToastContext } from "@/layout/context/ToastContext";
 import DeleteDialog from "./DeleteDialog";
 import useTrans from "@/shared/hooks/useTrans";
 import { BookingService } from "@/shared/services";
@@ -7,12 +8,20 @@ import { useRouter } from "next/router";
 import { FilterMatchMode } from "primereact/api";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
-import { DataTable, DataTableFilterMeta } from "primereact/datatable";
-import { Dropdown } from "primereact/dropdown";
-import { InputText } from "primereact/inputtext";
+import {
+    DataTable,
+    DataTableFilterEvent,
+    DataTableFilterMeta,
+    DataTablePageEvent,
+    DataTableSortEvent,
+} from "primereact/datatable";
 import { Tooltip } from "primereact/tooltip";
-import { classNames } from "primereact/utils";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { BookingDataType, FilterType } from "@/types/user";
+import { StatusBox } from "./StatusBox";
+import { TableHeader } from "./TableHeader";
+import { FilterBar } from "./FilterBar";
+import { checkFilled } from "@/shared/tools";
 const apiFetch = new BookingService();
 
 const renderIcon = ({
@@ -66,110 +75,6 @@ const renderIcon = ({
         </span>
     );
 };
-export const renderHeader = ({
-    globalFilterValue,
-    onGlobalFilterChange,
-    trans,
-}: any) => {
-    return (
-        <div className="flex justify-content-between">
-            <span>
-                <span className="p-input-icon-left">
-                    <i className="pi pi-search" />
-                    <InputText
-                        value={globalFilterValue}
-                        onChange={onGlobalFilterChange}
-                        placeholder={trans.input.global}
-                    />
-                </span>
-                <span className="p-input-icon-left ml-3">
-                    <i className="pi pi-filter " />
-                    <InputText
-                        value={globalFilterValue}
-                        onChange={onGlobalFilterChange}
-                        placeholder="Filter"
-                        style={{ width: "9rem" }}
-                    />
-                </span>
-            </span>
-            <div className="w-auto flex">
-                <Link href={"/manage/booking/Calendar"}>
-                    <Button
-                        severity="help"
-                        outlined
-                        className="w-12 h-4rem m-auto text-lg"
-                    >
-                        <i
-                            className="pi pi-calendar pr-2 font-bold "
-                            style={{ fontSize: "1.5rem" }}
-                        />
-                        <span className="font-bold">
-                            {trans.booking.calendar}
-                        </span>
-                    </Button>
-                </Link>
-                <Link href={"/manage/booking/create"}>
-                    <Button
-                        severity="help"
-                        outlined
-                        className="w-10 h-4rem text-lg ml-3"
-                    >
-                        <i
-                            className="pi pi-plus-circle pr-2 font-bold pi-lg "
-                            style={{ fontSize: "1.5rem" }}
-                        />
-                        <span className="font-bold">
-                            {trans.booking.create}
-                        </span>
-                    </Button>
-                </Link>
-            </div>
-        </div>
-    );
-};
-const StatusBox = ({ status }: { status: number }) => {
-    const [bookingStatus, setBookingStatus] = useState<string>(String(status));
-    const { trans } = useTrans();
-    const option = [
-        { status: trans.booking.status.waiting, code: "1" },
-        { status: trans.booking.status.inprog, code: "2" },
-        { status: trans.booking.status.done, code: "3" },
-    ];
-    const changeData = (e: any) => {};
-    const dropwDownContainer = classNames({
-        "border-yellow-500 bg-yellow-500": bookingStatus === "2",
-        "border-gray-400 bg-gray-400": bookingStatus === "1",
-        "border-green-600 bg-green-600": bookingStatus === "3",
-    });
-    if (status) {
-        return (
-            <div className=" flex justify-content-center ">
-                <Dropdown
-                    value={bookingStatus}
-                    disabled
-                    onChange={(e) => {
-                        console.log(e.value);
-                        setBookingStatus(e.value);
-                        changeData(e);
-                    }}
-                    editable={false}
-                    defaultValue={status}
-                    options={option}
-                    optionLabel="status"
-                    optionValue="code"
-                    className={dropwDownContainer}
-                    style={{
-                        width: "10rem",
-                        textAlign: "center",
-                        color: "white",
-                        borderWidth: "3px",
-                    }}
-                />
-            </div>
-        );
-    }
-    return <p>Loading...</p>;
-};
 const RouteDetailID = ({
     id,
     customerName,
@@ -221,11 +126,29 @@ const FromTo = ({ fromTime, toTime }: { fromTime: string; toTime: string }) => {
 const BookingTable = () => {
     const { trans } = useTrans();
     const router = useRouter();
-    const [bookingData, setBookingData] = useState();
+
     const [filters, setFilters] = useState<DataTableFilterMeta>({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     });
+
+    const [loading, setLoading] = useState<boolean>(true);
+    const [bookingData, setBookingData] = useState<BookingDataType>();
+    const [totalRecords, setTotalRecords] = useState<number>();
+    const [lazyState, setLazyState] = useState<any>({
+        first: 0,
+        rows: 5,
+        page: 0,
+        sortField: null,
+        sortOrder: null,
+    });
+
     const [globalFilterValue, setGlobalFilterValue] = useState<string>("");
+    const [filterBar, setFilterBar] = useState<FilterType>({
+        BookingDate: "",
+        FromTime: "",
+        ToTime: "",
+        Status: "",
+    });
     const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         let _filters = { ...filters };
@@ -235,89 +158,184 @@ const BookingTable = () => {
         setFilters(_filters);
         setGlobalFilterValue(value);
     };
-    const headers = renderHeader({
+    const headers = TableHeader({
         globalFilterValue,
         onGlobalFilterChange,
         trans,
     });
-    useEffect(() => {
-        apiFetch.getBooking("").then((resp: any) => {
-            console.log(resp);
+    const refreshData = () => {
+        const url = `Keyword=${globalFilterValue}&PageNumber=${
+            lazyState.page + 1
+        }&PageSize=${lazyState.rows}&IsExport=false`;
+        apiFetch.getBooking("?" + url).then((resp: any) => {
             setBookingData(resp);
+            setTotalRecords(resp.totalCount);
+            setLoading(false);
         });
-    }, [router.locale]);
+    };
+    const fetchData = () => {
+        console.log(lazyState);
+        const url = `Keyword=${globalFilterValue}&PageNumber=${
+            lazyState.page + 1
+        }&PageSize=${lazyState.rows}&IsExport=false`;
+        if (lazyState.sortField == null) {
+            if (
+                filterBar.BookingDate != "" ||
+                filterBar.FromTime != "" ||
+                filterBar.ToTime != "" ||
+                filterBar.Status != ""
+            ) {
+                apiFetch
+                    .getBooking(
+                        `?BookingDate=${filterBar?.BookingDate}&FromTime=${filterBar?.FromTime}&ToTime=${filterBar?.ToTime}&Status=${filterBar?.Status}&` +
+                            url,
+                    )
+                    .then((resp: any) => {
+                        setBookingData(resp);
+                        setTotalRecords(resp.totalCount);
+                        setLoading(false);
+                    });
+            } else {
+                apiFetch.getBooking("?" + url).then((resp: any) => {
+                    setBookingData(resp);
+                    setTotalRecords(resp.totalCount);
+                    setLoading(false);
+                });
+            }
+        } else {
+            if (
+                filterBar.BookingDate != "" ||
+                filterBar.FromTime != "" ||
+                filterBar.ToTime != "" ||
+                filterBar.Status != ""
+            ) {
+                apiFetch
+                    .getBooking(
+                        `?BookingDate=${filterBar?.BookingDate}&FromTime=${filterBar?.FromTime}&ToTime=${filterBar?.ToTime}&Status=${filterBar?.Status}&` +
+                            url +
+                            `&OrderBy=${lazyState.sortField}`,
+                    )
+                    .then((resp: any) => {
+                        setBookingData(resp);
+                        setTotalRecords(resp.totalCount);
+                        setLoading(false);
+                    });
+            } else {
+                apiFetch
+                    .getBooking(`?${url}&OrderBy=${lazyState.sortField}`)
+                    .then((resp: any) => {
+                        setBookingData(resp);
+                        setTotalRecords(resp.totalCount);
+                        setLoading(false);
+                    });
+            }
+        }
+    };
+    useEffect(() => {
+        setLoading(true);
+        fetchData();
+    }, [router.locale, lazyState, globalFilterValue, filterBar]);
+
+    const onPage = (event: DataTablePageEvent) => {
+        console.log(event);
+        setLazyState({ ...event, sortField: lazyState.sortField });
+    };
+    const onSort = (event: DataTableSortEvent) => {
+        console.log(event, lazyState);
+        setLazyState({ ...lazyState, sortField: event.sortField });
+    };
+
+    const onFilter = (event: DataTableFilterEvent) => {
+        console.log(event);
+        event["first"] = 0;
+        setLazyState({ ...lazyState, ...event });
+    };
 
     return (
-        <DataTable
-            value={bookingData}
-            scrollable
-            scrollHeight="60vh"
-            paginator
-            removableSort
-            filters={filters}
-            dataKey="id"
-            header={headers}
-            globalFilterFields={[
-                "id",
-                "customerName",
-                "phoneNumber",
-                "bookingDate",
-                "fromTime",
-                "toTime",
-                "status",
-            ]}
-            emptyMessage={trans.booking.empty}
-            rows={5}
-            rowsPerPageOptions={[5, 15, 25]}
-            style={{ height: "55vh" }}
-        >
-            <Column
-                field="id"
-                sortable
-                header="ID"
-                body={RouteDetailID}
-                style={{ width: "10rem" }}
+        <>
+            <FilterBar
+                lazyState={lazyState}
+                setLazyState={setLazyState}
+                filter={filterBar}
+                setFilter={setFilterBar}
+                router={router}
+                filterFn={fetchData}
+                refetchFn={refreshData}
             />
-            <Column
-                field="customerName"
-                sortable
-                body={RouteDetailName}
-                header={trans.customer.form.name}
-                style={{ width: "15rem" }}
-            />
-            <Column
-                field="phoneNumber"
-                sortable
-                header={trans.customer.form.phone_label}
-                style={{ width: "15rem" }}
-            />
-            <Column
-                field="bookingDate"
-                sortable
-                body={({ bookingDate }: { bookingDate: string }) => {
-                    return <p>{formatBookingDate(bookingDate)}</p>;
-                }}
-                header={trans.booking.bookDate}
-                style={{ width: "20rem" }}
-            />
-            <Column
-                field="fromTime,toTime"
-                sortable
-                body={FromTo}
-                header={trans.booking.fromTo}
-                style={{ width: "15rem" }}
-            />
-            <Column
-                field="status"
-                body={StatusBox}
-                style={{ width: "13rem" }}
-            />
-            <Column
-                field="id,customerName"
-                body={renderIcon}
-                style={{ width: "12rem" }}
-            />
-        </DataTable>
+            <DataTable
+                value={bookingData?.data}
+                scrollable
+                scrollHeight="60vh"
+                paginator
+                lazy
+                first={lazyState.first}
+                removableSort
+                dataKey="id"
+                filters={filters}
+                onPage={onPage}
+                onSort={onSort}
+                onFilter={onFilter}
+                totalRecords={totalRecords}
+                header={headers}
+                rows={lazyState.rows}
+                globalFilterFields={[
+                    "id",
+                    "customerName",
+                    "phoneNumber",
+                    "bookingDate",
+                    "fromTime",
+                    "toTime",
+                    "status",
+                ]}
+                emptyMessage={trans.booking.empty}
+                rowsPerPageOptions={[5, 15, 25]}
+                style={{ height: "55vh" }}
+            >
+                <Column
+                    field="id"
+                    header="ID"
+                    body={RouteDetailID}
+                    style={{ width: "10rem" }}
+                />
+                <Column
+                    field="customerName"
+                    body={RouteDetailName}
+                    header={trans.customer.form.name}
+                    style={{ width: "15rem" }}
+                />
+                <Column
+                    field="phoneNumber"
+                    header={trans.customer.form.phone_label}
+                    style={{ width: "15rem" }}
+                />
+                <Column
+                    field="bookingDate"
+                    body={({ bookingDate }: { bookingDate: string }) => {
+                        return <p>{formatBookingDate(bookingDate)}</p>;
+                    }}
+                    header={trans.booking.bookDate}
+                    style={{ width: "20rem" }}
+                />
+                <Column
+                    field="fromTime,toTime"
+                    body={FromTo}
+                    header={trans.booking.fromTo}
+                    style={{ width: "15rem" }}
+                />
+                <Column
+                    field="status"
+                    body={({ id, status }: { id: string; status: string }) =>
+                        StatusBox({ id, status, fetchData })
+                    }
+                    style={{ width: "13rem" }}
+                />
+                <Column
+                    field="id,customerName"
+                    body={renderIcon}
+                    style={{ width: "12rem" }}
+                />
+            </DataTable>
+        </>
     );
 };
 

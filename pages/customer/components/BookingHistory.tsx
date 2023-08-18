@@ -13,7 +13,7 @@ const BookingHistory = ({ id }: { id?: string | string[] }) => {
     const { trans } = useTrans();
     useEffect(() => {
         apiFetch.getBooking(`customer/${id}`).then((resp: any) => {
-            setBooking(resp);
+            setBooking(resp.data);
             setIsLoading(false);
         });
     });
