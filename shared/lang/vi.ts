@@ -58,6 +58,11 @@ export default {
         service: 'Dịch vụ',
         note: 'Ghi chú',
         serviceph: 'Chọn dịch vụ',
+        changeStatus:"Chuyển trạng thái thành công",
+        cancelFilter:"Hủy điều kiện",
+        orderPH: 'Hiển thị thứ tự',
+        statusPH:"Chọn trạng thái",
+        bookingDatePH:"Chọn ngày đặt",
         button: {
             add: 'Thêm lịch',
         },

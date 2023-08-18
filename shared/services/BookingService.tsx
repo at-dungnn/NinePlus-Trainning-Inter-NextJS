@@ -4,11 +4,14 @@ import { BookingType } from "@/types/user";
 export class BookingService extends CRUDService {
     protected basePath = `/booking`;
     public async getBooking<T>(url: string): Promise<T> {
+        return await this.get<T>(url).then((resp: any) => resp);
+    }
+    public async getBookingDetail<T>(url: string): Promise<T> {
         return await this.get<T>(url).then((resp: any) => resp.data);
     }
     public async createBooking<T>(
         url: string,
-        data: BookingType
+        data: BookingType,
     ): Promise<T | void> {
         return await this.create<T>(url, data);
     }
@@ -18,6 +21,10 @@ export class BookingService extends CRUDService {
     public async deleteBooking<T>(url: string): Promise<T> {
         return await this.delete<T>(url);
     }
+
+    public async updateStatus<T>(url: string, data: any): Promise<T> {
+        return await this.patch<T>(url, data);
+    }
 }
 
 export class ServicesManageService extends CRUDService {
@@ -26,6 +33,3 @@ export class ServicesManageService extends CRUDService {
         return await this.get<T>(url).then((resp: any) => resp.data);
     }
 }
-
-
-

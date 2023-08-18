@@ -2,9 +2,10 @@ import {
     formatDate,
     splitDateTime,
     splitDate,
-  
+    formatDateTime,
     formatDateCalendar,
     formatFromTo,
+    splitFormatDate,
 } from "./formatDate";
 import checkFilled from "./checkFilled";
 export {
@@ -12,7 +13,8 @@ export {
     splitDateTime,
     checkFilled,
     splitDate,
- 
     formatDateCalendar,
     formatFromTo,
+    formatDateTime,
+    splitFormatDate,
 };
