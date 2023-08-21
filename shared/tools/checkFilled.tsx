@@ -2,6 +2,7 @@ export default function checkFilled(obj: any, trans: any) {
     let errorString = "";
     const isFilled = Object.keys(obj).every((key) => {
         if (key === "id") return true;
+        if (key === "note") return true;
         if (key === "phoneNumber") {
             const checkField: boolean =
                 (obj[key] as string).length <= 10 &&

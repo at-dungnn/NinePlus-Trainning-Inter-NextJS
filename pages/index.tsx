@@ -12,13 +12,16 @@ import { Card } from "primereact/card";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { ServicesManageService } from "@/shared/services/BookingService";
+import { useRouter } from "next/router";
 
-const fetchService = () => {
-    const serviceFetch = new ServicesManageService();
-    return serviceFetch.getServices("");
-};
+// const fetchService = () => {
+//     const serviceFetch = new ServicesManageService();
+//     return serviceFetch.getServices("");
+// };
 const LandingPage: Page = () => {
-    const [service, setService] = useState(fetchService);
+    const router = useRouter();
+    const [service, setService] = useState();
+    const [isLogin, setLogin] = useState(false);
     const [contact, setContact] = useState<any>({});
     const aboutMenu = useRef(null);
     const serviceMenu = useRef(null);
@@ -188,12 +191,10 @@ const LandingPage: Page = () => {
                                     Natural Spa
                                 </h6>
                                 <h3 className="display-3 text-capitalize text-white mb-3">
-                                    Massage & Spa Treatment
+                                    Xoa Bóp Và Trị Liệu
                                 </h3>
                                 <p className="mx-md-5 px-5">
-                                    Lorem rebum magna dolore amet lorem eirmod
-                                    magna erat diam stet. Sadips duo stet amet
-                                    amet ndiam elitr ipsum labore diam
+                                    Thư giãn sâu bên trong
                                 </p>
                             </div>
                         </div>
@@ -204,7 +205,7 @@ const LandingPage: Page = () => {
                     >
                         <img
                             className="position-absolute w-100 h-100"
-                            src="/demo/images/templates/carousel-2.jpg"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQDvnn0QmP554WLSeDMnG_yjOPLVr2Vky39A&usqp=CAU"
                             style={{ objectFit: "cover" }}
                         ></img>
                         <div className="carousel-caption d-flex flex-column align-items-center justify-content-center">
@@ -213,15 +214,13 @@ const LandingPage: Page = () => {
                                     className="text-white text-uppercase mb-3 animate__animated animate__fadeInDown"
                                     style={{ letterSpacing: "3px" }}
                                 >
-                                    Spa & Beauty Center
+                                    NATURAL SPA
                                 </h6>
                                 <h3 className="display-3 text-capitalize text-white mb-3">
-                                    Facial Treatment
+                                    Jacuuzi @ Natural Spa
                                 </h3>
                                 <p className="mx-md-5 px-5">
-                                    Lorem rebum magna dolore amet lorem eirmod
-                                    magna erat diam stet. Sadips duo stet amet
-                                    amet ndiam elitr ipsum labore diam
+                                    Một giải pháp mang đến niềm hạnh phúc
                                 </p>
                                 <a
                                     className="btn btn-outline-light py-3 px-4 mt-3 animate__animated animate__fadeInUp"
@@ -247,15 +246,13 @@ const LandingPage: Page = () => {
                                     className="text-white text-uppercase mb-3 animate__animated animate__fadeInDown"
                                     style={{ letterSpacing: "3px" }}
                                 >
-                                    Spa & Beauty Center
+                                    NATURAL SPA
                                 </h6>
                                 <h3 className="display-3 text-capitalize text-white mb-3">
-                                    Cellulite Treatment
+                                    Chăm sóc làng da và sắc đẹp
                                 </h3>
                                 <p className="mx-md-5 px-5">
-                                    Lorem rebum magna dolore amet lorem eirmod
-                                    magna erat diam stet. Sadips duo stet amet
-                                    amet ndiam elitr ipsum labore diam
+                                    Hòa mình với thiên nhiên và sự hành phúc
                                 </p>
                                 <a
                                     className="btn btn-outline-light py-3 px-4 mt-3 animate__animated animate__fadeInUp"

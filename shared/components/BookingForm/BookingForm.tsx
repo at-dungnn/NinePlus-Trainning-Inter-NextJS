@@ -1,5 +1,4 @@
 import useTrans from "@/shared/hooks/useTrans";
-import { formatDate } from "@/shared/tools";
 import { splitDate } from "@/shared/tools/formatDate";
 import { useRouter } from "next/router";
 import { addLocale } from "primereact/api";
@@ -66,16 +65,23 @@ const BookingForm = ({
                 setBooking({
                     ...booking,
                     [key]: `${value.getFullYear()}-${String(
-                        value.getMonth() + 1
+                        value.getMonth() + 1,
                     ).padStart(2, "0")}-${String(value.getDate()).padStart(
                         2,
-                        "0"
+                        "0",
                     )}`,
                 });
             } else if (key === "fromTime" || key === "toTime") {
                 setBooking({
                     ...booking,
-                    [key]: String(new Date(value).toISOString()),
+                    [key]: `${value.getFullYear()}-${String(
+                        value.getMonth() + 1,
+                    ).padStart(2, "0")}-${String(value.getDate()).padStart(
+                        2,
+                        "0",
+                    )}T${String(value.getHours()).padStart(2, "0")}:${String(
+                        value.getMinutes(),
+                    ).padStart(2, "0")}`,
                 });
             } else if (key === "serviceId") {
                 setBooking({
@@ -89,7 +95,7 @@ const BookingForm = ({
                 });
             }
         },
-        [booking]
+        [booking],
     );
     useEffect(() => {
         customerFetch.getCustomer(`${booking.customerId}`).then((resp: any) => {
@@ -210,8 +216,8 @@ const BookingForm = ({
                     className="w-full "
                 />
             </div>
-            <div className=" lg:flex justify-content-between w-full">
-                <div className="mt-3" style={{ width: "50%" }}>
+            <div className=" lg:flex gap-8 justify-content-between w-full">
+                <div className="mt-3 lg:w-6 w-full">
                     <h5>
                         {trans.booking.form.from}
                         <span className="ml-2 text-orange-700">*</span>
@@ -228,10 +234,9 @@ const BookingForm = ({
                             handleChange(e.target.value, "fromTime")
                         }
                         showIcon
-                        style={{ width: "50%" }}
                     />
                 </div>
-                <div className="mt-3 " style={{ width: "50%" }}>
+                <div className="mt-3 lg:w-6 w-full">
                     <h5>
                         {trans.booking.form.to}{" "}
                         <span className="ml-2 text-orange-700">*</span>
@@ -246,7 +251,6 @@ const BookingForm = ({
                         hourFormat="24"
                         onChange={(e) => handleChange(e.target.value, "toTime")}
                         showIcon
-                        style={{ width: "50%" }}
                     />
                 </div>
             </div>

@@ -27,3 +27,20 @@ export type BookingType = {
     note?: string;
     serviceId?: string[];
 };
+
+export type BookingDataType = {
+    data: BookingType[];
+    currentPage: number;
+    totalPages: number;
+    totalCount: number;
+    pageSize: number;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
+    succeeded: boolean;
+};
+export type FilterType = {
+    BookingDate?: string | null;
+    FromTime?: string | null;
+    ToTime?: string | null;
+    Status?: number | string | null;
+};
