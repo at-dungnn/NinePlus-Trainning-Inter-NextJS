@@ -1,5 +1,6 @@
 import React from "react";
 import NotFoundPage from "./pages/notfound";
+import NotFound from "@/pages/pages/notfound/index";
 import { Page } from "@/types/types";
 
 const Custom404: Page = () => {
