@@ -1,552 +1,960 @@
 /* eslint-disable @next/next/no-img-element */
-
-import { Button } from "primereact/button";
-import { Chart } from "primereact/chart";
-import { Column } from "primereact/column";
-import { DataTable } from "primereact/datatable";
-import { Menu } from "primereact/menu";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { ProductService } from "@/demo/service/ProductService";
+import React, { useEffect, useRef, useState } from "react";
+import AppConfig from "@/layout/AppConfig";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 import { LayoutContext } from "@/layout/context/LayoutContext";
-import Link from "next/link";
-import { Demo } from "@/types/types";
-import { ChartData, ChartOptions } from "chart.js";
+import { NodeRef, Page } from "@/types/types";
+import { classNames } from "primereact/utils";
+import { Button } from "primereact/button";
+import { Menu } from "primereact/menu";
+import { Card } from "primereact/card";
+import { InputText } from "primereact/inputtext";
+import { InputTextarea } from "primereact/inputtextarea";
+import { ServicesManageService } from "@/shared/services/BookingService";
 
-const lineData: ChartData = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
-    datasets: [
-        {
-            label: "First Dataset",
-            data: [65, 59, 80, 81, 56, 55, 40],
-            fill: false,
-            backgroundColor: "#2f4860",
-            borderColor: "#2f4860",
-            tension: 0.4,
-        },
-        {
-            label: "Second Dataset",
-            data: [28, 48, 40, 19, 86, 27, 90],
-            fill: false,
-            backgroundColor: "#00bb7e",
-            borderColor: "#00bb7e",
-            tension: 0.4,
-        },
-    ],
+const fetchService = () => {
+    const serviceFetch = new ServicesManageService();
+    return serviceFetch.getServices("");
 };
-
-const Dashboard = () => {
-    const [products, setProducts] = useState<Demo.Product[]>([]);
-    const menu1 = useRef<Menu>(null);
-    const menu2 = useRef<Menu>(null);
-    const [lineOptions, setLineOptions] = useState<ChartOptions>({});
-    const { layoutConfig } = useContext(LayoutContext);
-
-    const applyLightTheme = () => {
-        const lineOptions: ChartOptions = {
-            plugins: {
-                legend: {
-                    labels: {
-                        color: "#495057",
-                    },
-                },
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: "#495057",
-                    },
-                    grid: {
-                        color: "#ebedef",
-                    },
-                },
-                y: {
-                    ticks: {
-                        color: "#495057",
-                    },
-                    grid: {
-                        color: "#ebedef",
-                    },
-                },
-            },
-        };
-
-        setLineOptions(lineOptions);
-    };
-
-    const applyDarkTheme = () => {
-        const lineOptions = {
-            plugins: {
-                legend: {
-                    labels: {
-                        color: "#ebedef",
-                    },
-                },
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: "#ebedef",
-                    },
-                    grid: {
-                        color: "rgba(160, 167, 181, .3)",
-                    },
-                },
-                y: {
-                    ticks: {
-                        color: "#ebedef",
-                    },
-                    grid: {
-                        color: "rgba(160, 167, 181, .3)",
-                    },
-                },
-            },
-        };
-
-        setLineOptions(lineOptions);
-    };
-
-    useEffect(() => {
-        ProductService.getProductsSmall().then((data) => setProducts(data));
-    }, []);
-
-    useEffect(() => {
-        if (layoutConfig.colorScheme === "light") {
-            applyLightTheme();
-        } else {
-            applyDarkTheme();
-        }
-    }, [layoutConfig.colorScheme]);
-
-    const formatCurrency = (value: number) => {
-        return value?.toLocaleString("en-US", {
-            style: "currency",
-            currency: "USD",
-        });
-    };
+const LandingPage: Page = () => {
+    const [service, setService] = useState(fetchService);
+    const [contact, setContact] = useState<any>({});
+    const aboutMenu = useRef(null);
+    const serviceMenu = useRef(null);
+    const productMenu = useRef(null);
+    const aboutOption = [
+        {
+            label: "About us",
+        },
+        { label: "Vision, Misson, Core Values" },
+        { label: "About the president" },
+        {
+            label: "Team of Doctors",
+        },
+        { label: "Achievement" },
+    ];
+    const serviceOption = [
+        {
+            label: "Skin care Treatment",
+            url: "https://primereact.org/menu/",
+        },
+        {
+            label: "Body treatment",
+        },
+        {
+            label: "Facial treatment",
+        },
+        { label: "Hair care" },
+        {
+            label: "Nail",
+        },
+    ];
+    const productOption = [
+        { label: "Cosmetics" },
+        {
+            label: "Health protection product",
+        },
+        {
+            label: "Hair care",
+        },
+    ];
+    const serviceCarousel = [
+        {
+            src: "https://img.freepik.com/free-photo/beauty-spa_144627-46202.jpg?t=st=1692011876~exp=1692012476~hmac=1f66c01793fd5f788c46036beb3e7a265f843d5df8dd927406be47959bc0380c",
+        },
+        {
+            src: "https://img.freepik.com/free-photo/beautiful-young-woman-having-spa-massage-head-beauty-salon-indoors_186202-3543.jpg?t=st=1692012001~exp=1692012601~hmac=092fdb099c572c5a44d6157d059e42985b91db91813165755d3191919dbde8f7",
+        },
+        {
+            src: "https://img.freepik.com/free-photo/beautician-with-brush-applies-white-moisturizing-mask-face-young-girl-client-spa-beauty-salon_343596-4246.jpg?t=st=1692012029~exp=1692012629~hmac=4c7915b5beea4d517a691628b89c7f2b29902fbb7a4998de3c49fe7337dbdea8",
+        },
+    ];
 
     return (
-        <div className="grid">
-            <div className="col-12 lg:col-6 xl:col-3">
-                <div className="card mb-0">
-                    <div className="flex justify-content-between mb-3">
-                        <div>
-                            <span className="block text-500 font-medium mb-3">
-                                Orders
-                            </span>
-                            <div className="text-900 font-medium text-xl">
-                                152
-                            </div>
-                        </div>
-                        <div
-                            className="flex align-items-center justify-content-center bg-blue-100 border-round"
-                            style={{ width: "2.5rem", height: "2.5rem" }}
-                        >
-                            <i className="pi pi-shopping-cart text-blue-500 text-xl" />
-                        </div>
-                    </div>
-                    <span className="text-green-500 font-medium">24 new </span>
-                    <span className="text-500">since last visit</span>
-                </div>
-            </div>
-            <div className="col-12 lg:col-6 xl:col-3">
-                <div className="card mb-0">
-                    <div className="flex justify-content-between mb-3">
-                        <div>
-                            <span className="block text-500 font-medium mb-3">
-                                Revenue
-                            </span>
-                            <div className="text-900 font-medium text-xl">
-                                $2.100
-                            </div>
-                        </div>
-                        <div
-                            className="flex align-items-center justify-content-center bg-orange-100 border-round"
-                            style={{ width: "2.5rem", height: "2.5rem" }}
-                        >
-                            <i className="pi pi-map-marker text-orange-500 text-xl" />
-                        </div>
-                    </div>
-                    <span className="text-green-500 font-medium">%52+ </span>
-                    <span className="text-500">since last week</span>
-                </div>
-            </div>
-            <div className="col-12 lg:col-6 xl:col-3">
-                <div className="card mb-0">
-                    <div className="flex justify-content-between mb-3">
-                        <div>
-                            <span className="block text-500 font-medium mb-3">
-                                Customers
-                            </span>
-                            <div className="text-900 font-medium text-xl">
-                                28441
-                            </div>
-                        </div>
-                        <div
-                            className="flex align-items-center justify-content-center bg-cyan-100 border-round"
-                            style={{ width: "2.5rem", height: "2.5rem" }}
-                        >
-                            <i className="pi pi-inbox text-cyan-500 text-xl" />
-                        </div>
-                    </div>
-                    <span className="text-green-500 font-medium">520 </span>
-                    <span className="text-500">newly registered</span>
-                </div>
-            </div>
-            <div className="col-12 lg:col-6 xl:col-3">
-                <div className="card mb-0">
-                    <div className="flex justify-content-between mb-3">
-                        <div>
-                            <span className="block text-500 font-medium mb-3">
-                                Comments
-                            </span>
-                            <div className="text-900 font-medium text-xl">
-                                152 Unread
-                            </div>
-                        </div>
-                        <div
-                            className="flex align-items-center justify-content-center bg-purple-100 border-round"
-                            style={{ width: "2.5rem", height: "2.5rem" }}
-                        >
-                            <i className="pi pi-comment text-purple-500 text-xl" />
-                        </div>
-                    </div>
-                    <span className="text-green-500 font-medium">85 </span>
-                    <span className="text-500">responded</span>
-                </div>
-            </div>
-
-            <div className="col-12 xl:col-6">
-                <div className="card">
-                    <h5>Recent Sales</h5>
-                    <DataTable
-                        value={products}
-                        rows={5}
-                        paginator
-                        responsiveLayout="scroll"
+        <>
+            <div className="container-fluid p-0">
+                <nav className="navbar navbar-expand-lg bg-white navbar-light py-3 py-lg-0 px-lg-5">
+                    <a href="index.html" className="navbar-brand ml-lg-3">
+                        <h1 className="m-0 primary-text">
+                            <span className="text-dark">NATURAL</span> SPA
+                        </h1>
+                    </a>
+                    <button
+                        type="button"
+                        className="navbar-toggler"
+                        data-toggle="collapse"
+                        data-target="#navbarCollapse"
                     >
-                        <Column
-                            header="Image"
-                            body={(data) => (
-                                <img
-                                    className="shadow-2"
-                                    src={`/demo/images/product/${data.image}`}
-                                    alt={data.image}
-                                    width="50"
-                                />
-                            )}
-                        />
-                        <Column
-                            field="name"
-                            header="Name"
-                            sortable
-                            style={{ width: "35%" }}
-                        />
-                        <Column
-                            field="price"
-                            header="Price"
-                            sortable
-                            style={{ width: "35%" }}
-                            body={(data) => formatCurrency(data.price)}
-                        />
-                        <Column
-                            header="View"
-                            style={{ width: "15%" }}
-                            body={() => (
-                                <>
-                                    <Button icon="pi pi-search" text />
-                                </>
-                            )}
-                        />
-                    </DataTable>
-                </div>
-                <div className="card">
-                    <div className="flex justify-content-between align-items-center mb-5">
-                        <h5>Best Selling Products</h5>
-                        <div>
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                    <div
+                        className="collapse navbar-collapse justify-content-end gap-8 px-lg-3"
+                        id="navbarCollapse"
+                    >
+                        <div className="navbar-nav py-0">
                             <Button
-                                type="button"
-                                icon="pi pi-ellipsis-v"
-                                className="p-button-rounded p-button-text p-button-plain"
+                                severity="secondary"
+                                label="About us"
                                 onClick={(event) =>
-                                    menu1.current?.toggle(event)
+                                    (aboutMenu.current as any).toggle(event)
                                 }
+                                aria-haspopup
+                                text
                             />
                             <Menu
-                                ref={menu1}
+                                ref={aboutMenu}
                                 popup
-                                model={[
-                                    {
-                                        label: "Add New",
-                                        icon: "pi pi-fw pi-plus",
-                                    },
-                                    {
-                                        label: "Remove",
-                                        icon: "pi pi-fw pi-minus",
-                                    },
-                                ]}
+                                model={aboutOption}
+                                className="mt-3"
+                            />
+
+                            <Button
+                                severity="secondary"
+                                label="Service"
+                                onClick={(event) =>
+                                    (serviceMenu.current as any).toggle(event)
+                                }
+                                aria-haspopup
+                                text
+                            />
+                            <Menu
+                                ref={serviceMenu}
+                                popup
+                                model={serviceOption}
+                                id="servicePopup"
+                                className="mt-3"
+                            />
+                            <Button
+                                severity="secondary"
+                                label="Product"
+                                onClick={(event) =>
+                                    (productMenu.current as any).toggle(event)
+                                }
+                                aria-haspopup
+                                text
+                            />
+                            <Menu
+                                ref={productMenu}
+                                popup
+                                model={productOption}
+                                id="productPopup"
+                                className="mt-3"
+                            />
+
+                            <Button severity="secondary" label="Blog" text />
+                        </div>
+                        <div className="flex gap-8 w-24rem ">
+                            <Button
+                                severity="success"
+                                label="Book Now"
+                                className="w-8"
+                            />
+                            <Button
+                                icon="pi pi-users"
+                                label="Login"
+                                className="w-8"
                             />
                         </div>
                     </div>
-                    <ul className="list-none p-0 m-0">
-                        <li className="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4">
-                            <div>
-                                <span className="text-900 font-medium mr-2 mb-1 md:mb-0">
-                                    Space T-Shirt
-                                </span>
-                                <div className="mt-1 text-600">Clothing</div>
-                            </div>
-                            <div className="mt-2 md:mt-0 flex align-items-center">
-                                <div
-                                    className="surface-300 border-round overflow-hidden w-10rem lg:w-6rem"
-                                    style={{ height: "8px" }}
-                                >
-                                    <div
-                                        className="bg-orange-500 h-full"
-                                        style={{ width: "50%" }}
-                                    />
-                                </div>
-                                <span className="text-orange-500 ml-3 font-medium">
-                                    %50
-                                </span>
-                            </div>
-                        </li>
-                        <li className="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4">
-                            <div>
-                                <span className="text-900 font-medium mr-2 mb-1 md:mb-0">
-                                    Portal Sticker
-                                </span>
-                                <div className="mt-1 text-600">Accessories</div>
-                            </div>
-                            <div className="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
-                                <div
-                                    className="surface-300 border-round overflow-hidden w-10rem lg:w-6rem"
-                                    style={{ height: "8px" }}
-                                >
-                                    <div
-                                        className="bg-cyan-500 h-full"
-                                        style={{ width: "16%" }}
-                                    />
-                                </div>
-                                <span className="text-cyan-500 ml-3 font-medium">
-                                    %16
-                                </span>
-                            </div>
-                        </li>
-                        <li className="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4">
-                            <div>
-                                <span className="text-900 font-medium mr-2 mb-1 md:mb-0">
-                                    Supernova Sticker
-                                </span>
-                                <div className="mt-1 text-600">Accessories</div>
-                            </div>
-                            <div className="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
-                                <div
-                                    className="surface-300 border-round overflow-hidden w-10rem lg:w-6rem"
-                                    style={{ height: "8px" }}
-                                >
-                                    <div
-                                        className="bg-pink-500 h-full"
-                                        style={{ width: "67%" }}
-                                    />
-                                </div>
-                                <span className="text-pink-500 ml-3 font-medium">
-                                    %67
-                                </span>
-                            </div>
-                        </li>
-                        <li className="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4">
-                            <div>
-                                <span className="text-900 font-medium mr-2 mb-1 md:mb-0">
-                                    Wonders Notebook
-                                </span>
-                                <div className="mt-1 text-600">Office</div>
-                            </div>
-                            <div className="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
-                                <div
-                                    className="surface-300 border-round overflow-hidden w-10rem lg:w-6rem"
-                                    style={{ height: "8px" }}
-                                >
-                                    <div
-                                        className="bg-green-500 h-full"
-                                        style={{ width: "35%" }}
-                                    />
-                                </div>
-                                <span className="text-green-500 ml-3 font-medium">
-                                    %35
-                                </span>
-                            </div>
-                        </li>
-                        <li className="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4">
-                            <div>
-                                <span className="text-900 font-medium mr-2 mb-1 md:mb-0">
-                                    Mat Black Case
-                                </span>
-                                <div className="mt-1 text-600">Accessories</div>
-                            </div>
-                            <div className="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
-                                <div
-                                    className="surface-300 border-round overflow-hidden w-10rem lg:w-6rem"
-                                    style={{ height: "8px" }}
-                                >
-                                    <div
-                                        className="bg-purple-500 h-full"
-                                        style={{ width: "75%" }}
-                                    />
-                                </div>
-                                <span className="text-purple-500 ml-3 font-medium">
-                                    %75
-                                </span>
-                            </div>
-                        </li>
-                        <li className="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4">
-                            <div>
-                                <span className="text-900 font-medium mr-2 mb-1 md:mb-0">
-                                    Robots T-Shirt
-                                </span>
-                                <div className="mt-1 text-600">Clothing</div>
-                            </div>
-                            <div className="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
-                                <div
-                                    className="surface-300 border-round overflow-hidden w-10rem lg:w-6rem"
-                                    style={{ height: "8px" }}
-                                >
-                                    <div
-                                        className="bg-teal-500 h-full"
-                                        style={{ width: "40%" }}
-                                    />
-                                </div>
-                                <span className="text-teal-500 ml-3 font-medium">
-                                    %40
-                                </span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+                </nav>
             </div>
 
-            <div className="col-12 xl:col-6">
-                <div className="card">
-                    <h5>Sales Overview</h5>
-                    <Chart type="line" data={lineData} options={lineOptions} />
-                </div>
-
-                <div className="card">
-                    <div className="flex align-items-center justify-content-between mb-4">
-                        <h5>Notifications</h5>
-                        <div>
-                            <Button
-                                type="button"
-                                icon="pi pi-ellipsis-v"
-                                className="p-button-rounded p-button-text p-button-plain"
-                                onClick={(event) =>
-                                    menu2.current?.toggle(event)
-                                }
-                            />
-                            <Menu
-                                ref={menu2}
-                                popup
-                                model={[
-                                    {
-                                        label: "Add New",
-                                        icon: "pi pi-fw pi-plus",
-                                    },
-                                    {
-                                        label: "Remove",
-                                        icon: "pi pi-fw pi-minus",
-                                    },
-                                ]}
-                            />
-                        </div>
-                    </div>
-
-                    <span className="block text-600 font-medium mb-3">
-                        TODAY
-                    </span>
-                    <ul className="p-0 mx-0 mt-0 mb-4 list-none">
-                        <li className="flex align-items-center py-2 border-bottom-1 surface-border">
-                            <div className="w-3rem h-3rem flex align-items-center justify-content-center bg-blue-100 border-circle mr-3 flex-shrink-0">
-                                <i className="pi pi-dollar text-xl text-blue-500" />
-                            </div>
-                            <span className="text-900 line-height-3">
-                                Richard Jones
-                                <span className="text-700">
-                                    has purchased a blue t-shirt for
-                                    <span className="text-blue-500">79$</span>
-                                </span>
-                            </span>
-                        </li>
-                        <li className="flex align-items-center py-2">
-                            <div className="w-3rem h-3rem flex align-items-center justify-content-center bg-orange-100 border-circle mr-3 flex-shrink-0">
-                                <i className="pi pi-download text-xl text-orange-500" />
-                            </div>
-                            <span className="text-700 line-height-3">
-                                Your request for withdrawal of
-                                <span className="text-blue-500 font-medium">
-                                    2500$
-                                </span>
-                                has been initiated.
-                            </span>
-                        </li>
-                    </ul>
-
-                    <span className="block text-600 font-medium mb-3">
-                        YESTERDAY
-                    </span>
-                    <ul className="p-0 m-0 list-none">
-                        <li className="flex align-items-center py-2 border-bottom-1 surface-border">
-                            <div className="w-3rem h-3rem flex align-items-center justify-content-center bg-blue-100 border-circle mr-3 flex-shrink-0">
-                                <i className="pi pi-dollar text-xl text-blue-500" />
-                            </div>
-                            <span className="text-900 line-height-3">
-                                Keyser Wick
-                                <span className="text-700">
-                                    has purchased a black jacket for
-                                    <span className="text-blue-500">59$</span>
-                                </span>
-                            </span>
-                        </li>
-                        <li className="flex align-items-center py-2 border-bottom-1 surface-border">
-                            <div className="w-3rem h-3rem flex align-items-center justify-content-center bg-pink-100 border-circle mr-3 flex-shrink-0">
-                                <i className="pi pi-question text-xl text-pink-500" />
-                            </div>
-                            <span className="text-900 line-height-3">
-                                Jane Davis
-                                <span className="text-700">
-                                    has posted a new questions about your
-                                    product.
-                                </span>
-                            </span>
-                        </li>
-                    </ul>
-                </div>
-                <div
-                    className="px-4 py-5 shadow-2 flex flex-column md:flex-row md:align-items-center justify-content-between mb-3"
-                    style={{
-                        borderRadius: "1rem",
-                        background:
-                            "linear-gradient(0deg, rgba(0, 123, 255, 0.5), rgba(0, 123, 255, 0.5)), linear-gradient(92.54deg, #1C80CF 47.88%, #FFFFFF 100.01%)",
+            <div className="container-fluid p-0 mb-5 pb-5">
+                <Carousel
+                    arrows={false}
+                    responsive={{
+                        desktop: {
+                            breakpoint: { max: 3000, min: 0 },
+                            items: 1,
+                        },
                     }}
                 >
-                    <div>
-                        <div className="text-blue-100 font-medium text-xl mt-2 mb-3">
-                            TAKE THE NEXT STEP
-                        </div>
-                        <div className="text-white font-medium text-5xl">
-                            Try PrimeBlocks
+                    <div
+                        className="carousel-item position-relative active"
+                        style={{ minHeight: "100vh" }}
+                    >
+                        <img
+                            className="position-absolute w-100 h-100"
+                            src="/demo/images/templates/carousel-1.jpg"
+                            style={{ objectFit: "cover" }}
+                        ></img>
+                        <div className="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                            <div className="p-3" style={{ maxWidth: "900px" }}>
+                                <h6
+                                    className="text-white text-uppercase mb-3 animate__animated animate__fadeInDown"
+                                    style={{ letterSpacing: "3px" }}
+                                >
+                                    Natural Spa
+                                </h6>
+                                <h3 className="display-3 text-capitalize text-white mb-3">
+                                    Massage & Spa Treatment
+                                </h3>
+                                <p className="mx-md-5 px-5">
+                                    Lorem rebum magna dolore amet lorem eirmod
+                                    magna erat diam stet. Sadips duo stet amet
+                                    amet ndiam elitr ipsum labore diam
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    <div className="mt-4 mr-auto md:mt-0 md:mr-0">
-                        <Link
-                            href="https://blocks.primereact.org"
-                            className="p-button font-bold px-5 py-3 p-button-warning p-button-rounded p-button-raised"
-                        >
-                            Get Started
-                        </Link>
+                    <div
+                        className="carousel-item position-relative active"
+                        style={{ minHeight: "100vh" }}
+                    >
+                        <img
+                            className="position-absolute w-100 h-100"
+                            src="/demo/images/templates/carousel-2.jpg"
+                            style={{ objectFit: "cover" }}
+                        ></img>
+                        <div className="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                            <div className="p-3" style={{ maxWidth: "900px" }}>
+                                <h6
+                                    className="text-white text-uppercase mb-3 animate__animated animate__fadeInDown"
+                                    style={{ letterSpacing: "3px" }}
+                                >
+                                    Spa & Beauty Center
+                                </h6>
+                                <h3 className="display-3 text-capitalize text-white mb-3">
+                                    Facial Treatment
+                                </h3>
+                                <p className="mx-md-5 px-5">
+                                    Lorem rebum magna dolore amet lorem eirmod
+                                    magna erat diam stet. Sadips duo stet amet
+                                    amet ndiam elitr ipsum labore diam
+                                </p>
+                                <a
+                                    className="btn btn-outline-light py-3 px-4 mt-3 animate__animated animate__fadeInUp"
+                                    href="#"
+                                >
+                                    Make Appointment
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        className="carousel-item position-relative active"
+                        style={{ minHeight: "100vh" }}
+                    >
+                        <img
+                            className="position-absolute w-100 h-100"
+                            src="/demo/images/templates/carousel-3.jpg"
+                            style={{ objectFit: "cover" }}
+                        ></img>
+                        <div className="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                            <div className="p-3" style={{ maxWidth: "900px" }}>
+                                <h6
+                                    className="text-white text-uppercase mb-3 animate__animated animate__fadeInDown"
+                                    style={{ letterSpacing: "3px" }}
+                                >
+                                    Spa & Beauty Center
+                                </h6>
+                                <h3 className="display-3 text-capitalize text-white mb-3">
+                                    Cellulite Treatment
+                                </h3>
+                                <p className="mx-md-5 px-5">
+                                    Lorem rebum magna dolore amet lorem eirmod
+                                    magna erat diam stet. Sadips duo stet amet
+                                    amet ndiam elitr ipsum labore diam
+                                </p>
+                                <a
+                                    className="btn btn-outline-light py-3 px-4 mt-3 animate__animated animate__fadeInUp"
+                                    href="#"
+                                >
+                                    Make Appointment
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </Carousel>
+            </div>
+            <div className="container-fluid py-5">
+                <div className="container py-5">
+                    <div className="row align-items-center">
+                        <div className="col-lg-6 pb-5 pb-lg-0">
+                            <img
+                                className="img-fluid w-100"
+                                src="/demo/images/templates/about.jpg"
+                                alt=""
+                            ></img>
+                        </div>
+                        <div className="col-lg-6">
+                            <h6 className="d-inline-block primary-text text-uppercase bg-light py-1 px-2">
+                                About Us
+                            </h6>
+                            <h1 className="mb-4">
+                                CƠ SỞ CHĂM SÓC SẮC ĐẸP VÀ NUÔI DƯỠNG LÀN DA TỐT
+                                NHẤT
+                            </h1>
+                            <p className="pl-4 border-left border-primary">
+                                Natural Spa là nơi bạn đến để thư giản trong bầu
+                                không khí ngập tràn sự quan tâm và tin tưởng. Ẩn
+                                mình trong thiên nhiên, với bầu không khí trong
+                                lành đang tiếp thêm sinh lực. Natural Spa là sự
+                                lựa chọn cần thiết của bạn để nạp năng lượng và
+                                chữa lành tâm hồn
+                            </p>
+                            <div className="row pt-3">
+                                <div className="col-6">
+                                    <div className="bg-light text-center p-4">
+                                        <h3
+                                            className="display-4 primary-text"
+                                            data-toggle="counter-up"
+                                        >
+                                            99
+                                        </h3>
+                                        <h6 className="text-uppercase">
+                                            Chuyên gia sắc đẹp
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div className="col-6">
+                                    <div className="bg-light text-center p-4">
+                                        <h3
+                                            className="display-4 primary-text"
+                                            data-toggle="counter-up"
+                                        >
+                                            999
+                                        </h3>
+                                        <h6 className="text-uppercase">
+                                            Khách hàng hài lòng
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <div className="container-fluid px-0 py-5 my-5">
+                <div className="row mx-0 justify-content-center text-center">
+                    <div className="col-lg-6">
+                        <h6 className="d-inline-block bg-light primary-text text-uppercase py-1 px-2">
+                            Our Service
+                        </h6>
+                        <h1>Spa & Beauty Services</h1>
+                    </div>
+                </div>
+                <Carousel
+                    arrows={false}
+                    responsive={{
+                        desktop: {
+                            breakpoint: { max: 3000, min: 1024 },
+                            items: 5,
+                        },
+                        tablet: {
+                            breakpoint: { max: 1024, min: 464 },
+                            items: 3,
+                        },
+                        mobile: {
+                            breakpoint: { max: 464, min: 0 },
+                            items: 2,
+                        },
+                    }}
+                    infinite={true}
+                >
+                    <div className="service-item position-relative">
+                        <img
+                            className="img-fluid"
+                            src="/demo/images/templates/service-1.jpg"
+                            alt=""
+                        ></img>
+                        <div className="service-text text-center">
+                            <h4 className="text-white font-weight-medium px-3">
+                                Body Massage
+                            </h4>
+                            <p className="text-white px-3 mb-3">
+                                Elitr labore sit dolor erat est lorem diam sea
+                                ipsum diam dolor duo sit ipsum
+                            </p>
+                            <div className="w-100 bg-white text-center p-4">
+                                <a className="btn btn-primary" href="">
+                                    Make Order
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="service-item position-relative">
+                        <img
+                            className="img-fluid"
+                            src="/demo/images/templates/service-2.jpg"
+                            alt=""
+                        ></img>
+                        <div className="service-text text-center">
+                            <h4 className="text-white font-weight-medium px-3">
+                                Stone Therapy
+                            </h4>
+                            <p className="text-white px-3 mb-3">
+                                Elitr labore sit dolor erat est lorem diam sea
+                                ipsum diam dolor duo sit ipsum
+                            </p>
+                            <div className="w-100 bg-white text-center p-4">
+                                <a className="btn btn-primary" href="">
+                                    Make Order
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="service-item position-relative">
+                        <img
+                            className="img-fluid"
+                            src="/demo/images/templates/service-3.jpg"
+                            alt=""
+                        ></img>
+                        <div className="service-text text-center">
+                            <h4 className="text-white font-weight-medium px-3">
+                                Facial Therapy
+                            </h4>
+                            <p className="text-white px-3 mb-3">
+                                Elitr labore sit dolor erat est lorem diam sea
+                                ipsum diam dolor duo sit ipsum
+                            </p>
+                            <div className="w-100 bg-white text-center p-4">
+                                <a className="btn btn-primary" href="">
+                                    Make Order
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="service-item position-relative">
+                        <img
+                            className="img-fluid"
+                            src="/demo/images/templates/service-4.jpg"
+                            alt=""
+                        ></img>
+                        <div className="service-text text-center">
+                            <h4 className="text-white font-weight-medium px-3">
+                                Skin Care
+                            </h4>
+                            <p className="text-white px-3 mb-3">
+                                Elitr labore sit dolor erat est lorem diam sea
+                                ipsum diam dolor duo sit ipsum
+                            </p>
+                            <div className="w-100 bg-white text-center p-4">
+                                <a className="btn btn-primary" href="">
+                                    Make Order
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="service-item position-relative">
+                        <img
+                            className="img-fluid"
+                            src="/demo/images/templates/service-5.jpg"
+                            alt=""
+                        ></img>
+                        <div className="service-text text-center">
+                            <h4 className="text-white font-weight-medium px-3">
+                                Stream Bath
+                            </h4>
+                            <p className="text-white px-3 mb-3">
+                                Elitr labore sit dolor erat est lorem diam sea
+                                ipsum diam dolor duo sit ipsum
+                            </p>
+                            <div className="w-100 bg-white text-center p-4">
+                                <a className="btn btn-primary" href="">
+                                    Make Order
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="service-item position-relative">
+                        <img
+                            className="img-fluid"
+                            src="/demo/images/templates/service-6.jpg"
+                            alt=""
+                        ></img>
+                        <div className="service-text text-center">
+                            <h4 className="text-white font-weight-medium px-3">
+                                Face Masking
+                            </h4>
+                            <p className="text-white px-3 mb-3">
+                                Elitr labore sit dolor erat est lorem diam sea
+                                ipsum diam dolor duo sit ipsum
+                            </p>
+                            <div className="w-100 bg-white text-center p-4">
+                                <a className="btn btn-primary" href="">
+                                    Make Order
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </Carousel>
+            </div>
+            <div className="container-fluid py-5">
+                <div className="container py-5">
+                    <div className="row">
+                        <div
+                            className="col-lg-6"
+                            style={{ minHeight: "500px" }}
+                        >
+                            <div className="position-relative h-100">
+                                <img
+                                    className="position-absolute w-100 h-100"
+                                    src="/demo/images/templates/opening.jpg"
+                                    style={{ objectFit: "cover" }}
+                                ></img>
+                            </div>
+                        </div>
+                        <div className="col-lg-6 pt-5 pb-lg-5">
+                            <div className="hours-text bg-light p-4 p-lg-5 my-lg-5">
+                                <h6 className="d-inline-block text-white text-uppercase primary-bg py-1 px-2">
+                                    Open Hours
+                                </h6>
+                                <h1 className="mb-4">
+                                    Best Relax And Spa Zone
+                                </h1>
+                                <p>
+                                    Dolores lorem lorem ipsum sit et ipsum.
+                                    Sadip sea amet diam dolore sed et. Sit rebum
+                                    labore sit sit ut vero no sit. Et elitr stet
+                                    dolor sed sit et sed ipsum et kasd ut. Erat
+                                    duo eos et erat sed diam duo
+                                </p>
+                                <ul className="list-inline">
+                                    <li className="h6 py-1">
+                                        <i className="far fa-circle primary-text mr-3"></i>
+                                        Mon – Fri : 9:00 AM - 7:00 PM
+                                    </li>
+                                    <li className="h6 py-1">
+                                        <i className="far fa-circle primary-text mr-3"></i>
+                                        Saturday : 9:00 AM - 6:00 PM
+                                    </li>
+                                    <li className="h6 py-1">
+                                        <i className="far fa-circle primary-text mr-3"></i>
+                                        Sunday : Closed
+                                    </li>
+                                </ul>
+                                <a href="" className="btn btn-primary mt-2">
+                                    Book Now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="grid">
+                <div className="col-12 text-center bg-orange-400 ">
+                    <h2 className="text-white mt-2">SPA, NAIL AND HAIRCAIR</h2>
+                </div>
+                <Card className="md:col-6 col-12 h-25rem relative flex ">
+                    <div className="card-center relative  ">
+                        <h2 className="title">Điều Trị</h2>
+                        <div className="service-title w-full relative h-1"></div>
+                        <p className="card-content">
+                            Khám điều trị, chăm sóc da và body tại Natural Spa
+                        </p>
+                        <h1>Xem thêm</h1>
+                    </div>
+                </Card>
+                <div className="md:col-6 col-12 h-25rem relative">
+                    <Carousel
+                        infinite={true}
+                        arrows={true}
+                        responsive={{
+                            desktop: {
+                                breakpoint: { max: 3000, min: 0 },
+                                items: 1,
+                            },
+                        }}
+                        className="h-full relative"
+                    >
+                        {serviceCarousel.map((image, index) => (
+                            <div
+                                key={index}
+                                className="carousel-item relative active w-full"
+                            >
+                                <img
+                                    src={image.src}
+                                    alt=""
+                                    className="w-full image-round h-25rem img-fluid abolute"
+                                    style={{ objectFit: "cover" }}
+                                ></img>
+                            </div>
+                        ))}
+                    </Carousel>
+                </div>
+                <Card className="md:col-6 col-12 h-25rem relative flex md:flex-order-2">
+                    <div className="card-center relative ">
+                        <h2 className="title">NAIL SALON</h2>
+                        <div className="service-title w-full relative h-1"></div>
+                        <p className="card-content">
+                            Dịch vụ Nail chuyên nghiệp tại Natural Spa
+                        </p>
+                        <h1>Xem thêm</h1>
+                    </div>
+                </Card>
+                <div className="md:col-6 col-12 h-25rem md:flex-order-1">
+                    <Carousel
+                        infinite={true}
+                        arrows={true}
+                        responsive={{
+                            desktop: {
+                                breakpoint: { max: 3000, min: 0 },
+                                items: 1,
+                            },
+                        }}
+                        className="h-full relative"
+                    >
+                        {serviceCarousel.map((image, index) => (
+                            <div
+                                key={index}
+                                className="carousel-item relative active w-full"
+                            >
+                                <img
+                                    src={image.src}
+                                    alt=""
+                                    className="w-full h-25rem image-round img-fluid abolute"
+                                    style={{ objectFit: "cover" }}
+                                ></img>
+                            </div>
+                        ))}
+                    </Carousel>
+                </div>
+                <Card className="md:col-6 col-12 h-25rem relative flex md:flex-order-3 ">
+                    <div className="card-center relative  ">
+                        <h2 className="title">HAIR SALON</h2>
+                        <div className="service-title w-full relative h-1 "></div>
+                        <p className="card-content">
+                            Dịch vụ chăm sóc tóc chuyên nghiệp tại Natural Spa
+                        </p>
+                        <h1>Xem thêm</h1>
+                    </div>
+                </Card>
+                <div className="md:col-6 col-12 h-25rem md:flex-order-4 ">
+                    <Carousel
+                        infinite={true}
+                        arrows={true}
+                        responsive={{
+                            desktop: {
+                                breakpoint: { max: 3000, min: 0 },
+                                items: 1,
+                            },
+                        }}
+                        className="h-full relative"
+                    >
+                        {serviceCarousel.map((image, index) => (
+                            <div
+                                key={index}
+                                className="carousel-item relative active w-full"
+                            >
+                                <img
+                                    src={image.src}
+                                    alt=""
+                                    className="w-full h-25rem image-round img-fluid abolute"
+                                    style={{ objectFit: "cover" }}
+                                ></img>
+                            </div>
+                        ))}
+                    </Carousel>
+                </div>
+            </div>
+
+            <div className="contact">
+                <h1 className="contact-title">Liên hệ với chúng tôi</h1>
+                <div className=" contact-body  mt-7">
+                    <div className="info">
+                        <div className="info-card">
+                            <h4 className="info-title">
+                                <span></span>Da Nang
+                            </h4>
+                            <p className="info-detail">
+                                <i className="pi pi-directions mr-3  icon-size" />
+                                Địa chỉ
+                            </p>
+                            <p className="info-detail">
+                                <i className="pi pi-google mr-3  icon-size" />
+                                Email
+                            </p>
+                            <p className="info-detail">
+                                <i className="pi pi-tablet mr-3  icon-size" />
+                                Điện thoại
+                            </p>
+                            <p className="info-detail">
+                                <i className="pi pi-clock mr-3  icon-size" />
+                                Thứ 2 - Thứ 7 : 9:00 - 18:00
+                            </p>
+                        </div>
+                    </div>
+                    <div className="contact-form">
+                        <div className="mt-3">
+                            <h5>
+                                Họ và tên
+                                <span className="text-orange-700">*</span>:
+                            </h5>
+                            <InputText
+                                value={contact?.customerName}
+                                onChange={(e) => {
+                                    console.log(e);
+                                }}
+                                style={{ width: "100%" }}
+                                placeholder="Tên của bạn"
+                            />
+                        </div>
+                        <div className="lg:flex gap-7 justify-content-between lg:w-full  ">
+                            <div className="mt-3 w-full lg:w-6">
+                                <h5>
+                                    Số điện thoại
+                                    <span className="text-orange-700">*</span>:
+                                </h5>
+                                <InputText
+                                    value={contact?.phoneNumber}
+                                    onChange={(e) => {
+                                        console.log(e);
+                                    }}
+                                    style={{ width: "100%" }}
+                                    placeholder="Nhập SĐT của bạn"
+                                />
+                            </div>
+                            <div className="mt-3 w-full lg:w-6">
+                                <h5>
+                                    Email
+                                    <span className="text-orange-700">*</span>:
+                                </h5>
+                                <InputText
+                                    value={contact?.email}
+                                    onChange={(e) => {
+                                        console.log(e);
+                                    }}
+                                    style={{ width: "100%" }}
+                                    placeholder="Nhập email của bạn"
+                                />
+                            </div>
+                        </div>
+                        <div className="mt-3">
+                            <h5>
+                                Dịch vụ
+                                <span className="text-orange-700">*</span>:
+                            </h5>
+                            <InputText
+                                value={contact?.name}
+                                onChange={(e) => {
+                                    console.log(e);
+                                }}
+                                style={{ width: "100%" }}
+                            />
+                        </div>
+                        <div className="mt-3">
+                            <h5>
+                                Câu hỏi
+                                <span className="text-orange-700">*</span>:
+                            </h5>
+                            <InputTextarea
+                                value={contact?.question}
+                                autoResize
+                                rows={6}
+                                onChange={(e) => {
+                                    console.log(e);
+                                }}
+                                style={{ width: "100%" }}
+                            />
+                        </div>
+                        <div className="text-center">
+                            <Button
+                                label="Gửi"
+                                severity="success"
+                                className="w-3 mt-4 "
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="footer container-fluid position-relative bg-dark py-5">
+                <div className="container pt-5">
+                    <div className="row">
+                        <div className="col-lg-6 pr-lg-5 mb-5">
+                            <a href="index.html" className="navbar-brand">
+                                <h1 className="mb-3 text-white">
+                                    <span className="primary-text">SPA</span>
+                                    Center
+                                </h1>
+                            </a>
+                            <p>
+                                Aliquyam sed elitr elitr erat sed diam ipsum
+                                eirmod eos lorem nonumy. Tempor sea ipsum diam
+                                sed clita dolore eos dolores magna erat dolore
+                                sed stet justo et dolor.
+                            </p>
+                            <p>
+                                <i className="fa fa-map-marker-alt mr-2"></i>123
+                                Street, New York, USA
+                            </p>
+                            <p>
+                                <i className="fa fa-phone-alt mr-2"></i>+012 345
+                                67890
+                            </p>
+                            <p>
+                                <i className="fa fa-envelope mr-2"></i>
+                                info@example.com
+                            </p>
+                            <div className="d-flex justify-content-start mt-4">
+                                <a
+                                    className="btn btn-lg btn-primary btn-lg-square mr-2"
+                                    href="#"
+                                >
+                                    <i className="fab fa-twitter"></i>
+                                </a>
+                                <a
+                                    className="btn btn-lg btn-primary btn-lg-square mr-2"
+                                    href="#"
+                                >
+                                    <i className="fab fa-facebook-f"></i>
+                                </a>
+                                <a
+                                    className="btn btn-lg btn-primary btn-lg-square mr-2"
+                                    href="#"
+                                >
+                                    <i className="fab fa-linkedin-in"></i>
+                                </a>
+                                <a
+                                    className="btn btn-lg btn-primary btn-lg-square"
+                                    href="#"
+                                >
+                                    <i className="fab fa-instagram"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div className="col-lg-6 pl-lg-5">
+                            <div className="row">
+                                <div className="col-sm-6 mb-5">
+                                    <h5 className="text-white text-uppercase mb-4">
+                                        Quick Links
+                                    </h5>
+                                    <div className="d-flex flex-column justify-content-start">
+                                        <a
+                                            className="text-white-50 mb-2"
+                                            href="#"
+                                        >
+                                            <i className="fa fa-angle-right mr-2"></i>
+                                            Home
+                                        </a>
+                                        <a
+                                            className="text-white-50 mb-2"
+                                            href="#"
+                                        >
+                                            <i className="fa fa-angle-right mr-2"></i>
+                                            About Us
+                                        </a>
+                                        <a
+                                            className="text-white-50 mb-2"
+                                            href="#"
+                                        >
+                                            <i className="fa fa-angle-right mr-2"></i>
+                                            Our Services
+                                        </a>
+                                        <a
+                                            className="text-white-50 mb-2"
+                                            href="#"
+                                        >
+                                            <i className="fa fa-angle-right mr-2"></i>
+                                            Pricing Plan
+                                        </a>
+                                        <a className="text-white-50" href="#">
+                                            <i className="fa fa-angle-right mr-2"></i>
+                                            Contact Us
+                                        </a>
+                                    </div>
+                                </div>
+                                <div className="col-sm-6 mb-5">
+                                    <h5 className="text-white text-uppercase mb-4">
+                                        Our Services
+                                    </h5>
+                                    <div className="d-flex flex-column justify-content-start">
+                                        <a
+                                            className="text-white-50 mb-2"
+                                            href="#"
+                                        >
+                                            <i className="fa fa-angle-right mr-2"></i>
+                                            Body Massage
+                                        </a>
+                                        <a
+                                            className="text-white-50 mb-2"
+                                            href="#"
+                                        >
+                                            <i className="fa fa-angle-right mr-2"></i>
+                                            Stone Therapy
+                                        </a>
+                                        <a
+                                            className="text-white-50 mb-2"
+                                            href="#"
+                                        >
+                                            <i className="fa fa-angle-right mr-2"></i>
+                                            Facial Therapy
+                                        </a>
+                                        <a
+                                            className="text-white-50 mb-2"
+                                            href="#"
+                                        >
+                                            <i className="fa fa-angle-right mr-2"></i>
+                                            Skin Care
+                                        </a>
+                                        <a className="text-white-50" href="#">
+                                            <i className="fa fa-angle-right mr-2"></i>
+                                            Nail Care
+                                        </a>
+                                    </div>
+                                </div>
+                                <div className="col-sm-12 mb-5">
+                                    <h5 className="text-white text-uppercase mb-4">
+                                        Newsletter
+                                    </h5>
+                                    <div className="w-100">
+                                        <div className="input-group">
+                                            <input
+                                                type="text"
+                                                className="form-control border-light"
+                                                style={{ padding: "30px" }}
+                                                placeholder="Your Email Address"
+                                            ></input>
+                                            <div className="input-group-append">
+                                                <button className="btn btn-primary px-4">
+                                                    Sign Up
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div
+                className="container-fluid bg-dark text-light border-top py-4"
+                style={{ borderColor: "rgba(256, 256, 256, .15) !important" }}
+            >
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-6 text-center text-md-left mb-3 mb-md-0">
+                            <p className="m-0 text-white">
+                                &copy; <a href="#">Your Site Name</a>. All
+                                Rights Reserved.
+                            </p>
+                        </div>
+                        <div className="col-md-6 text-center text-md-right">
+                            <p className="m-0 text-white">
+                                Designed by
+                                <a href="https://htmlcodex.com">HTML Codex</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#" className="btn btn-lg btn-primary back-to-top">
+                <i className="fa fa-angle-double-up"></i>
+            </a>
+        </>
     );
 };
 
-export default Dashboard;
+LandingPage.getLayout = function getLayout(page) {
+    return (
+        <React.Fragment>
+            {page}
+            <AppConfig simple />
+        </React.Fragment>
+    );
+};
+
+export default LandingPage;
