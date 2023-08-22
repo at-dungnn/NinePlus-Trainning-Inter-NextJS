@@ -31,7 +31,11 @@ const AppMenu = () => {
                     icon: "pi pi-fw pi-home",
                     to: "/customer",
                 },
-                { label: "Booking", icon: "pi pi-fw pi-home", to: "/booking" },
+                {
+                    label: "Booking",
+                    icon: "pi pi-fw pi-home",
+                    to: "/manage/booking",
+                },
                 { label: "User", icon: "pi pi-fw pi-home", to: "/user" },
                 { label: "Setting", icon: "pi pi-fw pi-home", to: "/setting" },
             ],

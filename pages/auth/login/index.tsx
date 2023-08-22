@@ -10,13 +10,78 @@ import { LayoutContext } from "@/layout/context/LayoutContext";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
 import { Page } from "@/types/layout";
+import axios from "axios";
 import Link from "next/link";
+import Loader from "@/shared/components/Loader";
+import { ToastContext } from "@/layout/context/ToastContext";
 
 const LoginPage: Page<any> = ({ data }: { data: any }) => {
+    const { showToast } = useContext(ToastContext);
+    const axiosInstance = axios.create({
+        baseURL: "http://119.82.130.211:6060/api/",
+        headers: {
+            Accept: "application/json;multipart/form-data",
+            "Content-Type":
+                "application/json;multipart/form-data;application/x-www-form-urlencoded; charset=UTF-8",
+            "Access-Control-Allow-Headers": "Content-Type",
+            "Access-Control-Allow-Origin": "*",
+        },
+    });
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(true);
     const { layoutConfig } = useContext(LayoutContext);
-
     const router = useRouter();
+
+    const handleChange = (val: string, field: string) => {
+        if (field === "username") {
+            setUsername(val);
+        } else {
+            setPassword(val);
+        }
+    };
+
+    const handleSubmitLogin = async (e: any) => {
+        e.preventDefault();
+
+        try {
+            await axiosInstance
+                .post(
+                    "/identity/token",
+
+                    JSON.stringify({
+                        employeeNo: username,
+                        password: password,
+                    })
+                )
+                .then((resp: any) => {
+                    console.log(resp);
+                    if (resp?.data.succeeded == true) {
+                        localStorage.setItem(
+                            "USER",
+                            JSON.stringify(resp.data.data)
+                        );
+
+                        showToast({
+                            severity: "success",
+                            summary: "success",
+                            detail: "Login succeess",
+                        });
+                    }
+                    router.push("/");
+                    // else {
+                    //     console.log("123");
+                    // }
+                });
+        } catch {
+            showToast({
+                severity: "error",
+                // summary: "error",
+                detail: "The Username or Password is Incorrect",
+            });
+        }
+    };
+
     const containerClassName = classNames(
         " flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden",
         { "p-input-filled": layoutConfig.inputStyle === "filled" }
@@ -57,29 +122,35 @@ const LoginPage: Page<any> = ({ data }: { data: any }) => {
 
                         <div>
                             <label
-                                htmlFor="email1"
+                                htmlFor="email"
                                 className="block text-900 text-xl font-medium mb-2"
                             >
                                 Username
                             </label>
                             <InputText
-                                id="email1"
+                                id="email"
                                 type="text"
+                                value={username}
+                                onChange={(e) =>
+                                    handleChange(e.target.value, "username")
+                                }
                                 placeholder="Your email"
                                 className="w-full md:w-30rem mb-5"
                                 style={{ padding: "1rem" }}
                             />
 
                             <label
-                                htmlFor="password1"
+                                htmlFor="password"
                                 className="block text-900 font-medium text-xl mb-2"
                             >
                                 Password
                             </label>
                             <Password
-                                inputId="password1"
+                                inputId="password"
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={(e) =>
+                                    handleChange(e.target.value, "password")
+                                }
                                 placeholder="Your password"
                                 toggleMask
                                 className="w-full mb-5"
@@ -99,7 +170,7 @@ const LoginPage: Page<any> = ({ data }: { data: any }) => {
                                 label="Login"
                                 rounded
                                 className="w-5 p-3 text-xl"
-                                onClick={() => router.push("/")}
+                                onClick={handleSubmitLogin}
                             ></Button>
                         </div>
                         <div className="flex align-items-center mt-5 gap-3">
@@ -107,19 +178,19 @@ const LoginPage: Page<any> = ({ data }: { data: any }) => {
                                 Login with
                             </span>
                             <i
-                                className="pi pi-facebook cursor-pointer"
+                                className=" iconLogin pi pi-facebook cursor-pointer"
                                 onClick={() =>
                                     router.push("https://facebook.com")
                                 }
                             ></i>
                             <i
-                                className="pi pi-linkedin cursor-pointer"
+                                className=" iconLogin pi pi-linkedin cursor-pointer"
                                 onClick={() =>
                                     router.push("https://www.linkedin.com/")
                                 }
                             ></i>
                             <i
-                                className="pi pi-google"
+                                className=" iconLogin pi pi-google"
                                 onClick={() =>
                                     router.push("https://accounts.google.com")
                                 }
@@ -141,3 +212,10 @@ LoginPage.getLayout = function getLayout(page: React.ReactNode) {
     );
 };
 export default LoginPage;
+function Toastify(arg0: {
+    text: string;
+    className: string;
+    style: { background: string };
+}) {
+    throw new Error("Function not implemented.");
+}

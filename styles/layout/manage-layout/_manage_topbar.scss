@@ -85,7 +85,14 @@
         }
     }
 }
-
+.layout-topbar-menu .p-dropdown{
+    .p-dropdown-label{
+        color:black;
+    }
+    .p-dropdown-trigger .p-dropdown-trigger-icon{
+        color:black
+    }
+}
 @media (max-width: 991px) {
     .manage-layout-topbar{
         justify-content: space-between;

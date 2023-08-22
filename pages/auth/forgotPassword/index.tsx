@@ -4,12 +4,12 @@ import React, { useContext, useState } from "react";
 import { Button } from "primereact/button";
 import { useRouter } from "next/router";
 import AppConfig from "@/layout/AppConfig";
-// import { LayoutContext } from "@/layout/context/layoutcontext";
 import { LayoutContext } from "@/layout/context/LayoutContext";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
 import { Page } from "@/types/types";
 import { url } from "inspector";
+import Link from "next/link";
 
 const ForgotPassword: Page = () => {
     const { layoutConfig } = useContext(LayoutContext);
@@ -84,12 +84,12 @@ const ForgotPassword: Page = () => {
 
                             <div className="mt-4 text-center">
                                 <i className=" pi pi-arrow-left"></i>
-                                <a
+                                <Link
                                     className="font-semibold text-xl text-600 no-underline ml-2 "
                                     href="/auth/login/"
                                 >
                                     Back to Login
-                                </a>
+                                </Link>
                             </div>
                         </div>
                         <div className="flex align-items-center mt-6 gap-3">
@@ -97,21 +97,21 @@ const ForgotPassword: Page = () => {
                                 Login with
                             </span>
                             <i
-                                className="pi pi-facebook cursor-pointer"
+                                className=" iconLogin pi pi-facebook cursor-pointer"
                                 style={{ fontSize: "20px" }}
                                 onClick={() =>
                                     router.push("https://facebook.com")
                                 }
                             ></i>
                             <i
-                                className="pi pi-linkedin cursor-pointer"
+                                className=" iconLogin pi pi-linkedin cursor-pointer"
                                 style={{ fontSize: "20px" }}
                                 onClick={() =>
                                     router.push("https://www.linkedin.com/")
                                 }
                             ></i>
                             <i
-                                className="pi pi-google"
+                                className=" iconLogin pi pi-google"
                                 style={{ fontSize: "20px" }}
                                 onClick={() =>
                                     router.push("https://accounts.google.com")

@@ -30,3 +30,36 @@ export function splitDate(str: any): Date {
         return formatDate(dateParse[0]);
     }
 }
+//2023-07-11T15:30
+//
+export function formatDateCalendar(str: string): string {
+    if (!str) {
+        return new Date().toString();
+    } else {
+        const parseStr = str.split("T");
+
+        return `${parseStr[1].split(".")[0]}`;
+    }
+}
+
+export function formatFromTo(from: string, to: string) {
+    const dateParse1 = from?.split("T");
+
+    const dateParse2 = to?.split("T");
+
+    const data = `${dateParse1[1].split(".")[0]}-${
+        dateParse2[1].split(".")[0]
+    } ${dateParse1[0]}`;
+
+    return data;
+}
+export function formatBookingDate(str: string) {
+    const dateParse = str?.split("T");
+    return dateParse[0];
+}
+
+export function formatBookingTime(str: string) {
+    const dateParse = str?.split("T");
+    const timeParse = dateParse[1].split(".");
+    return `${timeParse[0]} ${dateParse[0]}`;
+}

@@ -7,6 +7,7 @@ import AppConfig from "@/layout/AppConfig";
 import { LayoutContext } from "@/layout/context/LayoutContext";
 import { classNames } from "primereact/utils";
 import { Page } from "@/types/types";
+import Link from "next/link";
 
 const SendMAil: Page = () => {
     const { layoutConfig } = useContext(LayoutContext);
@@ -74,35 +75,32 @@ const SendMAil: Page = () => {
 
                                 <div className="mt-4 text-center">
                                     <i className=" pi pi-arrow-left"></i>
-                                    <a
+                                    <Link
                                         className="font-semibold text-xl text-600 no-underline ml-2 "
                                         href="/auth/login/"
                                     >
                                         Back to Login
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
-                            <div className="flex fle align-items-start mt-6 gap-3">
+                            <div className="flex flex align-items-start mt-6 gap-3">
                                 <span className="font-semibold text-500 no-underline ml-2 text-right ">
                                     Login with
                                 </span>
                                 <i
-                                    className="pi pi-facebook cursor-pointer"
-                                    style={{ fontSize: "20px" }}
+                                    className=" iconLogin pi pi-facebook cursor-pointer"
                                     onClick={() =>
                                         router.push("https://facebook.com")
                                     }
                                 ></i>
                                 <i
-                                    className="pi pi-linkedin cursor-pointer"
-                                    style={{ fontSize: "20px" }}
+                                    className=" iconLogin pi pi-linkedin cursor-pointer"
                                     onClick={() =>
                                         router.push("https://www.linkedin.com/")
                                     }
                                 ></i>
                                 <i
-                                    className="pi pi-google"
-                                    style={{ fontSize: "20px" }}
+                                    className=" iconLogin pi pi-google"
                                     onClick={() =>
                                         router.push(
                                             "https://accounts.google.com"
