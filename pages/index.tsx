@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useRef, useState } from "react";
 import AppConfig from "@/layout/AppConfig";
 import Carousel from "react-multi-carousel";
@@ -13,22 +12,43 @@ import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { ServicesManageService } from "@/shared/services/BookingService";
 import { useRouter } from "next/router";
+import { Avatar } from "primereact/avatar";
+import { TieredMenu } from "primereact/tieredmenu";
 
 // const fetchService = () => {
 //     const serviceFetch = new ServicesManageService();
 //     return serviceFetch.getServices("");
 // };
+const fakedata = {
+    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6InN1cGVyYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJsZWhpZXUucXJ0QGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJOZ3V5ZW4gUGh1b2MgTGUgSGlldSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL21vYmlsZXBob25lIjoiIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiU3VwZXJhZG1pbiIsImV4cCI6MTY5Mjg2MTE2NX0.DgrXfah_yclmcu2qXNIR6-7oooM95IaDLD8mGUJOKJM",
+    refreshToken: "sx6d63MKUlya8dPHGv56YWGUH60wP51SDKcNwRFy9c4=",
+    employeeNo: "superadmin",
+    email: "lehieu.qrt@gmail.com",
+    avatarUrl:
+        "https://primefaces.org/cdn/primereact/images/avatar/amyelsner.png",
+    role: "Superadmin",
+    refreshTokenExpiryTime: "2023-08-29T14:12:45.0946093+07:00",
+    userId: 0,
+};
 const LandingPage: Page = () => {
     const router = useRouter();
+    const [user, setUser] = useState<any>();
     const [service, setService] = useState();
     const [isLogin, setLogin] = useState(false);
     const [contact, setContact] = useState<any>({});
     const aboutMenu = useRef(null);
     const serviceMenu = useRef(null);
+    const profileMenu = useRef(null);
     const productMenu = useRef(null);
+    const mobileMenu = useRef(null);
+    useEffect(() => {
+        setUser(localStorage.getItem("USER") || null);
+    }, []);
+
     const aboutOption = [
         {
             label: "About us",
+            url: "/about",
         },
         { label: "Vision, Misson, Core Values" },
         { label: "About the president" },
@@ -73,7 +93,47 @@ const LandingPage: Page = () => {
             src: "https://img.freepik.com/free-photo/beautician-with-brush-applies-white-moisturizing-mask-face-young-girl-client-spa-beauty-salon_343596-4246.jpg?t=st=1692012029~exp=1692012629~hmac=4c7915b5beea4d517a691628b89c7f2b29902fbb7a4998de3c49fe7337dbdea8",
         },
     ];
-
+    const profileOption = [
+        { label: "Profile", visible: user !== null },
+        { label: "Settings", visible: user !== null },
+        { label: "Manage", visible: user !== null },
+        { label: "Profile", visible: user !== null },
+        { label: "Log In", visible: user === null },
+        { label: "Sign Up", visible: user === null },
+        {
+            separator: true,
+            visible: user !== null,
+        },
+        {
+            label: "Log Out",
+            command: () => {
+                localStorage.removeItem("USER");
+                router.reload();
+            },
+            visible: user !== null,
+        },
+    ];
+    const MobileOption = [
+        {
+            label: "About us",
+            items: [...aboutOption],
+        },
+        {
+            label: "Services",
+            items: [...serviceOption],
+        },
+        {
+            label: "Product",
+            items: [...productOption],
+        },
+        {
+            label: "Blog",
+        },
+        {
+            separator: true,
+        },
+        { label: "Profile", items: [...profileOption] },
+    ];
     return (
         <>
             <div className="container-fluid p-0">
@@ -88,11 +148,20 @@ const LandingPage: Page = () => {
                         className="navbar-toggler"
                         data-toggle="collapse"
                         data-target="#navbarCollapse"
+                        onClick={(event) => {
+                            (mobileMenu.current as any).toggle(event);
+                        }}
                     >
+                        <TieredMenu
+                            model={MobileOption as any}
+                            popup
+                            ref={mobileMenu}
+                            breakpoint="767px"
+                        />
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div
-                        className="collapse navbar-collapse justify-content-end gap-8 px-lg-3"
+                        className="collapse navbar-collapse justify-content-between gap-8 px-lg-3"
                         id="navbarCollapse"
                     >
                         <div className="navbar-nav py-0">
@@ -147,18 +216,67 @@ const LandingPage: Page = () => {
 
                             <Button severity="secondary" label="Blog" text />
                         </div>
-                        <div className="flex gap-8 w-24rem ">
-                            <Button
-                                severity="success"
-                                label="Book Now"
-                                className="w-8"
-                            />
-                            <Button
-                                icon="pi pi-users"
-                                label="Login"
-                                className="w-8"
-                            />
-                        </div>
+
+                        {user === null ? (
+                            <div className="flex gap-8 w-24rem ">
+                                <Button
+                                    severity="success"
+                                    label="Book Now"
+                                    className="w-8"
+                                />
+                                <Button
+                                    icon="pi pi-users"
+                                    label="Login"
+                                    className="w-8"
+                                    onClick={() => {
+                                        // router.push("/auth/login");
+                                        localStorage.setItem(
+                                            "USER",
+                                            JSON.stringify(fakedata),
+                                        );
+                                        router.reload();
+                                    }}
+                                />
+                            </div>
+                        ) : (
+                            <div className="flex gap-8 w-24rem justify-content-end ">
+                                <div className="card p-2 right-0 ">
+                                    <div
+                                        onClick={(event) => {
+                                            (profileMenu.current as any).toggle(
+                                                event,
+                                            );
+                                        }}
+                                        className="  p-link flex align-items-center h-4 p-0"
+                                    >
+                                        <Avatar
+                                            image={
+                                                user?.avatarUrl !== null
+                                                    ? user?.avatarUrl
+                                                    : "https://t3.ftcdn.net/jpg/05/00/54/28/360_F_500542898_LpYSy4RGAi95aDim3TLtSgCNUxNlOlcM.jpg"
+                                            }
+                                            className="mr-2"
+                                            shape="circle"
+                                        />
+                                        <div className="flex flex-column align">
+                                            <span className="font-bold">
+                                                Amy Elsner
+                                            </span>
+                                            <span className="text-sm">
+                                                Agent
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <Menu
+                                        ref={profileMenu}
+                                        popup
+                                        model={profileOption as any}
+                                        id="profilePopup"
+                                        className="mt-3 mr-2"
+                                    />
+                                </div>{" "}
+                            </div>
+                        )}
                     </div>
                 </nav>
             </div>
@@ -205,7 +323,7 @@ const LandingPage: Page = () => {
                     >
                         <img
                             className="position-absolute w-100 h-100"
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQDvnn0QmP554WLSeDMnG_yjOPLVr2Vky39A&usqp=CAU"
+                            src="/demo/images/templates/service-5.jpg"
                             style={{ objectFit: "cover" }}
                         ></img>
                         <div className="carousel-caption d-flex flex-column align-items-center justify-content-center">
@@ -265,6 +383,59 @@ const LandingPage: Page = () => {
                     </div>
                 </Carousel>
             </div>
+
+            <div className="container-fluid py-5">
+                <div className="container py-5">
+                    <div className="row">
+                        <div
+                            className="col-lg-6"
+                            style={{ minHeight: "100px" }}
+                        >
+                            <div className="position-relative h-100">
+                                <img
+                                    className="position-absolute w-100 h-100"
+                                    src="/demo/images/templates/opening.jpg"
+                                    style={{ objectFit: "cover" }}
+                                ></img>
+                            </div>
+                        </div>
+                        <div className="col-lg-6 pt-5 pb-lg-5">
+                            <div className="hours-text bg-light p-4 p-lg-5 my-lg-5">
+                                <h6 className="d-inline-block text-white text-uppercase primary-bg py-1 px-2">
+                                    Natural Spa
+                                </h6>
+                                <h1 className="mb-4">
+                                    Trẻ hóa cơ thể và tâm hồn của bạn
+                                </h1>
+                                <p>
+                                    Tại Natural Spa, chúng tôi áp dụng phương
+                                    pháp tiếp cận toàn diện để trị liệu cho
+                                    Khách hàng của mình. Chúng ta biết rằng con
+                                    người không ai giống ai hoàn toàn ngay cả
+                                    khi có những diểm tương đồng. Cơ thể, tâm
+                                    trí và linh hồn của bạn đều được kết nối với
+                                    nhau và cơ thể nếu bị tổn thương tâm trí và
+                                    tinh thần cũng sẽ phản ứng và ngược lại.
+                                </p>
+                                <ul className="list-inline">
+                                    <li className="h6 py-1">
+                                        <i className="far fa-circle primary-text mr-3"></i>
+                                        T2 – T7 : 9:00 - 18:00
+                                    </li>
+
+                                    <li className="h6 py-1">
+                                        <i className="far fa-circle primary-text mr-3"></i>
+                                        CN : Đóng Cửa
+                                    </li>
+                                </ul>
+                                <a href="" className="btn btn-primary mt-2">
+                                    Đặt lịch
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div className="container-fluid py-5">
                 <div className="container py-5">
                     <div className="row align-items-center">
@@ -323,213 +494,7 @@ const LandingPage: Page = () => {
                     </div>
                 </div>
             </div>
-            <div className="container-fluid px-0 py-5 my-5">
-                <div className="row mx-0 justify-content-center text-center">
-                    <div className="col-lg-6">
-                        <h6 className="d-inline-block bg-light primary-text text-uppercase py-1 px-2">
-                            Our Service
-                        </h6>
-                        <h1>Spa & Beauty Services</h1>
-                    </div>
-                </div>
-                <Carousel
-                    arrows={false}
-                    responsive={{
-                        desktop: {
-                            breakpoint: { max: 3000, min: 1024 },
-                            items: 5,
-                        },
-                        tablet: {
-                            breakpoint: { max: 1024, min: 464 },
-                            items: 3,
-                        },
-                        mobile: {
-                            breakpoint: { max: 464, min: 0 },
-                            items: 2,
-                        },
-                    }}
-                    infinite={true}
-                >
-                    <div className="service-item position-relative">
-                        <img
-                            className="img-fluid"
-                            src="/demo/images/templates/service-1.jpg"
-                            alt=""
-                        ></img>
-                        <div className="service-text text-center">
-                            <h4 className="text-white font-weight-medium px-3">
-                                Body Massage
-                            </h4>
-                            <p className="text-white px-3 mb-3">
-                                Elitr labore sit dolor erat est lorem diam sea
-                                ipsum diam dolor duo sit ipsum
-                            </p>
-                            <div className="w-100 bg-white text-center p-4">
-                                <a className="btn btn-primary" href="">
-                                    Make Order
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="service-item position-relative">
-                        <img
-                            className="img-fluid"
-                            src="/demo/images/templates/service-2.jpg"
-                            alt=""
-                        ></img>
-                        <div className="service-text text-center">
-                            <h4 className="text-white font-weight-medium px-3">
-                                Stone Therapy
-                            </h4>
-                            <p className="text-white px-3 mb-3">
-                                Elitr labore sit dolor erat est lorem diam sea
-                                ipsum diam dolor duo sit ipsum
-                            </p>
-                            <div className="w-100 bg-white text-center p-4">
-                                <a className="btn btn-primary" href="">
-                                    Make Order
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="service-item position-relative">
-                        <img
-                            className="img-fluid"
-                            src="/demo/images/templates/service-3.jpg"
-                            alt=""
-                        ></img>
-                        <div className="service-text text-center">
-                            <h4 className="text-white font-weight-medium px-3">
-                                Facial Therapy
-                            </h4>
-                            <p className="text-white px-3 mb-3">
-                                Elitr labore sit dolor erat est lorem diam sea
-                                ipsum diam dolor duo sit ipsum
-                            </p>
-                            <div className="w-100 bg-white text-center p-4">
-                                <a className="btn btn-primary" href="">
-                                    Make Order
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="service-item position-relative">
-                        <img
-                            className="img-fluid"
-                            src="/demo/images/templates/service-4.jpg"
-                            alt=""
-                        ></img>
-                        <div className="service-text text-center">
-                            <h4 className="text-white font-weight-medium px-3">
-                                Skin Care
-                            </h4>
-                            <p className="text-white px-3 mb-3">
-                                Elitr labore sit dolor erat est lorem diam sea
-                                ipsum diam dolor duo sit ipsum
-                            </p>
-                            <div className="w-100 bg-white text-center p-4">
-                                <a className="btn btn-primary" href="">
-                                    Make Order
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="service-item position-relative">
-                        <img
-                            className="img-fluid"
-                            src="/demo/images/templates/service-5.jpg"
-                            alt=""
-                        ></img>
-                        <div className="service-text text-center">
-                            <h4 className="text-white font-weight-medium px-3">
-                                Stream Bath
-                            </h4>
-                            <p className="text-white px-3 mb-3">
-                                Elitr labore sit dolor erat est lorem diam sea
-                                ipsum diam dolor duo sit ipsum
-                            </p>
-                            <div className="w-100 bg-white text-center p-4">
-                                <a className="btn btn-primary" href="">
-                                    Make Order
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="service-item position-relative">
-                        <img
-                            className="img-fluid"
-                            src="/demo/images/templates/service-6.jpg"
-                            alt=""
-                        ></img>
-                        <div className="service-text text-center">
-                            <h4 className="text-white font-weight-medium px-3">
-                                Face Masking
-                            </h4>
-                            <p className="text-white px-3 mb-3">
-                                Elitr labore sit dolor erat est lorem diam sea
-                                ipsum diam dolor duo sit ipsum
-                            </p>
-                            <div className="w-100 bg-white text-center p-4">
-                                <a className="btn btn-primary" href="">
-                                    Make Order
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </Carousel>
-            </div>
-            <div className="container-fluid py-5">
-                <div className="container py-5">
-                    <div className="row">
-                        <div
-                            className="col-lg-6"
-                            style={{ minHeight: "500px" }}
-                        >
-                            <div className="position-relative h-100">
-                                <img
-                                    className="position-absolute w-100 h-100"
-                                    src="/demo/images/templates/opening.jpg"
-                                    style={{ objectFit: "cover" }}
-                                ></img>
-                            </div>
-                        </div>
-                        <div className="col-lg-6 pt-5 pb-lg-5">
-                            <div className="hours-text bg-light p-4 p-lg-5 my-lg-5">
-                                <h6 className="d-inline-block text-white text-uppercase primary-bg py-1 px-2">
-                                    Open Hours
-                                </h6>
-                                <h1 className="mb-4">
-                                    Best Relax And Spa Zone
-                                </h1>
-                                <p>
-                                    Dolores lorem lorem ipsum sit et ipsum.
-                                    Sadip sea amet diam dolore sed et. Sit rebum
-                                    labore sit sit ut vero no sit. Et elitr stet
-                                    dolor sed sit et sed ipsum et kasd ut. Erat
-                                    duo eos et erat sed diam duo
-                                </p>
-                                <ul className="list-inline">
-                                    <li className="h6 py-1">
-                                        <i className="far fa-circle primary-text mr-3"></i>
-                                        Mon – Fri : 9:00 AM - 7:00 PM
-                                    </li>
-                                    <li className="h6 py-1">
-                                        <i className="far fa-circle primary-text mr-3"></i>
-                                        Saturday : 9:00 AM - 6:00 PM
-                                    </li>
-                                    <li className="h6 py-1">
-                                        <i className="far fa-circle primary-text mr-3"></i>
-                                        Sunday : Closed
-                                    </li>
-                                </ul>
-                                <a href="" className="btn btn-primary mt-2">
-                                    Book Now
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
             <div className="grid">
                 <div className="col-12 text-center bg-orange-400 ">
                     <h2 className="text-white mt-2">SPA, NAIL AND HAIRCAIR</h2>
@@ -618,7 +583,7 @@ const LandingPage: Page = () => {
                         <h1>Xem thêm</h1>
                     </div>
                 </Card>
-                <div className="md:col-6 col-12 h-25rem md:flex-order-4 ">
+                <div className="md:col-6 col-12 h-25rem md:flex-order-4 mb-5 ">
                     <Carousel
                         infinite={true}
                         arrows={true}
@@ -646,7 +611,174 @@ const LandingPage: Page = () => {
                     </Carousel>
                 </div>
             </div>
-
+            <div className="container-fluid px-0 py-5 my-5">
+                <div className="row mx-0 justify-content-center text-center">
+                    <div className="col-lg-6">
+                        <h6 className="d-inline-block bg-light primary-text text-uppercase py-1 px-2">
+                            Dịch vụ phẩu thuật thẩm mỹ
+                        </h6>
+                        <h1>Natural Spa Plastic Surgery Service</h1>
+                    </div>
+                </div>
+                <Carousel
+                    arrows={false}
+                    responsive={{
+                        desktop: {
+                            breakpoint: { max: 3000, min: 1024 },
+                            items: 5,
+                        },
+                        tablet: {
+                            breakpoint: { max: 1024, min: 464 },
+                            items: 3,
+                        },
+                        mobile: {
+                            breakpoint: { max: 464, min: 0 },
+                            items: 2,
+                        },
+                    }}
+                    infinite={true}
+                    className="mb-5 "
+                >
+                    <div className="service-item position-relative relative ">
+                        <img
+                            className="w-full"
+                            height={"500em"}
+                            width={"600px"}
+                            src="/demo/images/templates/service-1.jpg"
+                            alt=""
+                        ></img>
+                        <div className="service-text text-center">
+                            <h4 className="text-white font-weight-medium px-3">
+                                Mặt
+                            </h4>
+                            <p className="text-white px-3 mb-3">
+                                Elitr labore sit dolor erat est lorem diam sea
+                                ipsum diam dolor duo sit ipsum
+                            </p>
+                            <div className="w-100 bg-white text-center p-4">
+                                <a className="btn btn-primary" href="">
+                                    Make Appointment
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="service-item position-relative relative  ">
+                        <img
+                            className="w-full"
+                            height={"500em"}
+                            width={"600px"}
+                            src="https://www.matsaigon.com/wp-content/uploads/benh-o-mi-mat.jpeg"
+                            alt=""
+                        ></img>
+                        <div className="service-text text-center">
+                            <h4 className="text-white font-weight-medium px-3">
+                                Mắt
+                            </h4>
+                            <p className="text-white px-3 mb-3">
+                                Elitr labore sit dolor erat est lorem diam sea
+                                ipsum diam dolor duo sit ipsum
+                            </p>
+                            <div className="w-100 bg-white text-center p-4">
+                                <a className="btn btn-primary" href="">
+                                    Make Appointment
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="service-item position-relative ">
+                        <img
+                            className="w-full"
+                            height={"500em"}
+                            width={"600px"}
+                            src="https://benhvienngocphu.com/static/upload/images/Mui-Ben-Dep.jpeg"
+                            alt=""
+                        ></img>
+                        <div className="service-text text-center">
+                            <h4 className="text-white font-weight-medium px-3">
+                                Mũi
+                            </h4>
+                            <p className="text-white px-3 mb-3">
+                                Elitr labore sit dolor erat est lorem diam sea
+                                ipsum diam dolor duo sit ipsum
+                            </p>
+                            <div className="w-100 bg-white text-center p-4">
+                                <a className="btn btn-primary" href="">
+                                    Make Appointment
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="service-item position-relative   ">
+                        <img
+                            className="w-full"
+                            height={"500em"}
+                            width={"600px"}
+                            src="https://thammyviengangwhoo.vn/wp-content/uploads/2021/03/don-cam-co-duoc-vinh-vien-khong-1.jpg"
+                            alt=""
+                        ></img>
+                        <div className="service-text text-center">
+                            <h4 className="text-white font-weight-medium px-3">
+                                Cằm
+                            </h4>
+                            <p className="text-white px-3 mb-3">
+                                Elitr labore sit dolor erat est lorem diam sea
+                                ipsum diam dolor duo sit ipsum
+                            </p>
+                            <div className="w-100 bg-white text-center p-4">
+                                <a className="btn btn-primary" href="">
+                                    Make Appointment
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="service-item position-relative  ">
+                        <img
+                            className="w-full"
+                            height={"500em"}
+                            width={"600px"}
+                            src="https://nhakhoatandinh.com/wp-content/uploads/2020/03/lam-trang-rang-nha-khoa.jpg"
+                            alt=""
+                        ></img>
+                        <div className="service-text text-center">
+                            <h4 className="text-white font-weight-medium px-3">
+                                Nha khoa
+                            </h4>
+                            <p className="text-white px-3 mb-3">
+                                Elitr labore sit dolor erat est lorem diam sea
+                                ipsum diam dolor duo sit ipsum
+                            </p>
+                            <div className="w-100 bg-white text-center p-4">
+                                <a className="btn btn-primary" href="">
+                                    Make Appointment
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="service-item position-relative  ">
+                        <img
+                            className="w-full"
+                            height={"500em"}
+                            width={"600px"}
+                            src="/demo/images/templates/service-4.jpg"
+                            alt=""
+                        ></img>
+                        <div className="service-text text-center">
+                            <h4 className="text-white font-weight-medium px-3">
+                                Body
+                            </h4>
+                            <p className="text-white px-3 mb-3">
+                                Elitr labore sit dolor erat est lorem diam sea
+                                ipsum diam dolor duo sit ipsum
+                            </p>
+                            <div className="w-100 bg-white text-center p-4">
+                                <a className="btn btn-primary" href="">
+                                    Make Appointment
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </Carousel>
+            </div>
             <div className="contact">
                 <h1 className="contact-title">Liên hệ với chúng tôi</h1>
                 <div className=" contact-body  mt-7">
@@ -762,22 +894,28 @@ const LandingPage: Page = () => {
                         <div className="col-lg-6 pr-lg-5 mb-5">
                             <a href="index.html" className="navbar-brand">
                                 <h1 className="mb-3 text-white">
-                                    <span className="primary-text">SPA</span>
-                                    Center
+                                    <span className="primary-text">
+                                        Natural
+                                    </span>{" "}
+                                    Spa
                                 </h1>
                             </a>
                             <p>
-                                Aliquyam sed elitr elitr erat sed diam ipsum
-                                eirmod eos lorem nonumy. Tempor sea ipsum diam
-                                sed clita dolore eos dolores magna erat dolore
-                                sed stet justo et dolor.
+                                Natural Spa là nơi bạn đến để thư giãn trong bầu
+                                không khí ngập tràn sự quan tâm và tin tưởng. Ẩn
+                                mình trong thiên nhiên với không khí trong lành
+                                tiếp thêm sinh lực.
+                            </p>
+                            <p>
+                                Natural Spa là sự lựa chọn cần thiết của bạn để
+                                nạp năng lượng và chữa lành tâm hồn.
                             </p>
                             <p>
                                 <i className="fa fa-map-marker-alt mr-2"></i>123
-                                Street, New York, USA
+                                Da Nang, Viet Nam
                             </p>
                             <p>
-                                <i className="fa fa-phone-alt mr-2"></i>+012 345
+                                <i className="fa fa-phone-alt mr-2"></i>+84 345
                                 67890
                             </p>
                             <p>
@@ -891,48 +1029,7 @@ const LandingPage: Page = () => {
                                         </a>
                                     </div>
                                 </div>
-                                <div className="col-sm-12 mb-5">
-                                    <h5 className="text-white text-uppercase mb-4">
-                                        Newsletter
-                                    </h5>
-                                    <div className="w-100">
-                                        <div className="input-group">
-                                            <input
-                                                type="text"
-                                                className="form-control border-light"
-                                                style={{ padding: "30px" }}
-                                                placeholder="Your Email Address"
-                                            ></input>
-                                            <div className="input-group-append">
-                                                <button className="btn btn-primary px-4">
-                                                    Sign Up
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div
-                className="container-fluid bg-dark text-light border-top py-4"
-                style={{ borderColor: "rgba(256, 256, 256, .15) !important" }}
-            >
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-6 text-center text-md-left mb-3 mb-md-0">
-                            <p className="m-0 text-white">
-                                &copy; <a href="#">Your Site Name</a>. All
-                                Rights Reserved.
-                            </p>
-                        </div>
-                        <div className="col-md-6 text-center text-md-right">
-                            <p className="m-0 text-white">
-                                Designed by
-                                <a href="https://htmlcodex.com">HTML Codex</a>
-                            </p>
                         </div>
                     </div>
                 </div>
