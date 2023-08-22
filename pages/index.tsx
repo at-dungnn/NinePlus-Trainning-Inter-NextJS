@@ -15,21 +15,6 @@ import { useRouter } from "next/router";
 import { Avatar } from "primereact/avatar";
 import { TieredMenu } from "primereact/tieredmenu";
 
-// const fetchService = () => {
-//     const serviceFetch = new ServicesManageService();
-//     return serviceFetch.getServices("");
-// };
-const fakedata = {
-    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6InN1cGVyYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJsZWhpZXUucXJ0QGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJOZ3V5ZW4gUGh1b2MgTGUgSGlldSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL21vYmlsZXBob25lIjoiIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiU3VwZXJhZG1pbiIsImV4cCI6MTY5Mjg2MTE2NX0.DgrXfah_yclmcu2qXNIR6-7oooM95IaDLD8mGUJOKJM",
-    refreshToken: "sx6d63MKUlya8dPHGv56YWGUH60wP51SDKcNwRFy9c4=",
-    employeeNo: "superadmin",
-    email: "lehieu.qrt@gmail.com",
-    avatarUrl:
-        "https://primefaces.org/cdn/primereact/images/avatar/amyelsner.png",
-    role: "Superadmin",
-    refreshTokenExpiryTime: "2023-08-29T14:12:45.0946093+07:00",
-    userId: 0,
-};
 const LandingPage: Page = () => {
     const router = useRouter();
     const [user, setUser] = useState<any>();
@@ -42,7 +27,7 @@ const LandingPage: Page = () => {
     const productMenu = useRef(null);
     const mobileMenu = useRef(null);
     useEffect(() => {
-        setUser(localStorage.getItem("USER") || null);
+        setUser(JSON.parse(localStorage.getItem("USER") as any) || null);
     }, []);
 
     const aboutOption = [
@@ -95,11 +80,20 @@ const LandingPage: Page = () => {
     ];
     const profileOption = [
         { label: "Profile", visible: user !== null },
-        { label: "Settings", visible: user !== null },
-        { label: "Manage", visible: user !== null },
+        {
+            label: "Settings",
+            visible: user !== null,
+        },
+        {
+            label: "Manage",
+            visible: user !== null && user?.role == "Superadmin",
+            url: "/dashboard",
+        },
         { label: "Profile", visible: user !== null },
+
         { label: "Log In", visible: user === null },
         { label: "Sign Up", visible: user === null },
+
         {
             separator: true,
             visible: user !== null,
@@ -229,12 +223,7 @@ const LandingPage: Page = () => {
                                     label="Login"
                                     className="w-8"
                                     onClick={() => {
-                                        // router.push("/auth/login");
-                                        localStorage.setItem(
-                                            "USER",
-                                            JSON.stringify(fakedata),
-                                        );
-                                        router.reload();
+                                        router.push("/auth/login");
                                     }}
                                 />
                             </div>
