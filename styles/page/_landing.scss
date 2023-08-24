@@ -113,3 +113,10 @@
 .image-round {
     border-radius: 5%;
 }
+button:active {
+    /* active css */
+}
+
+button:disabled {
+    opacity: 0.5;
+}
