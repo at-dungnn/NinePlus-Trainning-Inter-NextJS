@@ -75,8 +75,8 @@ const CalendarPage = () => {
             ],
         });
         apiFetch.getBooking("").then((resp: any) => {
-            setResourceData(inititalResourceData(resp));
-            setEventData(inititalEventData(resp));
+            setResourceData(inititalResourceData(resp.data));
+            setEventData(inititalEventData(resp.data));
         });
         setIsLoading(false);
     }, [router.query.slug, router.locale]);

@@ -52,14 +52,14 @@ const LoginPage: Page<any> = ({ data }: { data: any }) => {
                     JSON.stringify({
                         employeeNo: username,
                         password: password,
-                    })
+                    }),
                 )
                 .then((resp: any) => {
                     console.log(resp);
                     if (resp?.data.succeeded == true) {
                         localStorage.setItem(
                             "USER",
-                            JSON.stringify(resp.data.data)
+                            JSON.stringify(resp.data.data),
                         );
 
                         showToast({
@@ -76,7 +76,7 @@ const LoginPage: Page<any> = ({ data }: { data: any }) => {
         } catch {
             showToast({
                 severity: "error",
-                // summary: "error",
+                summary: "Error",
                 detail: "The Username or Password is Incorrect",
             });
         }
@@ -84,7 +84,7 @@ const LoginPage: Page<any> = ({ data }: { data: any }) => {
 
     const containerClassName = classNames(
         " flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden",
-        { "p-input-filled": layoutConfig.inputStyle === "filled" }
+        { "p-input-filled": layoutConfig.inputStyle === "filled" },
     );
 
     return (
@@ -111,7 +111,7 @@ const LoginPage: Page<any> = ({ data }: { data: any }) => {
                                 onClick={() => router.push("/auth/register/")}
                             ></Button>
                         </div>
-                        <div className="mb-5">
+                        <div className="mb-5 text-center">
                             <div className="text-900 text-3xl font-semibold mb-3">
                                 Welcome Back
                             </div>
@@ -168,8 +168,7 @@ const LoginPage: Page<any> = ({ data }: { data: any }) => {
                             </div>
                             <Button
                                 label="Login"
-                                rounded
-                                className="w-5 p-3 text-xl"
+                                className="w-full p-3 text-xl"
                                 onClick={handleSubmitLogin}
                             ></Button>
                         </div>
@@ -212,10 +211,3 @@ LoginPage.getLayout = function getLayout(page: React.ReactNode) {
     );
 };
 export default LoginPage;
-function Toastify(arg0: {
-    text: string;
-    className: string;
-    style: { background: string };
-}) {
-    throw new Error("Function not implemented.");
-}

@@ -53,6 +53,11 @@ export default {
         service: 'Service',
         note: 'Note',
         serviceph: 'Select Service',
+        changeStatus: 'Change status success',
+        cancelFilter: 'Clear Filter',
+        orderPH: 'Order by',
+        statusPH:"Select Status",
+        bookingDatePH:"Booking Date Select",
         button: {
             add: 'Add Booking',
         },

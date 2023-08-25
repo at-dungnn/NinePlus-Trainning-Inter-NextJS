@@ -33,13 +33,18 @@ const UpdateBooking = () => {
         useContext(BreadcrumbContext);
     useEffect(() => {
         if (router.query.id) {
-            apiFetch.getBooking(`${router.query.id}`).then((resp: any) => {
-                setBooking({ ...resp, serviceId: mapService(resp.services) });
-                serviceFetch.getServices("").then((resp: any) => {
-                    setService(resp);
-                    setIsLoading(false);
+            apiFetch
+                .getBookingDetail(`${router.query.id}`)
+                .then((resp: any) => {
+                    setBooking({
+                        ...resp,
+                        serviceId: mapService(resp.services),
+                    });
+                    serviceFetch.getServices("").then((resp: any) => {
+                        setService(resp);
+                        setIsLoading(false);
+                    });
                 });
-            });
         }
 
         setBreadcrumbs({

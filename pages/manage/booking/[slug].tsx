@@ -33,8 +33,7 @@ const DetailPage = () => {
         console.log(router.query.slug);
         if (router.query.slug) {
             apiFetch.getBooking(`${router.query.slug}`).then((resp: any) => {
-                console.log(resp);
-                setBooking(resp);
+                setBooking(resp.data);
                 setIsLoading(false);
             });
         }
@@ -103,7 +102,7 @@ const DetailPage = () => {
                                                     "text-yellow-500  pi-spin pi-spinner":
                                                         (booking.status as any) ===
                                                         2,
-                                                }
+                                                },
                                             )}
                                         />
                                     </h3>
@@ -120,7 +119,7 @@ const DetailPage = () => {
                                                 "text-yellow-500":
                                                     (booking.status as any) ===
                                                     2,
-                                            }
+                                            },
                                         )}
                                     >
                                         {(booking.status as any) === 3

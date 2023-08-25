@@ -61,7 +61,14 @@ export abstract class CRUDService {
 
     protected delete<T>(url: string): Promise<T> {
         return this.httpClient
-            .delete<T>(`${this.basePath}/${url}`)
+            .delete<T>(`${this.basePath}${url}`)
+            .then((response: AxiosResponse<T>) => {
+                return response.data;
+            });
+    }
+    protected patch<T>(url: string, data: any): Promise<T> {
+        return this.httpClient
+            .patch(`${this.basePath}/${url}`, JSON.stringify(data))
             .then((response: AxiosResponse<T>) => {
                 return response.data;
             });

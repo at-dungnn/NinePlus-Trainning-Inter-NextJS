@@ -4,6 +4,7 @@ import React from "react";
 import { LayoutProvider } from "@/layout/context/LayoutContext";
 import { AppContextProvider } from "@/shared/context";
 import Layout from "@/layout/layout";
+import "@/public/demo/css/style.css";
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import "primeicons/primeicons.css";
