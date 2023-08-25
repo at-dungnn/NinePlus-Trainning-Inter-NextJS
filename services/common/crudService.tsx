@@ -47,9 +47,20 @@ export abstract class CRUDService {
     }
 
     protected update<T>(url: string, data: any) {
-        console.log(data);
         return this.httpClient
             .put<T>(`${this.basePath}/${url}`, JSON.stringify(data))
+            .then((response: AxiosResponse<T>) => {
+                return response.data;
+            })
+            .catch((e) => {
+                console.log(e);
+                return e.response.data;
+            });
+    }
+
+    protected upload<T>(url: string, data: any) {
+        return this.httpClient
+            .post<T>(`${this.basePath}/${url}`, data)
             .then((response: AxiosResponse<T>) => {
                 return response.data;
             })

@@ -8,7 +8,7 @@ export class CustomerService extends CRUDService {
     }
     public async createCustomer<T>(
         url: string,
-        data: Customer
+        data: Customer,
     ): Promise<T | void> {
         return await this.create<T>(url, data);
     }
