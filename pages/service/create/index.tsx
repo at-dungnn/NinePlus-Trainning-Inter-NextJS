@@ -1,123 +1,95 @@
 import { useRouter } from "next/router";
 import { Card } from "primereact/card";
 import { InputText } from "primereact/inputtext";
-import React, { useContext, useState } from "react";
-import { ServicesContext } from "../../../layout/context/servicesContext";
+import React, { useState } from "react";
 import { classNames } from "primereact/utils";
-import {
-    FileUpload,
-    FileUploadHandlerEvent,
-    FileUploadUploadEvent,
-} from "primereact/fileupload";
+import { FileUpload } from "primereact/fileupload";
 import { InputTextarea } from "primereact/inputtextarea";
-import { InputNumber, InputNumberChangeEvent } from "primereact/inputnumber";
-import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
+import { InputNumber } from "primereact/inputnumber";
 import { Button } from "primereact/button";
-import axios from "axios";
 import Navigation from "../components/Nav/nav.component";
+import { ServiceManage } from "@/shared/services";
+import ManageLayout from "@/layout/manageLayout/layout";
+import { ServiceType } from "@/types/services";
 
 function Create() {
     const router = useRouter();
+    const [loading, setIsLoading] = useState(false);
 
-    const { services, setServices, service, setService, empty } =
-        useContext(ServicesContext);
+    const apiFetch = new ServiceManage();
+    const [uploadImages, setUploadImages] = useState<any>();
+    const upLoadImage: { nameFile: any; typeFile: string }[] = [];
+    const [service, setService] = useState<ServiceType>({
+        name: "",
+        description: "",
+        price: 0,
+        serviceTime: 0,
+    });
 
     const [submitted, setSubmitted] = useState<boolean>(false);
 
     const onInputChange = (
         e: React.ChangeEvent<HTMLInputElement>,
-        name: string
+        name: string,
     ) => {
-        const val = (e.target && e.target.value) || "";
-        let _service = { ...service };
-
-        // @ts-ignore
-        _service[`${name}`] = val;
-
-        setService(_service);
+        setService({ ...service, [name]: e.target.value });
     };
-
-    const onInputNumberChange = (e: InputNumberChangeEvent, name: string) => {
-        const val = e.value || 0;
-        let _service = { ...service };
-
-        // @ts-ignore
-        _service[`${name}`] = val;
-
-        setService(_service);
+    const uploadInvoice = () => {
+        uploadImages?.map((img: any) => {
+            const formData = new FormData();
+            formData.append("filePath", img.name);
+            formData.append("file", img);
+            apiFetch.uploadImg(formData).then((resp) => {
+                console.log(resp.data.filePath);
+                upLoadImage.push({
+                    nameFile: resp.data.filePath,
+                    typeFile: "Image",
+                });
+            });
+        });
     };
-
-    const onDropdownChange = (e: DropdownChangeEvent, name: string) => {
-        const val = e.value || "";
-        let _service = { ...service };
-
-        // @ts-ignore
-        _service[`${name}`] = val;
-
-        setService(_service);
-    };
-
-    const customBase64Uploader = async (event: FileUploadHandlerEvent) => {
-        // convert file to base64 encoded
-        const file = event.files[0];
-        let _service = { ...service };
-        const reader = new FileReader();
-
-        reader.readAsDataURL(file);
-
-        reader.onloadend = function () {
-            const base64 = reader.result;
-            const base64String = base64?.toString();
-            if (base64String) {
-                _service.image.base64 = base64String;
-            }
-            _service.image.name = file.name;
-        };
-        setService(_service);
-    };
-
     const saveService = async () => {
         setSubmitted(true);
-
-        if (
-            service.name.trim() &&
-            service.time !== null &&
-            service.price !== 0
-        ) {
-            let _services = [...services];
-            let _service = { ...service };
-
-            _service.code = createId();
-            try {
-                const res = await axios.post(empty.url, _service);
-            } catch (error) {
-                console.log(error);
-            }
-            _services.push(_service);
-            setServices(_services);
-            setService(empty.service);
+        console.log(service);
+        uploadInvoice();
+        setTimeout(() => {
+            apiFetch
+                .createService("service", {
+                    ...service,
+                    servicesImageRequests: [...upLoadImage],
+                })
+                .then((resp: any) => {
+                    console.log(resp);
+                });
             router.push("/service");
+        }, 1000);
+    };
+    if (loading) return "Loading...";
+    const customAfter = (event: any) => {
+        if (
+            uploadImages?.filter((e: any) => {
+                return e.name == event.files[0].name;
+            }).length
+        ) {
+            console.log("already add img");
+        } else {
+            setUploadImages([
+                ...(uploadImages == undefined ? [] : uploadImages),
+                ...event.files,
+            ]);
         }
     };
-
     const cancelService = () => {
-        setService(empty.service);
+        setService({
+            name: "",
+            description: "",
+            price: 0,
+            serviceTime: 0,
+        });
     };
 
     const hideCreateService = () => {
-        setService(empty.service);
         router.push("/service");
-    };
-
-    const createId = (): string => {
-        let id = "";
-        let chars =
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-        for (let i = 0; i < 5; i++) {
-            id += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return id;
     };
 
     const footer = (
@@ -129,12 +101,19 @@ function Create() {
                 onClick={saveService}
             />
             <Button
-                label="Cancel"
-                icon="pi pi-times"
+                label="Clear"
+                icon="pi pi-filter-slash"
                 severity="warning"
                 outlined
                 className="w-auto"
                 onClick={cancelService}
+            />
+            <Button
+                label="Cancel"
+                icon="pi pi-times"
+                severity="danger"
+                className="w-auto"
+                onClick={hideCreateService}
             />
         </div>
     );
@@ -165,7 +144,7 @@ function Create() {
                         </label>
                         <InputText
                             id="name"
-                            value={service.name}
+                            value={service?.name}
                             onChange={(e) => onInputChange(e, "name")}
                             required
                             autoFocus
@@ -185,23 +164,58 @@ function Create() {
 
                         <FileUpload
                             mode="basic"
+                            url="update/null"
                             name="demo[]"
-                            url="/api/upload"
                             accept="image/*"
                             chooseLabel="Upload Image"
+                            auto
+                            multiple
+                            maxFileSize={10000000000}
                             chooseOptions={{
                                 className:
                                     "border-1 border-gray-400 hover:border-indigo-600 bg-white text-gray-600",
                             }}
-                            customUpload
-                            uploadHandler={customBase64Uploader}
+                            onUpload={customAfter}
                         />
 
-                        {submitted && !service.image && (
-                            <small className="p-error">
-                                image is required.
-                            </small>
-                        )}
+                        <div className="flex">
+                            {uploadImages?.map(
+                                (
+                                    img: any,
+                                    index: React.Key | null | undefined,
+                                ) => {
+                                    return (
+                                        <div className="img-wrap" key={index}>
+                                            <img
+                                                src={img.objectURL}
+                                                height={"120px"}
+                                                width={"150px"}
+                                            />
+                                            <span
+                                                className="close"
+                                                onClick={(e) => {
+                                                    let images =
+                                                        uploadImages.filter(
+                                                            (el: any) => {
+                                                                if (
+                                                                    el.name !==
+                                                                    img.name
+                                                                )
+                                                                    return el;
+                                                            },
+                                                        );
+                                                    setUploadImages([
+                                                        ...images,
+                                                    ]);
+                                                }}
+                                            >
+                                                &times;
+                                            </span>
+                                        </div>
+                                    );
+                                },
+                            )}
+                        </div>
                     </div>
 
                     <div className="field">
@@ -210,7 +224,7 @@ function Create() {
                         </label>
                         <InputTextarea
                             id="description"
-                            value={service.description}
+                            value={service?.description}
                             onChange={(e: any) =>
                                 onInputChange(e, "description")
                             }
@@ -229,17 +243,20 @@ function Create() {
                             </label>
                             <InputNumber
                                 id="price"
-                                value={service.price}
+                                value={service?.price}
                                 placeholder="$"
-                                onValueChange={(e: any) =>
-                                    onInputNumberChange(e, "price")
-                                }
+                                onValueChange={(e: any) => {
+                                    setService({
+                                        ...service,
+                                        price: e.value,
+                                    });
+                                }}
                                 mode="currency"
                                 currency="USD"
                                 locale="en-US"
                                 required
                                 className={classNames({
-                                    "p-invalid": submitted && !service.price,
+                                    "p-invalid": submitted && !service?.price,
                                 })}
                             />
                             {submitted && !service.price && (
@@ -254,17 +271,16 @@ function Create() {
                                 Service time
                                 <span className="text-red-600">*</span>
                             </label>
-                            <Dropdown
-                                value={service.time}
-                                onChange={(e: DropdownChangeEvent) =>
-                                    onDropdownChange(e, "time")
-                                }
-                                options={empty.serviceTime}
-                                placeholder="Select one"
-                                className="w-full"
-                                required
+                            <InputNumber
+                                value={service?.serviceTime}
+                                onChange={(e: any) => {
+                                    setService({
+                                        ...service,
+                                        serviceTime: e.value,
+                                    });
+                                }}
                             />
-                            {submitted && !service.time && (
+                            {submitted && !service.serviceTime && (
                                 <small className="p-error">
                                     service time is required.
                                 </small>
@@ -276,5 +292,8 @@ function Create() {
         </div>
     );
 }
+Create.getLayout = function getLayout(page: React.ReactElement) {
+    return <ManageLayout>{page}</ManageLayout>;
+};
 
 export default Create;

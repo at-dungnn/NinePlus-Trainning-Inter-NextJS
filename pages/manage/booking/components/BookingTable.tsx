@@ -271,13 +271,13 @@ const BookingTable = () => {
                 first={lazyState.first}
                 removableSort
                 dataKey="id"
-                filters={filters}
                 onPage={onPage}
                 onSort={onSort}
                 onFilter={onFilter}
                 totalRecords={totalRecords}
                 header={headers}
                 rows={lazyState.rows}
+                filters={filters}
                 globalFilterFields={[
                     "id",
                     "customerName",

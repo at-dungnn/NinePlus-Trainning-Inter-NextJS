@@ -7,9 +7,9 @@ const apiClient: AxiosInstance = axios.create({
     baseURL: "http://119.82.130.211:6060/api/v1",
     transformRequest: [],
     headers: {
-        Accept: "application/json;multipart/form-data",
+        Accept: "application/json; multipart/form-data",
         "Content-Type":
-            "application/json;multipart/form-data;application/x-www-form-urlencoded; charset=UTF-8",
+            "application/json; multipart/form-data; application/x-www-form-urlencoded; charset=UTF-8",
         "Access-Control-Allow-Headers": "Content-Type",
         "Access-Control-Allow-Origin": "*",
     },

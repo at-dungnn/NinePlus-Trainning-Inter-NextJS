@@ -22,42 +22,28 @@ export const ServicesProvicer = ({ children }: ChildContainerProps) => {
         description: "",
         price: 0,
         time: null,
-        rating: 0,
+        review: 0,
     };
 
     const emptyFilter: Filter = {
-        time: null,
+        time: "",
         rating: null,
     };
-    const URL = "https://64ad10cdb470006a5ec54715.mockapi.io/services";
 
     const [services, setServices] = useState<Service[]>([]);
     const [service, setService] = useState<Service>(emptyService);
 
-    useEffect(() => {
-        const getServices = async () => {
-            try {
-                const response = await axios.get(URL);
-                setServices(response.data as Service[]);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        getServices();
-    }, []);
-
     const empty: Empty = {
-        url: URL,
         service: emptyService,
         filter: emptyFilter,
         serviceTime: [
-            "30 minutes",
-            "40 minutes",
-            "50 minutes",
-            "60 minutes",
-            "90 minutes",
+            { label: "30 minutes", time: 30 },
+            { label: "40 minutes", time: 40 },
+            { label: "50 minutes", time: 50 },
+            { label: "60 minutes", time: 60 },
+            { label: "90 minutes", time: 90 },
         ],
-        serviceRating: [1, 2, 3, 4, 5],
+        serviceRating: [0, 1, 2, 3, 4, 5],
     };
 
     const value: ServicesContextProp = {

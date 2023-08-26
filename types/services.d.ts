@@ -13,19 +13,18 @@ export interface Service {
     description: string;
     price: number;
     time: string | null;
-    rating: number;
+    review: number;
 }
 
 export interface Filter {
-    time: string | null;
+    time?: string | null;
     rating: number | null;
 }
 
 export interface Empty {
-    url: string;
     service: Service;
     filter: Filter;
-    serviceTime: string[];
+    serviceTime: any[];
     serviceRating: number[];
 }
 
@@ -36,3 +35,11 @@ export interface ServicesContextProp {
     setService: Dispatch<SetStateAction<Service>>;
     empty: Empty;
 }
+
+export type ServiceType = {
+    name: string;
+    description: string;
+    price: number;
+    serviceTime: number;
+    images?: { nameFile: any; typeFile: string }[];
+};
