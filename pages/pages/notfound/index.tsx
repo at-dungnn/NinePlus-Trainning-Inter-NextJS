@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import React from "react";
-import AppConfig from "@/layout/AppConfig";
+import AppConfig from "@/layout/manageLayout/AppConfig";
 import Link from "next/link";
 import { Page } from "@/types/types";
 

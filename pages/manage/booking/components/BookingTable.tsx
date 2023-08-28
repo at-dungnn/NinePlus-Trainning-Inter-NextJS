@@ -92,7 +92,7 @@ const RouteDetailID = ({
                     query: { slug: [id] },
                 }}
             >
-                <p className="text-black-alpha-90">{id}</p>
+                {id}
             </Link>
         </>
     );
@@ -290,6 +290,7 @@ const BookingTable = () => {
                 emptyMessage={trans.booking.empty}
                 rowsPerPageOptions={[5, 15, 25]}
                 style={{ height: "55vh" }}
+                className="h-full"
             >
                 <Column
                     field="id"

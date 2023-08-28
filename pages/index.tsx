@@ -1,16 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import AppConfig from "@/layout/AppConfig";
+import AppConfig from "@/layout/manageLayout/AppConfig";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { LayoutContext } from "@/layout/context/LayoutContext";
-import { NodeRef, Page } from "@/types/types";
-import { classNames } from "primereact/utils";
+import { Page } from "@/types/types";
 import { Button } from "primereact/button";
 import { Menu } from "primereact/menu";
 import { Card } from "primereact/card";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
-import { ServicesManageService } from "@/shared/services/BookingService";
 import { useRouter } from "next/router";
 import { Avatar } from "primereact/avatar";
 import { TieredMenu } from "primereact/tieredmenu";
@@ -89,8 +86,6 @@ const LandingPage: Page = () => {
             visible: user !== null && user?.role == "Superadmin",
             url: "/dashboard",
         },
-        { label: "Profile", visible: user !== null },
-
         { label: "Log In", visible: user === null },
         { label: "Sign Up", visible: user === null },
 
@@ -263,7 +258,7 @@ const LandingPage: Page = () => {
                                         id="profilePopup"
                                         className="mt-3 mr-2"
                                     />
-                                </div>{" "}
+                                </div>
                             </div>
                         )}
                     </div>

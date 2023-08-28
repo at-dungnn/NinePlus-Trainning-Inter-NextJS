@@ -292,8 +292,5 @@ function Create() {
         </div>
     );
 }
-Create.getLayout = function getLayout(page: React.ReactElement) {
-    return <ManageLayout>{page}</ManageLayout>;
-};
 
 export default Create;

@@ -43,7 +43,7 @@ const BookingManagePage = () => {
                     }}
                 />
             </Suspense>
-            <div className="m-2 ml-5 bg-white h-full">
+            <div className="m-2 ml-5 bg-white h-full relative">
                 <BookingTable />
             </div>
         </div>
