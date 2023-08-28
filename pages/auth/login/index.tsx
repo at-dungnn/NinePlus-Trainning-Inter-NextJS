@@ -30,6 +30,7 @@ const LoginPage: Page<any> = ({ data }: { data: any }) => {
     });
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [checked, setChecked] = useState(false);
     const [loading, setLoading] = useState(true);
     const { layoutConfig } = useContext(LayoutContext);
     const router = useRouter();
