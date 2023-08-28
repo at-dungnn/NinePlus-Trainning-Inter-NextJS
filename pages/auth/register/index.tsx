@@ -17,113 +17,6 @@ import axios from "axios";
 import { Calendar } from "primereact/calendar";
 import { Checkbox } from "primereact/checkbox";
 
-// const RegisterPage: Page<any> = ({ data }: { data: any }) => {
-//     const [username, setUsername] = useState("");
-//     const [password, setPassword] = useState("");
-//     const { layoutConfig } = useContext(LayoutContext);
-//     const router = useRouter();
-//     const [dropdownItem, setDropdownItem] = useState(null);
-//     const dropdownItems = [
-//         { name: "Option 1", code: "Option 1" },
-//         { name: "Option 2", code: "Option 2" },
-//         { name: "Option 3", code: "Option 3" },
-//     ];
-
-//     const handleChange = (val: string, field: string) => {
-//         if (field === "username") {
-//             setUsername(val);
-//         } else {
-//             setPassword(val);
-//         }
-//     };
-
-//     const containerClassName = classNames(
-//         " flex  justify-content-center min-h-screen min-w-screen overflow-hidden",
-//         { "p-input-filled": layoutConfig.inputStyle === "filled" },
-//     );
-
-//     return (
-//         <div className="min-h-screen min-w-screen flex justify-content-center align-items-center">
-//             <div className="flex">
-//                 <p>Create Account</p>
-//                 <div className="flex justify-content-end">
-//                     <p>Already have an account?</p>
-//                     <Button
-//                         label="SIGN UP"
-//                         className="w-5 font-semibold text-sm align-items-center text-color-secondary bg-white border-black-alpha-20 border-1"
-//                         onClick={() => router.push("/auth/register/")}
-//                     ></Button>
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// };
-// RegisterPage.getLayout = function getLayout(page: React.ReactNode) {
-//     return (
-//         <React.Fragment>
-//             {page}
-//             <AppConfig simple />
-//         </React.Fragment>
-//     );
-// };
-// export default RegisterPage;
-
-// <div className="col-12"></div>;
-
-// //  <div className={containerClassName}>
-// //             <div className="flex align-items-center justify-content-center">
-// //                 <div
-// //                     style={{
-// //                         borderRadius: "56px",
-// //                         padding: "0.3rem",
-// //                     }}
-// //                 >
-// //                     <div className="w-7 surface-card py-7 px-5 sm:px-8">
-// //                         <div className="card">
-// //                             <h5>Advanced</h5>
-// //                             <div className="p-fluid formgrid grid">
-// //                                 <div className="field col-12 md:col-6">
-// //                                     <label htmlFor="firstname2">
-// //                                         Firstname
-// //                                     </label>
-// //                                     <InputText id="firstname2" type="text" />
-// //                                 </div>
-// //                                 <div className="field col-12 md:col-6">
-// //                                     <label htmlFor="lastname2">Lastname</label>
-// //                                     <InputText id="lastname2" type="text" />
-// //                                 </div>
-// //                                 <div className="field col-12">
-// //                                     <label htmlFor="address">Address</label>
-// //                                     <InputTextarea id="address" rows={4} />
-// //                                 </div>
-// //                                 <div className="field col-12 md:col-6">
-// //                                     <label htmlFor="city">City</label>
-// //                                     <InputText id="city" type="text" />
-// //                                 </div>
-// //                                 <div className="field col-12 md:col-3">
-// //                                     <label htmlFor="state">State</label>
-// //                                     <Dropdown
-// //                                         id="state"
-// //                                         value={dropdownItem}
-// //                                         onChange={(e) =>
-// //                                             setDropdownItem(e.value)
-// //                                         }
-// //                                         options={dropdownItems}
-// //                                         optionLabel="name"
-// //                                         placeholder="Select One"
-// //                                     ></Dropdown>
-// //                                 </div>
-// //                                 <div className="field col-12 md:col-3">
-// //                                     <label htmlFor="zip">Zip</label>
-// //                                     <InputText id="zip" type="text" />
-// //                                 </div>
-// //                             </div>
-// //                         </div>
-// //                     </div>
-// //                 </div>
-// //             </div>
-// //         </div>
-
 const RegisterPage: Page<any> = ({ data }: { data: any }) => {
     const { showToast } = useContext(ToastContext);
     const axiosInstance = axios.create({
@@ -138,7 +31,7 @@ const RegisterPage: Page<any> = ({ data }: { data: any }) => {
     });
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [checked, setChecked] = useState("");
+    const [checked, setChecked] = useState(false);
     const [calendarValue, setCalendarValue] = useState(new Date());
     const [loading, setLoading] = useState(true);
     const { layoutConfig } = useContext(LayoutContext);
@@ -190,11 +83,6 @@ const RegisterPage: Page<any> = ({ data }: { data: any }) => {
         }
     };
 
-    const containerClassName = classNames(
-        " flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden",
-        { "p-input-filled": layoutConfig.inputStyle === "filled" },
-    );
-
     return (
         <div className="container">
             <h1 className="form-title">Registration</h1>
@@ -204,14 +92,18 @@ const RegisterPage: Page<any> = ({ data }: { data: any }) => {
                         <label htmlFor="Name"> Name</label>
                         <input type="text" id="Name" name="Name" />
                     </div>
-                    <div>
+                    <div className="user-input-box">
                         <label htmlFor="Birthday">Birthday</label>
-                        <Calendar
-                            showIcon
-                            showButtonBar
-                            value={calendarValue}
-                            onChange={(e) => setCalendarValue(e.value as Date)}
-                        ></Calendar>
+                        <div className="flex justify-content-start">
+                            <Calendar
+                                showIcon
+                                showButtonBar
+                                value={calendarValue}
+                                onChange={(e) =>
+                                    setCalendarValue(e.value as Date)
+                                }
+                            ></Calendar>
+                        </div>
                     </div>
                     <div className="user-input-box">
                         <label htmlFor="Phone">Phone Number</label>
@@ -224,7 +116,11 @@ const RegisterPage: Page<any> = ({ data }: { data: any }) => {
                     <div className="user-input-box">
                         <div>
                             <label htmlFor="Password">Password</label>
-                            <input type="text" id="Password" name="Password" />
+                            <input
+                                type="password"
+                                id="Password"
+                                name="Password"
+                            />
                         </div>
                         <span>
                             Use 8 or more characters with a mix of letters,
@@ -244,7 +140,31 @@ const RegisterPage: Page<any> = ({ data }: { data: any }) => {
                             name="Address"
                         />
                     </div>
-                    <div className="user-input-box"></div>
+                    <div className="user-input-box">
+                        <div className="flex align-items-center">
+                            <Checkbox
+                                inputId="rememberme1"
+                                checked={checked}
+                                onChange={(e) => setChecked(e.checked ?? false)}
+                                className="mr-2"
+                            ></Checkbox>
+                            <div>
+                                <div>
+                                    Send me tips, trends, freebies, updates &
+                                    offers.
+                                </div>
+                                <div className="flex-wrap">
+                                    You can unsubscribe at any time.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="form-submit-btn">
+                        <input
+                            type="submit"
+                            value="Create account & continue"
+                        />
+                    </div>
                 </div>
             </form>
         </div>

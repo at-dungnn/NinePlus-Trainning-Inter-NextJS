@@ -94,7 +94,7 @@ const LoginPage: Page<any> = ({ data }: { data: any }) => {
                     src="/demo/images/access/background.jpg"
                     style={{
                         objectFit: "cover",
-                        opacity: "0.7",
+                        opacity: "0.8",
                     }}
                     alt=""
                 />
