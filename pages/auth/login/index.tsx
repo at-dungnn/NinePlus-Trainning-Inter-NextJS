@@ -14,6 +14,7 @@ import axios from "axios";
 import Link from "next/link";
 import Loader from "@/shared/components/Loader";
 import { ToastContext } from "@/layout/context/ToastContext";
+import "@/public/demo/images/access/background.jpg";
 
 const LoginPage: Page<any> = ({ data }: { data: any }) => {
     const { showToast } = useContext(ToastContext);
@@ -69,9 +70,6 @@ const LoginPage: Page<any> = ({ data }: { data: any }) => {
                         });
                     }
                     router.push("/");
-                    // else {
-                    //     console.log("123");
-                    // }
                 });
         } catch {
             showToast({
@@ -90,15 +88,28 @@ const LoginPage: Page<any> = ({ data }: { data: any }) => {
     return (
         <div className={containerClassName}>
             <div className="flex flex-column align-items-center justify-content-center">
+                <img
+                    className="position-absolute w-100 h-100"
+                    src="/demo/images/access/background.jpg"
+                    style={{
+                        objectFit: "cover",
+                        opacity: "0.7",
+                    }}
+                    alt=""
+                />
                 <div
                     style={{
-                        borderRadius: "56px",
-                        padding: "0.3rem",
+                        padding: "0.1rem",
+                        position: "relative",
+                        background: "transparent",
+                        // borderRadius: "56px",
+                        borderRadius: "20px",
+                        boxShadow: "0 0 60px rgba(0,0,0, .79)",
                     }}
                 >
                     <div
-                        className="w-full surface-card py-7 px-5 sm:px-8"
-                        style={{ borderRadius: "53px" }}
+                        className="w-full surface-card  py-7 px-5 sm:px-8"
+                        style={{ borderRadius: "19px" }}
                     >
                         <div className="flex align-items-end justify-content-end mb-6 gap-5">
                             <span className="font-semibold text-500 no-underline ml-2 pb-2 text-color-secondary">
@@ -112,7 +123,7 @@ const LoginPage: Page<any> = ({ data }: { data: any }) => {
                             ></Button>
                         </div>
                         <div className="mb-5 text-center">
-                            <div className="text-900 text-3xl font-semibold mb-3">
+                            <div className="text-900 text-4xl font-semibold mb-3">
                                 Welcome Back
                             </div>
                             <span className="text-600 font-medium">

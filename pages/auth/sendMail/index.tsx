@@ -14,12 +14,12 @@ const SendMAil: Page = () => {
     const router = useRouter();
     const containerClassName = classNames(
         "surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden",
-        { "p-input-filled": layoutConfig.inputStyle === "filled" }
+        { "p-input-filled": layoutConfig.inputStyle === "filled" },
     );
 
     return (
         <div className={containerClassName}>
-            <div className="flex flex-column align-items-center justify-content-center">
+            <div className="flex  justify-content-center">
                 <div
                     style={{
                         borderRadius: "56px",
@@ -27,7 +27,7 @@ const SendMAil: Page = () => {
                     }}
                 >
                     <div
-                        className="w-full surface-card py-8 px-5 sm:px-8"
+                        className="w-8 surface-card py-8 px-5 sm:px-8"
                         style={{ borderRadius: "53px" }}
                     >
                         <div className="flex align-items-end justify-content-end mb-7 gap-5">
@@ -46,7 +46,7 @@ const SendMAil: Page = () => {
                                 src="/demo/images/access/iconEmail.png"
                                 alt=""
                                 className="mb-4 mt-3 cursor-pointer flex justify-content-center  "
-                                width="10%"
+                                width="13%"
                             />
                         </div>
 
@@ -103,7 +103,7 @@ const SendMAil: Page = () => {
                                     className=" iconLogin pi pi-google"
                                     onClick={() =>
                                         router.push(
-                                            "https://accounts.google.com"
+                                            "https://accounts.google.com",
                                         )
                                     }
                                 ></i>
