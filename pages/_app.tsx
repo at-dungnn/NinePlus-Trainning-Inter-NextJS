@@ -3,8 +3,8 @@ import type { Page } from "@/types/types";
 import React from "react";
 import { LayoutProvider } from "@/layout/context/LayoutContext";
 import { AppContextProvider } from "@/shared/context";
-import Layout from "@/layout/layout";
 import "@/public/demo/css/style.css";
+
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import "primeicons/primeicons.css";
@@ -15,6 +15,7 @@ import { ErrorBoundary } from "@/shared/error";
 import ErrorPage from "./auth/error";
 import { useRouter } from "next/router";
 import globalRouter from "@/shared/tools/globalRouter";
+import ManageLayout from "@/layout/manageLayout/layout";
 
 type Props = AppProps & {
     Component: Page;
@@ -34,7 +35,7 @@ export default function MyApp({
                         {Component.getLayout(
                             <ErrorBoundary fallback={<ErrorPage />}>
                                 <Component {...pageProps} />
-                            </ErrorBoundary>
+                            </ErrorBoundary>,
                         )}
                     </ErrorBoundary>
                 </LayoutProvider>
@@ -42,13 +43,15 @@ export default function MyApp({
         );
     } else {
         return (
-            <LayoutProvider>
-                <Layout>
-                    <ErrorBoundary fallback={<ErrorPage />}>
-                        <Component {...pageProps} />
-                    </ErrorBoundary>
-                </Layout>
-            </LayoutProvider>
+            <AppContextProvider>
+                <LayoutProvider>
+                    <ManageLayout>
+                        <ErrorBoundary fallback={<ErrorPage />}>
+                            <Component {...pageProps} />
+                        </ErrorBoundary>
+                    </ManageLayout>
+                </LayoutProvider>
+            </AppContextProvider>
         );
     }
 }

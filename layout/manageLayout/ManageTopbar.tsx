@@ -5,6 +5,7 @@ import { classNames } from "primereact/utils";
 import React, {
     forwardRef,
     useContext,
+    useEffect,
     useImperativeHandle,
     useRef,
     useState,
@@ -14,24 +15,70 @@ import { LayoutContext } from "../context/LayoutContext";
 import useTrans from "@/shared/hooks/useTrans";
 import { useRouter } from "next/router";
 import { Dropdown } from "primereact/dropdown";
+import { Avatar } from "primereact/avatar";
+import { TieredMenu } from "primereact/tieredmenu";
 
 const ManageTopbar = forwardRef<AppTopbarRef>((props, ref) => {
     const { layoutConfig, layoutState, onMenuToggle, showProfileSidebar } =
         useContext(LayoutContext);
+    const [user, setUser] = useState<any>();
     const menubuttonRef = useRef(null);
     const topbarmenuRef = useRef(null);
+    const profileMenu = useRef(null);
+
     const topbarmenubuttonRef = useRef(null);
     const router = useRouter();
-    const [transVal, setTransVal] = useState(router.locale);
     const { changeLang } = useTrans();
-    const langOptions = ["en", "vi"];
-
+    useEffect(() => {
+        setUser(JSON.parse(localStorage.getItem("USER") as any) || null);
+    }, [router.locale]);
     useImperativeHandle(ref, () => ({
         menubutton: menubuttonRef.current,
         topbarmenu: topbarmenuRef.current,
         topbarmenubutton: topbarmenubuttonRef.current,
     }));
+    const profileOption = [
+        { label: "Profile", visible: user !== null },
+        {
+            label: "Settings",
+            visible: user !== null,
+        },
+        {
+            label: "Language",
+            visible: user !== null,
+            items: [
+                {
+                    label: "VN",
+                    command: () => {
+                        changeLang("vi");
+                    },
+                },
+                {
+                    label: "EN",
+                    command: () => {
+                        changeLang("en");
+                    },
+                },
+            ],
+        },
 
+        { label: "Log In", visible: user === null },
+        { label: "Sign Up", visible: user === null },
+
+        {
+            separator: true,
+            visible: user !== null,
+        },
+
+        {
+            label: "Log Out",
+            command: () => {
+                localStorage.removeItem("USER");
+                router.reload();
+            },
+            visible: user !== null,
+        },
+    ];
     return (
         <div className="manage-layout-topbar">
             <Link href="/" className="layout-topbar-logo">
@@ -62,33 +109,39 @@ const ManageTopbar = forwardRef<AppTopbarRef>((props, ref) => {
                         layoutState.profileSidebarVisible,
                 })}
             >
-                <button type="button" className="p-link layout-topbar-button">
-                    <i className="pi pi-calendar"></i>
-                    <span>Calendar</span>
-                </button>
-                <button type="button" className="p-link layout-topbar-button">
-                    <i className="pi pi-user"></i>
-                    <span>Profile</span>
-                </button>
-                <Link href="/documentation">
-                    <button
-                        type="button"
-                        className="p-link layout-topbar-button"
-                    >
-                        <i className="pi pi-cog"></i>
-                        <span>Settings</span>
-                    </button>
-                </Link>
-                <Dropdown
-                    value={transVal}
-                    onChange={(e) => {
-                        setTransVal(e.value);
-                        changeLang(e.value);
-                    }}
-                    options={langOptions}
-                    className="w-full md:w-6rem"
-                    placeholder="Select a City"
-                />
+                <div className="flex gap-8 w-24rem justify-content-end ">
+                    <div className="card p-2 right-0 ">
+                        <div
+                            onClick={(event) => {
+                                (profileMenu.current as any).toggle(event);
+                            }}
+                            className="  p-link flex align-items-center h-4 p-0"
+                        >
+                            <Avatar
+                                image={
+                                    user?.avatarUrl !== null
+                                        ? user?.avatarUrl
+                                        : "https://t3.ftcdn.net/jpg/05/00/54/28/360_F_500542898_LpYSy4RGAi95aDim3TLtSgCNUxNlOlcM.jpg"
+                                }
+                                className="mr-2"
+                                shape="circle"
+                            />
+                            <div className="flex flex-column align">
+                                <span className="font-bold">
+                                    {user?.employeeNo}
+                                </span>
+                                <span className="text-sm">{user?.email}</span>
+                            </div>
+                        </div>
+                        <TieredMenu
+                            ref={profileMenu}
+                            popup
+                            model={profileOption as any}
+                            id="profilePopup"
+                            className="mt-3 mr-2"
+                        />
+                    </div>
+                </div>
             </div>
         </div>
     );

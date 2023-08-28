@@ -151,6 +151,7 @@ const CustomerTable = ({ tableData, setTableData }: any) => {
             rows={5}
             rowsPerPageOptions={[5, 15, 25]}
             style={{ height: "55vh" }}
+            className="surface-100"
         >
             <Column
                 field="id"

@@ -17,27 +17,31 @@ const AppMenu = () => {
             items: [
                 {
                     label: "Dashboard",
-                    icon: "pi pi-fw pi-home",
+                    icon: "pi pi-chart-bar",
                     to: "/dashboard",
                 },
                 {
                     label: "Employee",
-                    icon: "pi pi-fw pi-home",
+                    icon: "pi pi-fw pi-users",
                     to: "/employee",
                 },
-                { label: "Service", icon: "pi pi-fw pi-home", to: "/service" },
+                { label: "Service", icon: "pi pi-fw pi-book", to: "/service" },
                 {
                     label: "Customer",
-                    icon: "pi pi-fw pi-home",
+                    icon: "pi pi-fw pi-user ",
                     to: "/customer",
                 },
                 {
                     label: "Booking",
-                    icon: "pi pi-fw pi-home",
+                    icon: "pi pi-fw pi-calendar-plus",
                     to: "/manage/booking",
                 },
-                { label: "User", icon: "pi pi-fw pi-home", to: "/user" },
-                { label: "Setting", icon: "pi pi-fw pi-home", to: "/setting" },
+                {
+                    label: "User",
+                    icon: "pi pi-fw pi-user-edit",
+                    to: "/user",
+                },
+                { label: "Setting", icon: "pi pi-fw pi-cog", to: "/setting" },
             ],
         },
     ];

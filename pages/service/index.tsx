@@ -230,8 +230,8 @@ export default function ProductsDemo() {
     };
 
     const header = (
-        <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-            <div className="flex flex-row gap-2 align-content-center">
+        <div className="flex flex-wrap gap-2 align-items-center justify-content-between p-4">
+            <div className="flex flex-row gap-2 align-content-center ">
                 <span className="p-input-icon-left">
                     <i className="pi pi-search" />
                     <InputText
@@ -320,7 +320,7 @@ export default function ProductsDemo() {
         <div>
             <Navigation linkPage={["service"]} />
             <Toast ref={toast} />
-            <div className="card">
+            <div className="card p-2">
                 <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
 
                 <DataTable
