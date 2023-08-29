@@ -92,7 +92,7 @@ const RouteDetailID = ({
                     query: { slug: [id] },
                 }}
             >
-                <p className="text-black-alpha-90">{id}</p>
+                {id}
             </Link>
         </>
     );
@@ -271,13 +271,13 @@ const BookingTable = () => {
                 first={lazyState.first}
                 removableSort
                 dataKey="id"
-                filters={filters}
                 onPage={onPage}
                 onSort={onSort}
                 onFilter={onFilter}
                 totalRecords={totalRecords}
                 header={headers}
                 rows={lazyState.rows}
+                filters={filters}
                 globalFilterFields={[
                     "id",
                     "customerName",
@@ -290,6 +290,7 @@ const BookingTable = () => {
                 emptyMessage={trans.booking.empty}
                 rowsPerPageOptions={[5, 15, 25]}
                 style={{ height: "55vh" }}
+                className="h-full"
             >
                 <Column
                     field="id"

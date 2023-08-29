@@ -163,9 +163,9 @@ const RegisterPage: Page<any> = ({ data }: { data: any }) => {
                                     showIcon
                                     showButtonBar
                                     value={calendarValue}
-                                    onChange={(e) =>
-                                        setCalendarValue(e.value as Date)
-                                    }
+                                    // onChange={(e) =>
+                                    //     setCalendarValue(e.value as Date)
+                                    // }
                                 ></Calendar>
                             </div>
                         </div>

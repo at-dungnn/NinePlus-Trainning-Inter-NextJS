@@ -1,0 +1,12 @@
+.img-wrap {
+    position: relative;
+    width: auto;
+}
+.img-wrap .close {
+    position: absolute;
+    color: white;
+    top: 2px;
+    right: 2px;
+    z-index: 100;
+    cursor: pointer;
+}

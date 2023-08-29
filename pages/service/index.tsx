@@ -1,38 +1,73 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 
-import { DataTable } from "primereact/datatable";
+import {
+    DataTable,
+    DataTablePageEvent,
+    DataTableSortEvent,
+} from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
-
 import { Rating } from "primereact/rating";
 import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
-import axios from "axios";
 import { ServicesContext } from "../../layout/context/servicesContext";
 import { Service, Filter } from "../../types/types";
 import Navigation from "./components/Nav/nav.component";
 import { useRouter } from "next/router";
-
+import { ServiceManage } from "@/shared/services";
+const apiFetch = new ServiceManage();
 export default function ProductsDemo() {
-    const { services, setServices, service, setService, empty } =
-        useContext(ServicesContext);
+    const { setServices, empty } = useContext(ServicesContext);
 
     const router = useRouter();
+    const [serviceDatas, setServiceData] = useState<any>();
+    const [service, setService] = useState<any>();
+    const [loading, setLoading] = useState<boolean>(true);
+    const [totalRecords, setTotalRecords] = useState<number>();
+    const [lazyState, setLazyState] = useState<any>({
+        first: 0,
+        rows: 5,
+        page: 0,
+        sortField: null,
+        sortOrder: null,
+    });
 
     const [deleteServiceDialog, setDeleteServiceDialog] =
         useState<boolean>(false);
     const [filterServicesDialog, setFilterServicesDialog] =
         useState<boolean>(false);
-
+    const fetchData = async (url: string) => {
+        return await apiFetch.getService(`service?${url}`).then((resp: any) => {
+            setServiceData(resp.data);
+            setTotalRecords(resp.totalCount);
+            return resp.data;
+        });
+    };
     const [filter, setFilter] = useState<Filter>(empty.filter);
-    const [serviceByFilter, setServiceByFilter] = useState<Service[]>([]);
-
     const [globalFilter, setGlobalFilter] = useState<string>("");
     const toast = useRef<Toast>(null);
     const dt = useRef<DataTable<Service[]>>(null);
+    const filterUrl = `Time=${filter.time == null ? "" : filter.time}&Review=${
+        filter.rating == null ? "" : filter.rating
+    }&Keyword=${globalFilter == "" ? "" : globalFilter}`;
+    const refetchData = async () => {
+        return await apiFetch
+            .getService(`service??PageNumber=1&PageSize=5 &IsExport=false`)
+            .then((resp: any) => {
+                setServiceData(resp.data);
+                return resp.data;
+            });
+    };
+    useEffect(() => {
+        fetchData(
+            `${filterUrl}&PageNumber=${lazyState.page + 1}&PageSize=${
+                lazyState.rows
+            }&IsExport=false`,
+        );
+    }, [router.locale, globalFilter]);
 
     const formatCurrency = (value: number) => {
         return value.toLocaleString("en-US", {
@@ -47,7 +82,7 @@ export default function ProductsDemo() {
 
     const editService = (service: Service) => {
         setService(service);
-        router.push("/service/update");
+        router.push(`/service/update/${service.id}`);
     };
 
     const openFilter = () => {
@@ -63,7 +98,17 @@ export default function ProductsDemo() {
         setFilter(empty.filter);
     };
 
-    const clearFilter = () => setFilter(empty.filter);
+    const clearFilter = () => {
+        setFilter(empty.filter);
+        refetchData();
+        setLazyState({
+            first: 0,
+            rows: 5,
+            page: 0,
+            sortField: null,
+            sortOrder: null,
+        });
+    };
 
     const confirmDeleteProduct = (service: Service) => {
         setService(service);
@@ -71,13 +116,18 @@ export default function ProductsDemo() {
     };
 
     const deleteService = async () => {
-        let _products = services.filter((val) => val.id !== service.id);
+        console.log(service);
         try {
-            const res = await axios.delete(`${empty.url}/${service.id}`);
+            const res = await apiFetch
+                .deleteService(`/service?id=${service.id}`)
+                .then((resp: any) => {
+                    refetchData();
+                    return resp.succeeded;
+                });
         } catch (error) {
             console.log(error);
         }
-        setServices(_products);
+        // setServices(_products);
         setDeleteServiceDialog(false);
         setService(empty.service);
         toast.current?.show({
@@ -88,48 +138,14 @@ export default function ProductsDemo() {
         });
     };
 
-    const onFilter = () => {
-        const _services: Service[] = [];
-        services.forEach((value: Service, i: number) => {
-            if (filter.time && filter.rating) {
-                if (
-                    value.time === filter.time &&
-                    value.rating === filter.rating
-                ) {
-                    _services.push(value);
-                }
-            } else {
-                if (
-                    value.time === filter.time ||
-                    value.rating === filter.rating
-                ) {
-                    _services.push(value);
-                }
-            }
-        });
-
-        setServiceByFilter(_services);
-        setFilterServicesDialog(false);
-        if (_services.length) {
-            toast.current?.show({
-                severity: "success",
-                summary: "Successful",
-                detail: "Product Deleted",
-                life: 3000,
-            });
-        }
-    };
-
     const onDropdownChangeFilter = (e: DropdownChangeEvent, name: string) => {
         const val = e.value;
         let _filter = { ...filter };
 
-        // @ts-ignore
-        _filter[`${name}`] = val;
-        setFilter(_filter);
+        setFilter({ ...filter, [name]: val });
     };
 
-    const deleteFiterClick = (name: string) => {
+    const deleteFiterClick = async (name: string) => {
         let _filter = filter;
         // @ts-ignore
         _filter[`${name}`] = null;
@@ -144,8 +160,8 @@ export default function ProductsDemo() {
     const imageBodyTemplate = (rowData: Service) => {
         return (
             <img
-                src={rowData.image.base64}
-                alt={rowData.image.name}
+                src={rowData?.image as any}
+                alt={rowData.name}
                 className="shadow-2 border-round"
                 style={{ width: "64px" }}
             />
@@ -157,7 +173,39 @@ export default function ProductsDemo() {
     };
 
     const ratingBodyTemplate = (rowData: Service) => {
-        return <Rating value={rowData.rating} readOnly cancel={false} />;
+        return (
+            <Rating value={rowData.review as number} readOnly cancel={false} />
+        );
+    };
+
+    const onPage = (event: DataTablePageEvent) => {
+        console.log(event);
+        fetchData(
+            `${filterUrl}&PageNumber=${(event.page as number) + 1}&PageSize=${
+                event.rows
+            }&IsExport=false`,
+        );
+        setLazyState({ ...event, sortField: lazyState.sortField });
+    };
+    const onSort = (event: DataTableSortEvent) => {
+        console.log(event, lazyState);
+        setLazyState({ ...lazyState, sortField: event.sortField });
+    };
+    const onFilter = () => {
+        const _services: Service[] = [];
+        fetchData(filterUrl).then((resp: any) => {
+            _services.push(...resp);
+        });
+        setService(_services);
+        setFilterServicesDialog(false);
+        if (_services.length) {
+            toast.current?.show({
+                severity: "success",
+                summary: "Successful",
+                detail: "Product Filtered",
+                life: 3000,
+            });
+        }
     };
 
     const actionBodyTemplate = (rowData: Service) => {
@@ -182,14 +230,15 @@ export default function ProductsDemo() {
     };
 
     const header = (
-        <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-            <div className="flex flex-row gap-2 align-content-center">
+        <div className="flex flex-wrap gap-2 align-items-center justify-content-between p-4">
+            <div className="flex flex-row gap-2 align-content-center ">
                 <span className="p-input-icon-left">
                     <i className="pi pi-search" />
                     <InputText
                         type="search"
                         placeholder="Search..."
-                        onInput={(e) => {
+                        onChange={(e) => {
+                            console.log(e);
                             const target = e.target as HTMLInputElement;
                             setGlobalFilter(target.value);
                         }}
@@ -202,16 +251,32 @@ export default function ProductsDemo() {
                         icon="pi pi-times"
                         outlined
                         severity="danger"
-                        onClick={() => deleteFiterClick("time")}
+                        onClick={() => {
+                            deleteFiterClick("time");
+                            fetchData(
+                                `PageNumber=${lazyState.page + 1}&PageSize=${
+                                    lazyState.rows
+                                }&IsExport=false`,
+                            );
+                        }}
                     />
                 )}
-                {filter.rating && (
+                {filter.rating == undefined ? (
+                    <></>
+                ) : (
                     <Button
                         label={`rating: ${filter.rating}`}
                         icon="pi pi-times"
                         outlined
                         severity="danger"
-                        onClick={() => deleteFiterClick("rating")}
+                        onClick={() => {
+                            deleteFiterClick("rating");
+                            fetchData(
+                                `PageNumber=${lazyState.page + 1}&PageSize=${
+                                    lazyState.rows
+                                }&IsExport=false`,
+                            );
+                        }}
                     />
                 )}
             </div>
@@ -255,23 +320,28 @@ export default function ProductsDemo() {
         <div>
             <Navigation linkPage={["service"]} />
             <Toast ref={toast} />
-            <div className="card">
+            <div className="card p-2">
                 <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
 
                 <DataTable
                     ref={dt}
-                    value={serviceByFilter.length ? serviceByFilter : services}
+                    value={serviceDatas}
                     dataKey="id"
                     paginator
-                    rows={10}
-                    rowsPerPageOptions={[5, 10, 25]}
-                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+                    lazy
+                    first={lazyState.first}
+                    onPage={onPage}
+                    onSort={onSort}
+                    onFilter={onFilter}
+                    totalRecords={totalRecords}
+                    rows={lazyState.rows}
+                    removableSort
+                    rowsPerPageOptions={[5, 15, 25]}
                     globalFilter={globalFilter}
                     header={header}
                 >
                     <Column
-                        field="code"
+                        field="id"
                         header="ID"
                         sortable
                         style={{ minWidth: "12rem" }}
@@ -301,7 +371,7 @@ export default function ProductsDemo() {
                         style={{ minWidth: "10rem" }}
                     ></Column>
                     <Column
-                        field="rating"
+                        field="review"
                         header="Reviews"
                         body={ratingBodyTemplate}
                         sortable
@@ -360,13 +430,12 @@ export default function ProductsDemo() {
                 <div className="confirmation-content flex flex-column gap-5">
                     <div className="field">
                         <label className="font-bold">Time</label>
-                        <Dropdown
-                            value={filter.time}
-                            onChange={(e: DropdownChangeEvent) =>
-                                onDropdownChangeFilter(e, "time")
-                            }
-                            options={empty.serviceTime}
-                            placeholder="Select one"
+                        <InputText
+                            value={filter.time as any}
+                            onChange={(e: any) => {
+                                onDropdownChangeFilter(e.target, "time");
+                                setFilter({ ...filter, time: e.target.value });
+                            }}
                             className="w-full"
                             required
                         />

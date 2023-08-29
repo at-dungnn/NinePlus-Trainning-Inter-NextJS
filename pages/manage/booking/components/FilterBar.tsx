@@ -165,7 +165,7 @@ export const FilterBar = ({
                     }}
                 />
             </div>
-            <div className="p-3 flex justify-content-end gap-5 mr-4">
+            <div className="p-3 surface-100 flex justify-content-end gap-5 pr-4">
                 <Button
                     icon="pi pi-filter-slash"
                     label={trans.booking.cancelFilter}
