@@ -3,7 +3,7 @@ import {
     SessionService,
     UserAuthenticate,
 } from "@/models/common/user-auth.model";
-
+// store token dưới dạng localStorage.setItem("USER",token) !!!
 export class SessionKey {
     static CURRENT_SELECT_LANG = "CURRENT_SELECT_LANG";
     static ROLE = "ROLE";
