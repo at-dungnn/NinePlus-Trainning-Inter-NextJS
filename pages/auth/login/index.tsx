@@ -12,7 +12,6 @@ import { classNames } from "primereact/utils";
 import { Page } from "@/types/layout";
 import axios from "axios";
 import Link from "next/link";
-import Loader from "@/shared/components/Loader";
 import { ToastContext } from "@/layout/context/ToastContext";
 import "@/public/demo/images/access/background.jpg";
 
