@@ -7,7 +7,6 @@ import { FileUpload } from "primereact/fileupload";
 import { InputTextarea } from "primereact/inputtextarea";
 import { InputNumber } from "primereact/inputnumber";
 import { Button } from "primereact/button";
-import Navigation from "../components/Nav/nav.component";
 import { ServiceManage } from "@/shared/services";
 import ManageLayout from "@/layout/manageLayout/layout";
 import { ServiceType } from "@/types/services";
@@ -120,8 +119,6 @@ function Create() {
 
     return (
         <div>
-            <Navigation linkPage={["service", "create"]} />
-
             <Card
                 title="Create Service"
                 footer={footer}

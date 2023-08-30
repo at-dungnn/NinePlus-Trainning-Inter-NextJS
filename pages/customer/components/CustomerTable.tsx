@@ -17,7 +17,7 @@ const renderIcon = ({
 }: {
     id: string;
     customerName: string;
-}): React.ReactNode => {
+}) => {
     const { trans } = useTrans();
     const router = useRouter();
     const [visible, setVisible] = useState(false);

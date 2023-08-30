@@ -45,7 +45,7 @@ addLocale("vi", {
     clear: "Clear",
 });
 
-export const FilterBar = ({
+const FilterBar = ({
     lazyState,
     setLazyState,
     filter,
@@ -61,7 +61,7 @@ export const FilterBar = ({
     router: any;
     filterFn: Function;
     refetchFn: Function;
-}) => {
+}): React.ReactElement => {
     const { trans } = useTrans();
     const option = [
         { status: trans.booking.status.waiting, code: "1" },
@@ -190,3 +190,4 @@ export const FilterBar = ({
         </>
     );
 };
+export { FilterBar };

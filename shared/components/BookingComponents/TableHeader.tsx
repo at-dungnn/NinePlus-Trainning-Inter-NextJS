@@ -2,11 +2,11 @@ import Link from "next/link";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 
-export const TableHeader = ({
+const TableHeader = ({
     globalFilterValue,
     onGlobalFilterChange,
     trans,
-}: any) => {
+}: any): React.ReactElement => {
     return (
         <div className="flex justify-content-between">
             <span>
@@ -54,3 +54,4 @@ export const TableHeader = ({
         </div>
     );
 };
+export { TableHeader };

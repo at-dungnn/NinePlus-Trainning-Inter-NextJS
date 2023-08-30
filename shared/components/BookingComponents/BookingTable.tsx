@@ -1,5 +1,5 @@
 import { ToastContext } from "@/layout/context/ToastContext";
-import DeleteDialog from "./DeleteDialog";
+import { DeleteDialog } from "./DeleteDialog";
 import useTrans from "@/shared/hooks/useTrans";
 import { BookingService } from "@/shared/services";
 import { formatFromTo, formatBookingDate } from "@/shared/tools/formatDate";
@@ -30,7 +30,7 @@ const renderIcon = ({
 }: {
     id: string;
     customerName: string;
-}): React.ReactNode => {
+}) => {
     const { trans } = useTrans();
     const router = useRouter();
     const [visible, setVisible] = useState(false);
@@ -340,4 +340,4 @@ const BookingTable = () => {
     );
 };
 
-export default BookingTable;
+export { BookingTable };

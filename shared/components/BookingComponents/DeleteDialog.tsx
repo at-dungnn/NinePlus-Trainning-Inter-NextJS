@@ -66,4 +66,4 @@ const DeleteDialog = ({ id, name, visible, setVisible }: dialogProps) => {
         </Dialog>
     );
 };
-export default DeleteDialog;
+export { DeleteDialog };

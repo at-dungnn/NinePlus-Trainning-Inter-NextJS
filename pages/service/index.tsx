@@ -15,7 +15,6 @@ import { InputText } from "primereact/inputtext";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { ServicesContext } from "../../layout/context/servicesContext";
 import { Service, Filter } from "../../types/types";
-import Navigation from "./components/Nav/nav.component";
 import { useRouter } from "next/router";
 import { ServiceManage } from "@/shared/services";
 const apiFetch = new ServiceManage();
@@ -318,7 +317,6 @@ export default function ProductsDemo() {
 
     return (
         <div>
-            <Navigation linkPage={["service"]} />
             <Toast ref={toast} />
             <div className="card p-2">
                 <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>

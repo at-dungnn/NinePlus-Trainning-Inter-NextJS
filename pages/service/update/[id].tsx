@@ -8,7 +8,6 @@ import { InputTextarea } from "primereact/inputtextarea";
 import React, { useContext, useEffect, useState } from "react";
 import {} from "../../../layout/context/servicesContext";
 import { classNames } from "primereact/utils";
-import Navigation from "../components/Nav/nav.component";
 import { ServiceManage } from "@/shared/services";
 import { ToastContext } from "@/layout/context/ToastContext";
 import ManageLayout from "@/layout/manageLayout/layout";
@@ -119,8 +118,6 @@ function EditService() {
     if (loading) return "Loading...";
     return (
         <div>
-            <Navigation linkPage={["service", "update"]} />
-
             <Card
                 title="Update Service"
                 footer={footer}

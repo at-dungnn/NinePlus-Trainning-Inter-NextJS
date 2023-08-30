@@ -5,7 +5,7 @@ import { Dropdown } from "primereact/dropdown";
 import { classNames } from "primereact/utils";
 import { useContext, useState } from "react";
 
-export const StatusBox = ({
+const StatusBox = ({
     id,
     status,
     fetchData,
@@ -13,7 +13,7 @@ export const StatusBox = ({
     id: string;
     status: string;
     fetchData: any;
-}) => {
+}): React.ReactElement => {
     const apiFetch = new BookingService();
     const { showToast } = useContext(ToastContext);
     const [bookingStatus, setBookingStatus] = useState<string>(String(status));
@@ -73,3 +73,4 @@ export const StatusBox = ({
     }
     return <p>Loading...</p>;
 };
+export { StatusBox };

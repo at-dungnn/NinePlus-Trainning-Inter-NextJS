@@ -11,7 +11,7 @@ import {
     useEffect,
     useState,
 } from "react";
-import { BookingTable } from "./components";
+import { BookingTable } from "@shared/components/BookingComponents/BookingTable";
 
 const BookingManagePage = () => {
     const router = useRouter();
