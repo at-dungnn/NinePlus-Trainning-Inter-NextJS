@@ -244,10 +244,10 @@ const LandingPage: Page = () => {
                                         />
                                         <div className="flex flex-column align">
                                             <span className="font-bold">
-                                                Amy Elsner
+                                                {user?.employeeNo}
                                             </span>
                                             <span className="text-sm">
-                                                Agent
+                                                {user?.email}
                                             </span>
                                         </div>
                                     </div>

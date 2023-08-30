@@ -19,6 +19,7 @@ apiClient.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
         const sessionService = useSessionService();
         const accessToken = sessionService.loggedInUser?.token;
+
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
         } else {

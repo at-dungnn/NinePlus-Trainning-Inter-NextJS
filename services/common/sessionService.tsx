@@ -14,9 +14,9 @@ export const useSessionService = (): SessionService => {
     const loggedInUser: UserAuthenticate | null = (() => {
         try {
             const value = JSON.parse(
-                localStorage.getItem(SessionKey.USER) || "false"
+                localStorage.getItem(SessionKey.USER) || "false",
             );
-            return value === "false" ? value : null;
+            return value;
         } catch (e) {
             console.log(e);
         }
@@ -32,16 +32,11 @@ export const useSessionService = (): SessionService => {
         localStorage.setItem(SessionKey.USER, JSON.stringify(userAuth));
     };
 
-    const clearSession = (): void => {
-        localStorage.removeItem(SessionKey.USER);
-    };
-
     const isLoggedIn = !!loggedInUser;
 
     return {
         loggedInUser,
         isLoggedIn,
-        clearSession,
         saveSession,
     };
 };

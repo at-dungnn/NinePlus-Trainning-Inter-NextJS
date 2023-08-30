@@ -16,6 +16,6 @@ export interface UserAuthenticate {
 export interface SessionService {
     loggedInUser: UserAuthenticate | null;
     isLoggedIn: boolean;
-    clearSession: () => void;
+    clearSession?: () => void;
     saveSession: (userAuth: UserAuthenticate) => void;
 }

@@ -74,7 +74,7 @@ const ManageTopbar = forwardRef<AppTopbarRef>((props, ref) => {
             label: "Log Out",
             command: () => {
                 localStorage.removeItem("USER");
-                router.reload();
+                router.push("/");
             },
             visible: user !== null,
         },
